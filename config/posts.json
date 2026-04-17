@@ -1,29 +1,6 @@
 {
   "posts": [
     {
-      "id": "MG0fxy",
-      "title": "矩形四点坐标一键转 x/y/宽/高",
-      "createdAt": "2026-04-17T11:42:28Z",
-      "updatedAt": "0001-01-01T00:00:00Z",
-      "tags": [],
-      "tagIds": null,
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "# 前端实用工具：矩形四点坐标一键转 x/y/宽/高\r\n在前端开发（尤其是Canvas、图片标注、UI自动化、可视化编辑场景）中，我们经常会遇到**矩形四个顶点坐标**，但业务需要的却是**左上角坐标 + 宽 + 高**的标准矩形格式。\r\n\r\n手动计算不仅繁琐，还容易出错。今天给大家封装一个**通用、健壮、支持任意坐标顺序**的 JS 工具函数，一行代码完成转换！\r\n\r\n---\r\n\r\n## 一、需求场景\r\n输入：矩形 4 个顶点坐标数组（顺序任意）\r\n```js\r\n[[31, 312], [347, 312], [347, 394], [31, 394]]\r\n```\r\n\r\n输出：标准矩形格式\r\n```js\r\n{ x: 31, y: 312, width: 316, height: 82 }\r\n```\r\n\r\n---\r\n\r\n## 二、核心思路\r\n不管四个点顺序如何，只需要抓住两个关键值：\r\n1. **最小 x、最小 y** → 矩形左上角坐标\r\n2. **最大 x、最大 y** → 用于计算宽高\r\n3. 宽 = maxX - minX\r\n4. 高 = maxY - minY\r\n\r\n这种方式**不依赖坐标点顺序**，鲁棒性极强。\r\n\r\n---\r\n\r\n## 三、完整工具函数（可直接复制使用）\r\n新建 `rectUtils.js`：\r\n\r\n```javascript\r\n/**\r\n * 将矩形四个顶点坐标 转换为 {x, y, width, height}\r\n * @param {number[][]} coordinates - 四个点坐标 [[x1,y1], [x2,y2], [x3,y3], [x4,y4]]\r\n * @returns { {x: number, y: number, width: number, height: number} }\r\n */\r\nexport function convertPointsToRect(coordinates) {\r\n  // 输入校验\r\n  if (!Array.isArray(coordinates) || coordinates.length !== 4) {\r\n    throw new Error('必须传入包含4个坐标点的数组')\r\n  }\r\n\r\n  // 提取所有 x、y\r\n  const xs = coordinates.map(p =\u003e p[0])\r\n  const ys = coordinates.map(p =\u003e p[1])\r\n\r\n  // 计算极值\r\n  const minX = Math.min(...xs)\r\n  const maxX = Math.max(...xs)\r\n  const minY = Math.min(...ys)\r\n  const maxY = Math.max(...ys)\r\n\r\n  // 生成结果\r\n  return {\r\n    x: minX,\r\n    y: minY,\r\n    width: maxX - minX,\r\n    height: maxY - minY\r\n  }\r\n}\r\n\r\n/**\r\n * 批量转换\r\n * @param {number[][][]} list\r\n * @returns {Array\u003c{x,y,width,height}\u003e}\r\n */\r\nexport function batchConvertPointsToRect(list) {\r\n  return list.map(item =\u003e convertPointsToRect(item))\r\n}\r\n```\r\n\r\n---\r\n\r\n## 四、使用示例\r\n```javascript\r\nimport { convertPointsToRect } from './rectUtils'\r\n\r\nconst points = [\r\n  [35, 507],\r\n  [312, 507],\r\n  [312, 605],\r\n  [35, 605]\r\n]\r\n\r\nconst rect = convertPointsToRect(points)\r\nconsole.log(rect)\r\n// { x: 35, y: 507, width: 277, height: 98 }\r\n```\r\n\r\n**批量转换：**\r\n```javascript\r\nconst rects = batchConvertPointsToRect([\r\n  [[31,312],[347,312],[347,394],[31,394]],\r\n  [[37,244],[324,244],[324,275],[37,275]]\r\n])\r\n```\r\n\r\n---\r\n\r\n## 五、工具亮点\r\n✅ **不依赖坐标点顺序**（左上/右上/右下/左下 任意乱序都能正确转换）  \r\n✅ **输入校验**（避免非法数据导致报错）  \r\n✅ **支持负数坐标**（适合屏幕外、偏移场景）  \r\n✅ **支持批量转换**  \r\n✅ **轻量无依赖**（纯 JS，可在浏览器/Node/小程序中使用）\r\n\r\n---\r\n\r\n## 六、适用场景\r\n- Canvas 绘制矩形\r\n- 图片标注/选区工具\r\n- 截图区域坐标转换\r\n- UI 自动化元素定位\r\n- 可视化图表矩形计算\r\n- PDF/画布坐标转换\r\n\r\n---\r\n\r\n## 七、总结\r\n这个工具函数虽然简单，但**解决了前端坐标转换中最常见的重复劳动**。\r\n\r\n以后遇到四点坐标转矩形，直接调用这行代码即可，再也不用手动算来算去啦！\r\n\r\n---\r\n\r\n需要我再给你生成一个**可在线预览的 HTML Demo** 吗？你可以直接打开页面粘贴坐标并实时看到转换结果～",
-      "fileName": "ju-xing-si-dian-zuo-biao-yi-jian-zhuan-xykuangao",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "D2N3nP",
       "title": "都 2026 年了，我们为什么还要写博客",
       "createdAt": "2026-04-17T11:11:06+08:00",
@@ -76,6 +53,62 @@
       "fileName": "indie-blog-is-not-dead",
       "deleteFileName": "",
       "abstract": "你可能听过很多次这样的说法：\"博客已经过时了\"、\"现在谁还看博客\"、\"有公众号和小红书就够了\"。\r\n\r\n但事实是——2026 年的今天，全球有超过 6 亿个博客，每天产生 750 万篇新文章，77% 的互联网用户仍然在定期阅读博客。\r\n\r\n博客从未死过。真正在死的，是那些没有灵魂的博客。"
+    },
+    {
+      "id": "MG0fxy",
+      "title": "矩形四点坐标一键转 x/y/宽/高",
+      "createdAt": "2026-03-17T11:42:28+08:00",
+      "updatedAt": "2026-04-17T13:30:23+08:00",
+      "tags": [
+        "konva"
+      ],
+      "tagIds": [
+        "x6lQV4"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "# 前端实用工具：矩形四点坐标一键转 x/y/宽/高\r\n在前端开发（尤其是Canvas、图片标注、UI自动化、可视化编辑场景）中，我们经常会遇到**矩形四个顶点坐标**，但业务需要的却是**左上角坐标 + 宽 + 高**的标准矩形格式。\r\n\r\n手动计算不仅繁琐，还容易出错。今天给大家封装一个**通用、健壮、支持任意坐标顺序**的 JS 工具函数，一行代码完成转换！\r\n\r\n---\r\n\r\n## 一、需求场景\r\n输入：矩形 4 个顶点坐标数组（顺序任意）\r\n```js\r\n[[31, 312], [347, 312], [347, 394], [31, 394]]\r\n```\r\n\r\n输出：标准矩形格式\r\n```js\r\n{ x: 31, y: 312, width: 316, height: 82 }\r\n```\r\n\r\n---\r\n\r\n## 二、核心思路\r\n不管四个点顺序如何，只需要抓住两个关键值：\r\n1. **最小 x、最小 y** → 矩形左上角坐标\r\n2. **最大 x、最大 y** → 用于计算宽高\r\n3. 宽 = maxX - minX\r\n4. 高 = maxY - minY\r\n\r\n这种方式**不依赖坐标点顺序**，鲁棒性极强。\r\n\r\n---\r\n\r\n## 三、完整工具函数（可直接复制使用）\r\n新建 `rectUtils.js`：\r\n\r\n```javascript\r\n/**\r\n * 将矩形四个顶点坐标 转换为 {x, y, width, height}\r\n * @param {number[][]} coordinates - 四个点坐标 [[x1,y1], [x2,y2], [x3,y3], [x4,y4]]\r\n * @returns { {x: number, y: number, width: number, height: number} }\r\n */\r\nexport function convertPointsToRect(coordinates) {\r\n  // 输入校验\r\n  if (!Array.isArray(coordinates) || coordinates.length !== 4) {\r\n    throw new Error('必须传入包含4个坐标点的数组')\r\n  }\r\n\r\n  // 提取所有 x、y\r\n  const xs = coordinates.map(p =\u003e p[0])\r\n  const ys = coordinates.map(p =\u003e p[1])\r\n\r\n  // 计算极值\r\n  const minX = Math.min(...xs)\r\n  const maxX = Math.max(...xs)\r\n  const minY = Math.min(...ys)\r\n  const maxY = Math.max(...ys)\r\n\r\n  // 生成结果\r\n  return {\r\n    x: minX,\r\n    y: minY,\r\n    width: maxX - minX,\r\n    height: maxY - minY\r\n  }\r\n}\r\n\r\n/**\r\n * 批量转换\r\n * @param {number[][][]} list\r\n * @returns {Array\u003c{x,y,width,height}\u003e}\r\n */\r\nexport function batchConvertPointsToRect(list) {\r\n  return list.map(item =\u003e convertPointsToRect(item))\r\n}\r\n```\r\n\r\n---\r\n\r\n## 四、使用示例\r\n```javascript\r\nimport { convertPointsToRect } from './rectUtils'\r\n\r\nconst points = [\r\n  [35, 507],\r\n  [312, 507],\r\n  [312, 605],\r\n  [35, 605]\r\n]\r\n\r\nconst rect = convertPointsToRect(points)\r\nconsole.log(rect)\r\n// { x: 35, y: 507, width: 277, height: 98 }\r\n```\r\n\r\n**批量转换：**\r\n```javascript\r\nconst rects = batchConvertPointsToRect([\r\n  [[31,312],[347,312],[347,394],[31,394]],\r\n  [[37,244],[324,244],[324,275],[37,275]]\r\n])\r\n```\r\n\r\n---\r\n\r\n## 五、工具亮点\r\n✅ **不依赖坐标点顺序**（左上/右上/右下/左下 任意乱序都能正确转换）  \r\n✅ **输入校验**（避免非法数据导致报错）  \r\n✅ **支持负数坐标**（适合屏幕外、偏移场景）  \r\n✅ **支持批量转换**  \r\n✅ **轻量无依赖**（纯 JS，可在浏览器/Node/小程序中使用）\r\n\r\n---\r\n\r\n## 六、适用场景\r\n- Canvas 绘制矩形\r\n- 图片标注/选区工具\r\n- 截图区域坐标转换\r\n- UI 自动化元素定位\r\n- 可视化图表矩形计算\r\n- PDF/画布坐标转换\r\n\r\n---\r\n\r\n## 七、总结\r\n这个工具函数虽然简单，但**解决了前端坐标转换中最常见的重复劳动**。\r\n\r\n以后遇到四点坐标转矩形，直接调用这行代码即可，再也不用手动算来算去啦！\r\n\r\n---\r\n\r\n需要我再给你生成一个**可在线预览的 HTML Demo** 吗？你可以直接打开页面粘贴坐标并实时看到转换结果～",
+      "fileName": "ju-xing-si-dian-zuo-biao-yi-jian-zhuan-xykuangao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "nyBbNL",
+      "title": "解决 window.addEventListener('storage') 监听不生效问题",
+      "createdAt": "2022-02-17T10:11:03Z",
+      "updatedAt": "0001-01-01T00:00:00Z",
+      "tags": [
+        "通信",
+        "storage"
+      ],
+      "tagIds": [
+        "HOOERd",
+        "4uK6uG"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "# 解决 window.addEventListener('storage') 监听不生效问题\r\n很多前端同学在使用 `window.addEventListener('storage')` 监听本地存储变化时，都会遇到**监听不触发、完全没反应**的问题，这篇文章用最简单的话讲清原因和解决方案。\r\n\r\n## 一、核心真相（必看）\r\n`storage` 事件**天生就不会在当前窗口触发**！\r\n只有**同源的另一个窗口/标签页**修改了 `localStorage`，当前窗口才会收到监听通知。\r\n\r\n简单说：**自己改存储，自己收不到通知；别人改，你才能收到**。\r\n\r\n## 二、监听不生效的 4 个常见原因\r\n1. **同一窗口测试**：当前页面改存储，自己的监听不会执行\r\n2. **值没变化**：重复设置相同的值，不会触发事件\r\n3. **用错存储**：`sessionStorage` 不跨标签页，监听无效\r\n4. **跨域**：不同网址/端口，无法触发 storage 事件\r\n\r\n## 三、正确使用代码（复制即用）\r\n```javascript\r\n// 监听存储变化（放在需要接收通知的页面）\r\nwindow.addEventListener('storage', function (e) {\r\n  console.log('存储发生变化！');\r\n  console.log('修改的key：', e.key);\r\n  console.log('旧值：', e.oldValue);\r\n  console.log('新值：', e.newValue);\r\n  console.log('修改来源页面：', e.url);\r\n});\r\n```\r\n\r\n## 四、正确测试步骤（一步不落）\r\n1. 打开**标签页A**，运行上面的监听代码\r\n2. 打开**标签页B**（同源页面），执行修改存储：\r\n```javascript\r\nlocalStorage.setItem('userInfo', '张三');\r\n// localStorage.removeItem('key'); 删除也能触发\r\n```\r\n3. 回到标签页A，就能看到监听生效了\r\n\r\n## 五、同一页面想监听？用这个方案\r\n如果必须在**当前页面修改存储、当前页面监听**，用自定义事件替代：\r\n```javascript\r\n// 1. 封装统一修改方法\r\nfunction setMyStorage(key, value) {\r\n  localStorage.setItem(key, value);\r\n  // 触发自定义事件\r\n  const event = new CustomEvent('myStorage', {\r\n    detail: { key, value }\r\n  });\r\n  window.dispatchEvent(event);\r\n}\r\n\r\n// 2. 监听自定义事件（当前页面可用）\r\nwindow.addEventListener('myStorage', (e) =\u003e {\r\n  console.log('当前页面存储修改：', e.detail);\r\n});\r\n\r\n// 3. 使用\r\nsetMyStorage('name', '测试');\r\n```\r\n\r\n## 六、避坑总结\r\n1. ❌ 同一窗口改存储 → 不触发\r\n2. ✅ 另一同源窗口改 → 触发\r\n3. ❌ 值不变重复设置 → 不触发\r\n4. ✅ 自定义事件 → 当前窗口可用\r\n5. ❌ sessionStorage → 不跨标签页\r\n\r\n看完这篇，再也不会被 `storage` 监听坑到啦！\r\n\r\n---\r\n\r\n### 总结\r\n1. 博客极简清晰，只讲核心问题+解决方案，新手也能看懂\r\n2. 代码可直接复制使用，测试步骤明确\r\n3. 区分**原生storage用法**和**同一页面监听方案**，覆盖所有场景\r\n4. 无多余术语，适合做笔记/快速查阅",
+      "fileName": "jie-jue-windowaddeventlistenerstorage-jian-ting-bu-sheng-xiao-wen-ti",
+      "deleteFileName": "",
+      "abstract": ""
     },
     {
       "id": "mUq5wW",
@@ -1534,29 +1567,6 @@
       "abstract": ""
     },
     {
-      "id": "WEpoVC",
-      "title": "vue cli \u0026 create-react-app 打包编译时间 buildTime",
-      "createdAt": "2020-08-20T08:42:45+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
-      "fileName": "vue-cli-and-create-react-app-da-bao-bian-yi-shi-jian-buildtime",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "lW4a90",
       "title": "打包编译时间 buildTime",
       "createdAt": "2020-08-20T08:42:45+08:00",
@@ -1576,6 +1586,29 @@
       },
       "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
       "fileName": "da-bao-bian-yi-shi-jian-buildtime",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "WEpoVC",
+      "title": "vue cli \u0026 create-react-app 打包编译时间 buildTime",
+      "createdAt": "2020-08-20T08:42:45+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
+      "fileName": "vue-cli-and-create-react-app-da-bao-bian-yi-shi-jian-buildtime",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -1948,29 +1981,6 @@
       "abstract": ""
     },
     {
-      "id": "uasAeF",
-      "title": "自定义指令directive",
-      "createdAt": "2020-05-12T20:21:32+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
-      "fileName": "zi-ding-yi-zhi-ling-directive",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "Kl4nFz",
       "title": "自定义指令directive 表单按钮重复提交",
       "createdAt": "2020-05-12T20:21:32+08:00",
@@ -1990,6 +2000,29 @@
       },
       "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
       "fileName": "zi-ding-yi-zhi-ling-directive-biao-dan-an-niu-chong-fu-ti-jiao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "uasAeF",
+      "title": "自定义指令directive",
+      "createdAt": "2020-05-12T20:21:32+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
+      "fileName": "zi-ding-yi-zhi-ling-directive",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -3007,31 +3040,6 @@
       "abstract": ""
     },
     {
-      "id": "JsvNfK",
-      "title": "getTargetObject",
-      "createdAt": "2019-09-19T18:16:00+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [
-        "js utils"
-      ],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
-      "fileName": "gettargetobject",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "AqFF3L",
       "title": "filter Object",
       "createdAt": "2019-09-19T18:16:00+08:00",
@@ -3053,6 +3061,31 @@
       },
       "content": "# 过滤目标对象 / 过滤掉两个对象相等的值\r\n## 过滤目标对象 getTargetObject\r\n/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}\r\n## 过滤掉两个对象相等的值\r\n```\r\n/**\r\n * 比较两个对象是否相等\r\n * 相等返回obj2\r\n * 不等 返回不相同的值 和 reserveArray数组保留的值\r\n *\r\n * @export\r\n * @param {*} obj1\r\n * @param {*} obj2\r\n * @param {*} reserveArray\r\n * @returns\r\n */\r\nexport function getObjectDifferent(obj1, obj2, reserveArray) {\r\n  var data = {}\r\n  var isEqually = true\r\n  for (var key in obj1) {\r\n    if (obj1.hasOwnProperty(key) \u0026\u0026 obj1[key] !== obj2[key]) {\r\n      data[key] = obj2[key]\r\n      isEqually = false\r\n    }\r\n  }\r\n\r\n  if (isEqually) {\r\n    data = obj2\r\n  } else {\r\n    for (var i = 0; i \u003c reserveArray.length; i++) {\r\n      var item = reserveArray[i]\r\n      data[item] = obj2[item]\r\n    }\r\n  }\r\n  // reserveArray.forEach(item =\u003e {\r\n  //   data[item] = obj2[item];\r\n  // })\r\n  return {\r\n    isEqually: isEqually,\r\n    data: data\r\n  }\r\n}\r\n```",
       "fileName": "filter-object",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "JsvNfK",
+      "title": "getTargetObject",
+      "createdAt": "2019-09-19T18:16:00+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [
+        "js utils"
+      ],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
+      "fileName": "gettargetobject",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -3649,29 +3682,6 @@
       "abstract": ""
     },
     {
-      "id": "jwMBYc",
-      "title": "Vue 作用域插槽",
-      "createdAt": "2019-09-16T10:38:35+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
-      "fileName": "vue-zuo-yong-yu-cha-cao",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "LzWYUj",
       "title": "Vue 生疏知识\u0026实用开发技巧",
       "createdAt": "2019-09-16T10:38:35+08:00",
@@ -3694,6 +3704,29 @@
       },
       "content": "## 一些 Vue 生疏知识\r\n[Vue 实用开发技巧](https://juejin.im/post/5d790819e51d453b5e465bc7)",
       "fileName": "vue-shi-yong-kai-fa-ji-qiao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "jwMBYc",
+      "title": "Vue 作用域插槽",
+      "createdAt": "2019-09-16T10:38:35+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
+      "fileName": "vue-zuo-yong-yu-cha-cao",
       "deleteFileName": "",
       "abstract": ""
     },

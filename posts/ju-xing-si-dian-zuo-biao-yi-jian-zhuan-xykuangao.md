@@ -2,9 +2,11 @@
 id: MG0fxy
 title: 矩形四点坐标一键转 x/y/宽/高
 createdAt: "2026-03-17 11:42:28"
-updated: "2026-03-17 11:42:28"
-tags: []
-tag_ids: []
+updated: "2026-04-17 13:30:23"
+tags:
+    - konva
+tag_ids:
+    - x6lQV4
 categories: []
 published: true
 hideInList: false

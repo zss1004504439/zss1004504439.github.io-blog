@@ -1,25 +1,46 @@
 {
-    "tags": [
-        {
-            "id": "Gr1dea",
-            "name": "Gridea",
-            "slug": "gridea",
-            "used": true,
-            "color": "#eab308"
-        },
-        {
-            "id": "Gr1dPr",
-            "name": "Gridea Pro",
-            "slug": "gridea-pro",
-            "used": true,
-            "color": "#22c55e"
-        },
-        {
-            "id": "RuMen0",
-            "name": "入门",
-            "slug": "getting-started",
-            "used": true,
-            "color": "#3b82f6"
-        }
-    ]
+  "tags": [
+    {
+      "id": "Gr1dea",
+      "name": "Gridea",
+      "slug": "gridea",
+      "used": true,
+      "color": "#eab308"
+    },
+    {
+      "id": "Gr1dPr",
+      "name": "Gridea Pro",
+      "slug": "gridea-pro",
+      "used": true,
+      "color": "#22c55e"
+    },
+    {
+      "id": "RuMen0",
+      "name": "入门",
+      "slug": "getting-started",
+      "used": true,
+      "color": "#3b82f6"
+    },
+    {
+      "id": "x6lQV4",
+      "name": "konva",
+      "slug": "konva",
+      "used": true,
+      "color": "#AF5DC4"
+    },
+    {
+      "id": "HOOERd",
+      "name": "通信",
+      "slug": "tong-xin",
+      "used": true,
+      "color": "#5D70C4"
+    },
+    {
+      "id": "4uK6uG",
+      "name": "storage",
+      "slug": "storage",
+      "used": true,
+      "color": "#5DAFC4"
+    }
+  ]
 }
