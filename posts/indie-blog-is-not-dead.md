@@ -2,14 +2,14 @@
 id: FjpuYE
 title: 独立博客没有死，正在死的是平庸的博客
 createdAt: "2026-04-17 11:10:06"
-updated: "2026-04-17 11:19:41"
+updated: "2026-04-17 14:24:53"
 tags:
     - Gridea Pro
 tag_ids:
     - Gr1dPr
 categories: []
 published: true
-hideInList: false
+hideInList: true
 feature: ""
 isTop: false
 ---

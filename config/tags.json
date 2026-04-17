@@ -69,6 +69,27 @@
       "slug": "mvp",
       "used": true,
       "color": "#5D70C4"
+    },
+    {
+      "id": "AmV76Z",
+      "name": "navigator",
+      "slug": "navigator",
+      "used": true,
+      "color": "#99C45D"
+    },
+    {
+      "id": "R7tksN",
+      "name": "redis",
+      "slug": "redis",
+      "used": true,
+      "color": "#5DC499"
+    },
+    {
+      "id": "g0OtDN",
+      "name": "SEO",
+      "slug": "seo",
+      "used": true,
+      "color": "#99C45D"
     }
   ]
 }

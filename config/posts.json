@@ -33,7 +33,7 @@
       "id": "D2N3nP",
       "title": "都 2026 年了，我们为什么还要写博客",
       "createdAt": "2026-04-17T11:11:06+08:00",
-      "updatedAt": "2026-04-17T11:19:41+08:00",
+      "updatedAt": "2026-04-17T14:24:41+08:00",
       "tags": [
         "Gridea Pro"
       ],
@@ -43,7 +43,7 @@
       "categories": [],
       "categoryIds": null,
       "published": true,
-      "hideInList": false,
+      "hideInList": true,
       "isTop": false,
       "feature": "",
       "featureImagePath": "",
@@ -60,7 +60,7 @@
       "id": "FjpuYE",
       "title": "独立博客没有死，正在死的是平庸的博客",
       "createdAt": "2026-04-17T11:10:06+08:00",
-      "updatedAt": "2026-04-17T11:19:41+08:00",
+      "updatedAt": "2026-04-17T14:24:53+08:00",
       "tags": [
         "Gridea Pro"
       ],
@@ -70,7 +70,7 @@
       "categories": [],
       "categoryIds": null,
       "published": true,
-      "hideInList": false,
+      "hideInList": true,
       "isTop": false,
       "feature": "",
       "featureImagePath": "",
@@ -111,10 +111,93 @@
       "abstract": ""
     },
     {
+      "id": "rwgiNH",
+      "title": "GET 与 POST 接口缓存机制",
+      "createdAt": "2025-06-20T09:28:11+08:00",
+      "updatedAt": "2025-06-20T09:28:11+08:00",
+      "tags": [
+        "缓存"
+      ],
+      "tagIds": [
+        "AqlvyI"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 📄 关于 GET 与 POST 接口缓存机制的调研总结\r\n\r\n### 一、 核心结论\r\n1.  **GET 接口：** 具备**全链路缓存**能力，是 Web 性能优化的核心手段。\r\n2.  **POST 接口：** 默认情况下**几乎不具备**浏览器和网络层级的缓存，其缓存通常局限于服务端内部（业务层）。\r\n3.  **设计原则：** 遵循“读用 GET，写用 POST”。若因参数过长导致查询接口必须使用 POST，需通过额外技术手段手动实现缓存。\r\n\r\n---\r\n\r\n### 二、 缓存覆盖层级对比\r\n我们将缓存分为四个层级，对比两者在各层的原生支持情况：\r\n\r\n| 缓存层级 | GET 请求 (默认) | POST 请求 (默认) | 关键点 |\r\n| :--- | :--- | :--- | :--- |\r\n| **L1: 浏览器缓存** | **完美支持** | **不支持** | POST 的非幂等性导致浏览器默认强制请求服务器 |\r\n| **L2: CDN/边缘计算** | **完美支持** | **不支持** | CDN 节点通常只根据 URL 缓存，不解析 POST Body |\r\n| **L3: 反向代理 (Nginx)** | **支持** | **不支持** | 缓存 Key 默认不包含 Body，POST 缓存需特殊配置 |\r\n| **L4: 服务端 (Redis/内存)** | **广泛应用** | **部分应用** | POST 需将 Body 进行 Hash 运算后作为缓存 Key |\r\n\r\n---\r\n\r\n### 三、 为什么 POST 接口难以缓存？\r\n* **语义冲突：** POST 在 HTTP 规范中被定义为“非幂等”操作（如新增、修改），缓存可能导致服务器状态更新被跳过。\r\n* **Cache Key 复杂性：** * GET 的唯一标识是 `URL + QueryString`。\r\n    * POST 的标识隐藏在 `Request Body` 中。Body 格式多样（JSON, XML, 二进制），中间节点提取并计算其摘要的计算成本过高。\r\n* **安全性考量：** POST 常用于传输敏感信息（密码、个人信息），缓存这些数据存在极大的泄露风险。\r\n\r\n---\r\n\r\n### 四、 针对“必须缓存 POST”场景的解决方案\r\n在某些复杂查询（如参数超过 2KB 的搜索接口）必须使用 POST 时，可采用以下补救措施：\r\n\r\n1.  **服务端 Hash 缓存（L4 层级）：**\r\n    * **实现：** 在后端接收到请求后，对 JSON Body 进行 MD5 散列，结合用户 Token 作为 Redis Key。\r\n    * **优点：** 减少数据库压力，逻辑受控。\r\n2.  **Service Worker 拦截（L1 层级）：**\r\n    * **实现：** 在前端利用 Service Worker 拦截 POST 请求，手动将结果存入 `CacheStorage`。\r\n    * **优点：** 实现“零延迟”响应，绕过浏览器限制。\r\n3.  **网关层特殊配置（L3 层级）：**\r\n    * **实现：** 配置 Nginx 利用 `$request_body` 计算散列作为缓存 Key。\r\n    * **缺点：** 增加网关性能开销，对 Body 顺序敏感（即使字段相同，顺序不同也会导致缓存失效）。\r\n\r\n---\r\n\r\n### 五、 汇报建议与最佳实践\r\n* **性能优先原则：** 对于纯查询接口，优先进行参数瘦身并回归 **GET** 模式，以获得最优的 CDN 和浏览器加速效果。\r\n* **业务解耦：** 如果必须使用 POST 且需高性能，建议在**服务端**使用 Redis 缓存结果，不要过度依赖浏览器或网络节点的默认行为。\r\n* **安全提示：** 任何涉及敏感数据或会导致数据库状态变更的 POST 接口，**严禁**开启任何形式的缓存。",
+      "fileName": "get-yu-post-jie-kou-huan-cun-ji-zhi",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "mxjx7Q",
+      "title": "express + redis 实现接口缓存最佳实践",
+      "createdAt": "2025-03-05T14:23:31+08:00",
+      "updatedAt": "2025-03-05T14:23:31+08:00",
+      "tags": [
+        "redis",
+        "缓存"
+      ],
+      "tagIds": [
+        "R7tksN",
+        "AqlvyI"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "在 Node.js 环境下，使用 **Express** 配合 **Redis** 进行接口缓存是提升系统性能、降低数据库压力的经典方案。\r\n\r\n以下是实现这一机制的最佳实践指南。\r\n\r\n-----\r\n\r\n## 1\\. 核心架构逻辑\r\n\r\n接口缓存的基本逻辑是 **“命中即返回，不中即查询并存入”**。\r\n\r\n1.  **客户端请求**：进入中间件。\r\n2.  **查询 Redis**：检查是否存在对应的 `Key`（通常由 URL 和参数组成）。\r\n3.  **命中（Cache Hit）**：直接从 Redis 返回数据，请求结束。\r\n4.  **未命中（Cache Miss）**：执行业务逻辑（查询数据库），将结果存入 Redis（设置过期时间），然后返回给客户端。\r\n\r\n-----\r\n\r\n## 2\\. 核心代码实现\r\n\r\n### 初始化 Redis 客户端\r\n\r\n首先，建议封装一个单例的 Redis 连接模块。\r\n\r\n```javascript\r\nconst redis = require('redis');\r\nconst client = redis.createClient({ url: 'redis://localhost:6379' });\r\n\r\nclient.on('error', (err) =\u003e console.error('Redis Client Error', err));\r\nclient.connect();\r\n\r\nmodule.exports = client;\r\n```\r\n\r\n### 编写通用缓存中间件\r\n\r\n这是最关键的部分。我们需要重写 `res.send` 方法，以便在数据发送给客户端的同时，自动将其捕获并存入 Redis。\r\n\r\n```javascript\r\nconst redisClient = require('./redisConfig');\r\n\r\nconst cacheMiddleware = (duration) =\u003e {\r\n  return async (req, res, next) =\u003e {\r\n    // 1. 生成唯一的 Key（根据路径和查询参数）\r\n    const key = `cache:${req.originalUrl || req.url}`;\r\n\r\n    try {\r\n      const cachedData = await redisClient.get(key);\r\n      \r\n      if (cachedData) {\r\n        // 2. 如果命中缓存，直接返回\r\n        console.log('Cache Hit!');\r\n        return res.status(200).json(JSON.parse(cachedData));\r\n      }\r\n\r\n      // 3. 如果未命中，拦截 res.send\r\n      console.log('Cache Miss!');\r\n      const originalSend = res.send;\r\n      \r\n      res.send = function (body) {\r\n        // 只有在状态码为 200 时才缓存\r\n        if (res.statusCode === 200) {\r\n          redisClient.setEx(key, duration, JSON.stringify(body));\r\n        }\r\n        return originalSend.call(this, body);\r\n      };\r\n\r\n      next();\r\n    } catch (err) {\r\n      console.error('Redis Error:', err);\r\n      next(); // Redis 报错时不影响业务，直接跳过缓存\r\n    }\r\n  };\r\n};\r\n```\r\n\r\n-----\r\n\r\n## 3\\. 最佳实践要点\r\n\r\n### A. 合理设置过期时间 (TTL)\r\n\r\n不要设置永久缓存。根据数据的实时性要求设置过期时间：\r\n\r\n  * **静态配置类**：1 小时或更久。\r\n  * **热门排行榜**：5-10 分钟。\r\n  * **用户信息/余额**：建议不要缓存，或仅缓存几秒钟。\r\n\r\n### B. 缓存键（Key）的设计\r\n\r\nKey 必须具有唯一性。如果接口依赖 `Header`（如语言切换）或 `User ID`（个性化内容），必须将这些因素加入 Key 中：\r\n\r\n  * `cache:/api/products?category=electronics`\r\n  * `cache:user:101:/api/profile`\r\n\r\n### C. 序列化开销\r\n\r\nRedis 存储的是字符串。对于大型 JSON 对象，`JSON.stringify()` 和 `JSON.parse()` 会消耗 CPU。如果数据量巨大，可以考虑使用 **MessagePack** 等更高效的序列化格式。\r\n\r\n### D. 处理缓存击穿与雪崩\r\n\r\n  * **缓存击穿**：热点 Key 过期瞬间，大量请求涌入。可以配合 `Semaphore`（信号量）或设置“逻辑过期”来缓解。\r\n  * **缓存雪崩**：大量 Key 同时过期。**解决方法**：在设置 `duration` 时增加一个随机的偏移量（Jitter），如 `duration + Math.random() * 60`。\r\n\r\n### E. 缓存主动更新\r\n\r\n当数据库数据发生 **Update/Delete** 时，必须同步删除 Redis 中对应的 Key，否则客户端会看到过期的数据。\r\n\r\n-----\r\n\r\n## 4\\. 示例用法\r\n\r\n在路由中应用中间件：\r\n\r\n```javascript\r\nconst express = require('express');\r\nconst app = express();\r\n\r\n// 对此接口开启 60 秒缓存\r\napp.get('/api/news', cacheMiddleware(60), async (req, res) =\u003e {\r\n  const news = await db.fetchNews(); // 模拟数据库查询\r\n  res.json(news);\r\n});\r\n```",
+      "fileName": "express-redis-shi-xian-jie-kou-huan-cun-zui-jia-shi-jian",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "IWg7ye",
+      "title": "网站页面源码结构相同，但域名不同对SEO的影响",
+      "createdAt": "2024-09-13T11:08:08Z",
+      "updatedAt": "0001-01-01T00:00:00Z",
+      "tags": [
+        "SEO"
+      ],
+      "tagIds": [
+        "g0OtDN"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "**“页面源码结构相同”本身通常不会直接导致 SEO 惩罚**，但**如果内容也高度重复，就可能带来问题**\r\n\r\n---\r\n\r\n### ✅ **1. 源码结构相同 ≠ 重复内容**\r\n搜索引擎（比如 Google、百度）主要看的是**页面上用户能看到的内容**——比如标题、正文、图片 alt、meta 描述等，而不是 HTML/CSS/JS 的结构。\r\n\r\n\u003e 就像很多 WordPress 网站都用同一个主题（比如 Astra、Divi），但只要内容不同，照样能各自排名很好。\r\n\r\n所以如果你两个网站：\r\n- 用的是同一套模板或框架（比如 Vue + Element UI）\r\n- 但每个页面的**文字内容、标题、关键词、图片、产品信息等都是原创且不同的**\r\n\r\n👉 那基本**不会影响 SEO**，放心！\r\n\r\n---\r\n\r\n### ⚠️ **2. 如果内容也差不多，那就危险了**\r\n如果你两个网站：\r\n- 不仅代码一样，连文章、产品描述、标题、meta 信息都几乎一模一样\r\n- 甚至只是换了个 logo 或联系方式\r\n\r\n那搜索引擎可能会认为你在搞“**跨域重复内容**”，后果可能是：\r\n- 只收录其中一个网站（通常是权重高的那个）\r\n- 两个都不给好排名（因为系统不确定哪个是“正版”）\r\n- 在极端情况下，被判定为“低质量站点群”，影响信任度\r\n\r\n\u003e Google 官方说过：**重复内容本身不会直接惩罚**，但会“选择性展示”，也就是只挑一个显示在搜索结果里（[来源1, 8]）。\r\n\r\n---\r\n\r\n### 🛠️ **3. 怎么安全地操作？建议这样做：**\r\n\r\n#### ✅ 如果两个网站内容**确实不同**（比如一个是郑州本地服务，另一个是北京分店）：\r\n- 确保每页的 `\u003ctitle\u003e`、`\u003cmeta description\u003e`、正文内容都**本地化、差异化**\r\n- 可以在页面中加入地域关键词（比如“郑州网站建设” vs “北京网站建设”）\r\n- 使用 **Google Search Console / 百度站长平台** 分别验证两个站，监控索引情况\r\n\r\n#### 🔁 如果你其实是想**迁移网站或合并内容**：\r\n- 务必设置 **301 永久重定向**（从旧域名指向新域名）  \r\n  👉 这样能保留 SEO 权重，避免流量流失（[来源4]）\r\n\r\n#### 🚫 千万别用“蜘蛛池”或刷流量工具\r\n这类黑帽手段会被百度/Google 识别为作弊，反而**降低站点信任度**（[来源5]）\r\n\r\n---\r\n\r\n### 💡 小贴士（来自实战经验）：\r\n\u003e 很多连锁品牌（比如麦当劳、瑞幸）在全国有几百个分店页面，结构几乎一样，但因为**地址、电话、营业时间、本地活动内容不同**，每个页面都能独立被搜索引擎收录和排名。\r\n\r\n所以关键不是“代码是否一样”，而是**内容是否有独特价值**。\r\n ",
+      "fileName": "wang-zhan-ye-mian-yuan-ma-jie-gou-xiang-tongdan-yu-ming-bu-tong-dui-seode-ying-xiang",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "DP9MML",
       "title": "什么是最小mvp",
-      "createdAt": "2024-08-09T14:09:08Z",
-      "updatedAt": "0001-01-01T00:00:00Z",
+      "createdAt": "2024-08-09T14:09:08+08:00",
+      "updatedAt": "2026-04-17T14:11:05+08:00",
       "tags": [
         "mvp"
       ],
@@ -1623,29 +1706,6 @@
       "abstract": ""
     },
     {
-      "id": "WEpoVC",
-      "title": "vue cli \u0026 create-react-app 打包编译时间 buildTime",
-      "createdAt": "2020-08-20T08:42:45+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
-      "fileName": "vue-cli-and-create-react-app-da-bao-bian-yi-shi-jian-buildtime",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "lW4a90",
       "title": "打包编译时间 buildTime",
       "createdAt": "2020-08-20T08:42:45+08:00",
@@ -1665,6 +1725,29 @@
       },
       "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
       "fileName": "da-bao-bian-yi-shi-jian-buildtime",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "WEpoVC",
+      "title": "vue cli \u0026 create-react-app 打包编译时间 buildTime",
+      "createdAt": "2020-08-20T08:42:45+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
+      "fileName": "vue-cli-and-create-react-app-da-bao-bian-yi-shi-jian-buildtime",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -2033,6 +2116,33 @@
       },
       "content": "```js\r\n//后台数据的模拟：\r\n    let dataList = [\r\n        {id: '1', name: '小狗', age: 5},\r\n        {id: '2', name: '小羊', age: 8},\r\n        {id: '3', name: '小猪', age: 10},\r\n        {id: '4', name: '小牛', age: 12}\r\n    ];\r\n    //前台数据的模拟：\r\n    let myList = [\r\n        {myId: '1001', age: 18, myName: '张三'},\r\n        {myId: '1001', age: 18, myName: '李四'}\r\n    ];\r\n    //数据中，数据的属性名称不同。\r\n\r\n    //1.声明两个数组： 要求两个数组中的属性，一一对应；\r\n    let myArr = ['myId', 'age', 'myName'];\r\n    let dataArr = ['id', 'age', 'name'];\r\n    // 2.调用适配函数，进行数据的转换；\r\n    // console.log('没有转换的前台的数据:',myList);\r\n    let data = myDataAdaptor(myList, dataList, myArr, dataArr);\r\n    // console.log('转换后的前台的数据:',data);\r\n    // 3. 自己页面逻辑中，如渲染一个table。\r\n\r\n//封装的适配函数：\r\n    function myDataAdaptor(myList, dataList, myArr, dataArr) {\r\n        let newList = [];  //存储函数转换后的数据\r\n//每循环一次，把后台数组中，一个对象中的指定的属性的值，赋值给前台模拟数据中对象指定的属性。\r\n        for (let i = 0; i \u003c dataList.length; i++) {\r\n            let tempObj = dataList[i]; //后台返回的某一条数据，{id: '1', name: '肖明亚', age: 28}；\r\n            let newObj = {};//一定是一个新的空对象。\r\n            let j = 0;\r\n            //for--in循环完成后，就把后台的一个对象的数据，变成前台的对象数据\r\n            for (let key in tempObj) {\r\n                // myArr[j] 去换 myArr数组中的值； j是0时， 'myId'\r\n                // dataArr[j] 去换 dataArr数组中的值；j是0时， 'id'\r\n                // 这儿实现对象数据的转换；\r\n                newObj[   myArr[j]  ] = tempObj[  dataArr[j]  ]\r\n                // newObj[  'myId' ] = tempObj[  'id'  ]\r\n                // newObj.myId = 1;\r\n/*\r\n                 拿对象中的属性名：\r\n                let q = myArr[j];  //'myId', 'age', 'myName'\r\n                let h = dataArr[j];// 'id', 'age', 'name'\r\n                newObj[q] = tempObj[h]\r\n                j=0  newObj['myId'] = tempObj['id']\r\n                j=1  newObj['age'] = tempObj['age']\r\n                j=2  newObj['myName'] = tempObj['name']\r\n*/\r\n                j++;\r\n            }\r\n            newList.push(newObj)\r\n        }\r\n        return newList;\r\n    }\r\n————————————————\r\n版权声明：本文为CSDN博主「李@@」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。\r\n原文链接：https://blog.csdn.net/weixin_44571638/java/article/details/107007629\r\n```",
       "fileName": "shi-xian-qian-hou-duan-jian-ming-bu-yi-zhi-de-shu-ju-jiao-huan",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "SvInyj",
+      "title": "js怎么检测网页的网络波动",
+      "createdAt": "2020-06-07T14:16:45+08:00",
+      "updatedAt": "2020-06-07T14:16:45+08:00",
+      "tags": [
+        "navigator"
+      ],
+      "tagIds": [
+        "AmV76Z"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 借用 Navigator.connection API\n浏览器会感知设备的网络类型（如 4G/WiFi）、带宽等变化，通过该 API 可直接监听波动，无需主动发请求。\n```js\n// 1. 获取网络连接对象（兼容不同浏览器）\nconst connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;\n\n// 2. 监听网络变化事件\nconnection?.addEventListener('change', () =\u003e {\n  console.log('网络波动发生：');\n  console.log('当前网络类型：', connection.effectiveType); // 如 \"4g\"、\"3g\"、\"2g\"、\"slow-2g\"\n  console.log('预估下行带宽(Mbps)：', connection.downlink); // 数值越小，网络越差\n  console.log('是否按流量计费（如手机流量）：', connection.saveData); // true/false\n});\n```",
+      "fileName": "jszen-me-jian-ce-wang-ye-de-wang-luo-bo-dong",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -3765,29 +3875,6 @@
       "abstract": ""
     },
     {
-      "id": "jwMBYc",
-      "title": "Vue 作用域插槽",
-      "createdAt": "2019-09-16T10:38:35+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
-      "fileName": "vue-zuo-yong-yu-cha-cao",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "LzWYUj",
       "title": "Vue 生疏知识\u0026实用开发技巧",
       "createdAt": "2019-09-16T10:38:35+08:00",
@@ -3810,6 +3897,29 @@
       },
       "content": "## 一些 Vue 生疏知识\r\n[Vue 实用开发技巧](https://juejin.im/post/5d790819e51d453b5e465bc7)",
       "fileName": "vue-shi-yong-kai-fa-ji-qiao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "jwMBYc",
+      "title": "Vue 作用域插槽",
+      "createdAt": "2019-09-16T10:38:35+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
+      "fileName": "vue-zuo-yong-yu-cha-cao",
       "deleteFileName": "",
       "abstract": ""
     },
