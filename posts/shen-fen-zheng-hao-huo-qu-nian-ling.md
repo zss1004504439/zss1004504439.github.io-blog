@@ -1,11 +1,19 @@
 ---
-title: '身份证号获取年龄'
-date: 2019-09-19 10:22:02
-tags: [JS,js utils]
+id: P6UAkB
+title: 身份证号获取年龄
+createdAt: "2019-09-19 10:22:02"
+updated: "2026-04-17 11:19:42"
+tags:
+    - JS
+    - js utils
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ## 扫描数据回填（比如使用扫描枪，高拍仪）
 ```
 // 扫描之后返回数据arr

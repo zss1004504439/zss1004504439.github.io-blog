@@ -1,12 +1,18 @@
 ---
-title: '如何使 pdf 文件在浏览器里面直接下载而不是打开'
-date: 2021-01-20 09:14:46
-tags: [pdf]
+id: j7aKeh
+title: 如何使 pdf 文件在浏览器里面直接下载而不是打开
+createdAt: "2021-01-20 09:14:46"
+updated: "2026-04-17 11:19:41"
+tags:
+    - pdf
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 window.open('url')
 ```

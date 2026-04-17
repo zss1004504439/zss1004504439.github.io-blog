@@ -1,12 +1,17 @@
 ---
-title: 'vscode 代码格式化 eslint+prettier+vetur'
-date: 2021-02-18 09:04:36
+id: 0XoQgo
+title: vscode 代码格式化 eslint+prettier+vetur
+createdAt: "2021-02-18 09:04:36"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## 安装插件
 eslint vetur prettier - code formatter
 ### 配置 vscode settings.json

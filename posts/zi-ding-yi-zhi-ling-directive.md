@@ -1,12 +1,17 @@
 ---
-title: '自定义指令directive'
-date: 2020-05-12 20:21:32
+id: uasAeF
+title: 自定义指令directive
+createdAt: "2020-05-12 20:21:32"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 https://juejin.im/post/5eb7fc626fb9a0436a7c6af1
 ```js
 import Vue from 'vue'

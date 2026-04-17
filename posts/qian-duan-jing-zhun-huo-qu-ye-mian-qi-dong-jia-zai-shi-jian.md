@@ -1,12 +1,17 @@
 ---
-title: '前端(performance)精准获取页面启动加载时间'
-date: 2021-05-08 18:41:04
+id: JDajao
+title: 前端(performance)精准获取页面启动加载时间
+createdAt: "2021-05-08 18:41:04"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 var t = performance.timing
 // 页面加载的耗时

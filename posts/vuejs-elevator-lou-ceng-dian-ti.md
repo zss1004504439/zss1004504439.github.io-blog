@@ -1,12 +1,17 @@
 ---
-title: 'vuejs elevator 楼层电梯'
-date: 2021-04-14 09:17:36
+id: 5MlOa0
+title: vuejs elevator 楼层电梯
+createdAt: "2021-04-14 09:17:36"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```html
 <template>
   <div class="elevator" :class="{'edit': isEdit}" id="elevator" ref="elevator" v-show="sortList.length > 0">

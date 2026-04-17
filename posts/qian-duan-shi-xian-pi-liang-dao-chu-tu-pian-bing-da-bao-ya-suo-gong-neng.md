@@ -1,12 +1,19 @@
 ---
-title: '前端实现批量导出图片并打包压缩功能'
-date: 2020-10-15 13:32:32
-tags: [jszip,file-saver]
+id: LpxLQN
+title: 前端实现批量导出图片并打包压缩功能
+createdAt: "2020-10-15 13:32:32"
+updated: "2026-04-17 11:19:42"
+tags:
+    - jszip
+    - file-saver
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 import axios from 'axios'
 import JSZip from 'jszip'

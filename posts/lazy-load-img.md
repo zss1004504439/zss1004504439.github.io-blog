@@ -1,11 +1,18 @@
 ---
-title: 'Lazy-Load-img'
-date: 2019-09-16 11:11:11
-tags: [Vue]
+id: tKEvsZ
+title: Lazy-Load-img
+createdAt: "2019-09-16 11:11:11"
+updated: "2026-04-17 11:19:42"
+tags:
+    - Vue
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ## 在懒加载的实现中，有两个关键的数值：一个是当前可视区域的高度，另一个是元素距离可视区域顶部的高度。
 ### 当前可视区域的高度
 >现代浏览器及 IE9 以上的浏览器中，可以用 window.innerHeight 属性获取。在低版本 IE 的标准模式中，可以用 document.documentElement.clientHeight 获取，这里我们兼容两种情况

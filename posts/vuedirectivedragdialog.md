@@ -1,12 +1,17 @@
 ---
-title: 'Vue.directive.dragDialog'
-date: 2020-12-17 09:58:02
+id: 54cnXC
+title: Vue.directive.dragDialog
+createdAt: "2020-12-17 09:58:02"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```
 export default {
   bind (el, binding, vNode) {

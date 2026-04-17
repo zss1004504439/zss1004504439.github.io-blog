@@ -1,11 +1,18 @@
 ---
-title: 'Vue 自定义组件全局引用'
-date: 2019-09-29 10:03:40
-tags: [Vue cli 配置]
+id: rwTiBn
+title: Vue 自定义组件全局引用
+createdAt: "2019-09-29 10:03:40"
+updated: "2026-04-17 11:19:42"
+tags:
+    - Vue cli 配置
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ## 局部组件引用方式
 ```js
 import A from '@/component/A'

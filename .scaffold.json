@@ -1,0 +1,23 @@
+{
+  "version": "",
+  "posts": [
+    "about.md",
+    "hello-gridea-pro.md",
+    "indie-blog-is-not-dead.md",
+    "quick-start.md",
+    "why-i-revived-gridea.md",
+    "why-we-write.md"
+  ],
+  "themes": [
+    "amore",
+    "amore-jinja2",
+    "claudo-theme",
+    "flavor-theme",
+    "fly",
+    "inotes",
+    "letters-theme",
+    "notes",
+    "simple"
+  ],
+  "memos": true
+}

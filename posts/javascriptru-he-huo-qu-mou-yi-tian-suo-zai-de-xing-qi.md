@@ -1,11 +1,19 @@
 ---
-title: 'JavaScript：如何获取某一天所在的星期'
-date: 2019-09-17 08:28:34
-tags: [ECMAScript,Date]
+id: Cg2FyE
+title: JavaScript：如何获取某一天所在的星期
+createdAt: "2019-09-17 08:28:34"
+updated: "2026-04-17 11:19:42"
+tags:
+    - ECMAScript
+    - Date
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 [如何获取某一天所在的星期](https://segmentfault.com/a/1190000020342937)
 ```js
 function getWeekStartAndEnd(timestamp) {

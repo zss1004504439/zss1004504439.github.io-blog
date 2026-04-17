@@ -1,12 +1,19 @@
 ---
-title: 'vue-router 控制路由权限'
-date: 2020-09-24 10:19:02
-tags: [递归,vue-router]
+id: ImQgzi
+title: vue-router 控制路由权限
+createdAt: "2020-09-24 10:19:02"
+updated: "2026-04-17 11:19:42"
+tags:
+    - 递归
+    - vue-router
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 // src/utils/index.js
 const { pathToRegexp } = require('path-to-regexp');

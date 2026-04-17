@@ -1,11 +1,19 @@
 ---
-title: '给Canvas录制一个视频'
-date: 2019-09-19 10:31:11
-tags: [canvas]
+id: 2OLc8F
+title: 给Canvas录制一个视频
+createdAt: "2019-09-19 10:31:11"
+updated: "2026-04-17 11:19:42"
+tags:
+    - canvas
+tag_ids:
+    - canvas
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 [给Canvas录制一个视频](https://juejin.im/post/5d81f689f265da039b24cf56)
 ### Step 1：初始化录屏实例
 ```

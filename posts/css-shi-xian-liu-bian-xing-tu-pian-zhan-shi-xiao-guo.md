@@ -1,11 +1,18 @@
 ---
-title: 'CSS实现六边形图片展示效果'
-date: 2019-02-04 11:57:21
-tags: [CSS3]
+id: XSFfzi
+title: CSS实现六边形图片展示效果
+createdAt: "2019-02-04 11:57:21"
+updated: "2026-04-17 11:19:43"
+tags:
+    - CSS3
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ``` html
 <!DOCTYPE html>
 <html>

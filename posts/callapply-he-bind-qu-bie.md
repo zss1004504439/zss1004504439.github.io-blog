@@ -1,11 +1,17 @@
 ---
-title: 'call,apply和bind区别'
-date: 2019-12-13 14:44:31
+id: zYYdmo
+title: call,apply和bind区别
+createdAt: "2019-12-13 14:44:31"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ### 三个函数的作用都是将函数绑定到上下文中，用来改变函数中this的指向；三者的不同点在于语法的不同。
 ```js
 fun.call(thisArg[, arg1[, arg2[, ...]]])

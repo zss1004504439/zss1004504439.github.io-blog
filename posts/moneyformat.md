@@ -1,12 +1,17 @@
 ---
-title: 'MoneyFormat'
-date: 2020-07-28 09:55:13
+id: ukZtBj
+title: MoneyFormat
+createdAt: "2020-07-28 09:55:13"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## 金额格式化
 ```js
       var money = 1200;

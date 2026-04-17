@@ -1,28 +1,17 @@
 {
-  "config": {
-    "branch": "master",
-    "domain": "https://serverless-page-bucket-b3092udd-1254276257.cos-website.ap-hongkong.myqcloud.com",
-    "email": "1004504439@qq.com",
-    "platform": "coding",
-    "privateKey": "",
-    "repository": "zssjs.coding.me",
-    "token": "bc55ad91a2fa590211a4fe7212e7ff97d1343028",
-    "tokenUsername": "YbrpazqEpO",
-    "username": "zssjs"
+  "platform": "github",
+  "platformConfigs": {
+    "github": {
+      "domain": "https://zss1004504439.github.io",
+      "repository": "zss1004504439.github.io",
+      "branch": "main",
+      "username": "zss1004504439",
+      "email": "1004504439@qq.com",
+      "tokenUsername": "",
+      "token": "",
+      "cname": ""
+    }
   },
-  "comment": {
-    "commentPlatform": "gitalk",
-    "disqusSetting": {
-      "api": "",
-      "apikey": "",
-      "shortname": ""
-    },
-    "gitalkSetting": {
-      "clientId": "",
-      "clientSecret": "",
-      "owner": "",
-      "repository": ""
-    },
-    "showComment": false
-  }
+  "proxyEnabled": false,
+  "proxyURL": ""
 }

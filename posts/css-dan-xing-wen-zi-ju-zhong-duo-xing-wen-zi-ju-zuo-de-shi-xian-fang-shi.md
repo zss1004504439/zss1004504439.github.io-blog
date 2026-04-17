@@ -1,11 +1,17 @@
 ---
-title: 'CSS单行文字居中，多行文字居左的实现方式'
-date: 2019-12-25 15:42:11
+id: xv1Ac8
+title: CSS单行文字居中，多行文字居左的实现方式
+createdAt: "2019-12-25 15:42:11"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ## CSS单行文字居中，多行文字居左的实现方式
 ### 1.父级`text-align:center`，子级`inline-block+text-align:left`
 

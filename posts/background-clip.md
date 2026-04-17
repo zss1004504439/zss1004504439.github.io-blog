@@ -1,11 +1,19 @@
 ---
-title: 'background-clip'
-date: 2019-09-10 11:53:02
-tags: [CSS3,CSS]
+id: cdeGCF
+title: background-clip
+createdAt: "2019-09-10 11:53:02"
+updated: "2026-04-17 11:19:43"
+tags:
+    - CSS3
+    - CSS
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ``` html
 <!DOCTYPE html>
 <html lang="en">

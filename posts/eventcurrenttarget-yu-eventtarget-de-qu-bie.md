@@ -1,12 +1,17 @@
 ---
-title: 'event.currentTarget与event.target的区别'
-date: 2019-09-10 11:55:21
+id: pTBCr8
+title: event.currentTarget与event.target的区别
+createdAt: "2019-09-10 11:55:21"
+updated: "2026-04-17 11:19:43"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## target、currentTarget的区别？
 currentTarget当前所绑定事件的元素
 

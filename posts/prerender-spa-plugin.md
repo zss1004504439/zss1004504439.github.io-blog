@@ -1,12 +1,17 @@
 ---
-title: 'prerender-spa-plugin'
-date: 2020-04-10 11:59:50
+id: JhOHtZ
+title: prerender-spa-plugin
+createdAt: "2020-04-10 11:59:50"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## prerender-spa-plugin
 ### webpack配置
 ```js

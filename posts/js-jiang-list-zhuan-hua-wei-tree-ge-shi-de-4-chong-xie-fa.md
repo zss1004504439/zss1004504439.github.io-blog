@@ -1,12 +1,17 @@
 ---
-title: 'js将list转化为tree格式的 4 种写法'
-date: 2020-11-27 10:18:11
+id: NpXfjd
+title: js将list转化为tree格式的 4 种写法
+createdAt: "2020-11-27 10:18:11"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 const list = [{ "menuId" : "5f50c5fb8f0d74536bbfb7a4", "menuName" : "菜单管理", "parentMenuId" : null },
 { "menuId" : "5f524416ff216c2cbc554907", "menuName" : "频道管理", "parentMenuId" : "5f50c5fb8f0d74536bbfb7a4" },

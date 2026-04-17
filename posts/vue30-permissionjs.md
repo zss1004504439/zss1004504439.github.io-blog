@@ -1,12 +1,17 @@
 ---
-title: 'vue3.0 permission.js'
-date: 2020-12-30 13:13:35
+id: rTJg8Q
+title: vue3.0 permission.js
+createdAt: "2020-12-30 13:13:35"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 /**
  *

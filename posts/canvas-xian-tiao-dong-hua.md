@@ -1,12 +1,19 @@
 ---
-title: 'canvas 线条动画'
-date: 2021-06-07 12:03:02
-tags: [canvas]
+id: QE0Qkh
+title: canvas 线条动画
+createdAt: "2021-06-07 12:03:02"
+updated: "2026-04-17 11:19:41"
+tags:
+    - canvas
+tag_ids:
+    - canvas
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 <template>
     <div class="ceshi" @click="ceshi()">

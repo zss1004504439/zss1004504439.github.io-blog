@@ -1,11 +1,18 @@
 ---
-title: 'vue / react的UI库都在用的几个DOM API🚀'
-date: 2019-09-18 16:50:48
-tags: [DOM]
+id: Quuqqw
+title: "vue / react的UI库都在用的几个DOM API\U0001F680"
+createdAt: "2019-09-18 16:50:48"
+updated: "2026-04-17 11:19:42"
+tags:
+    - DOM
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 [vue / react的UI库都在用的几个DOM API🚀](https://juejin.im/post/5d808601f265da03ef7a469b)
 ## element.getBoundingClientRect():rect
 ## insertAdjacentElement

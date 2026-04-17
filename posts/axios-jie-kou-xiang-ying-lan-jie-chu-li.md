@@ -1,12 +1,17 @@
 ---
-title: 'Axios 接口响应拦截处理'
-date: 2020-04-13 15:53:09
+id: MrM4fB
+title: Axios 接口响应拦截处理
+createdAt: "2020-04-13 15:53:09"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 接口响应的拦截主要是对接口返回的数据进行提取、封装使用，以及对请求异常进行统一配置处理。
 ```js
 request.interceptors.response.use(

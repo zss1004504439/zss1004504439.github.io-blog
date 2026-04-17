@@ -1,12 +1,17 @@
 ---
-title: 'Vue+Element-UI 中 el-table 动态合并单元格 :span-method 方法'
-date: 2021-01-18 17:26:02
+id: WYs87e
+title: Vue+Element-UI 中 el-table 动态合并单元格 :span-method 方法
+createdAt: "2021-01-18 17:26:02"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 <template>
           <el-table

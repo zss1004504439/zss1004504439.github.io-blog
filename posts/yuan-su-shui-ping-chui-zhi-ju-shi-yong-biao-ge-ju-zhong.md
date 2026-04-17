@@ -1,11 +1,17 @@
 ---
-title: '元素水平垂直居 -- 使用表格居中'
-date: 2019-09-27 17:49:40
+id: B5lxpc
+title: 元素水平垂直居 -- 使用表格居中
+createdAt: "2019-09-27 17:49:40"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ## 使用display：table（作为flexbox的替代）使子元素在其父元素中水平垂直居。
 ```html
 <div class="container">
@@ -36,4 +42,4 @@ feature:
 > display：table-cell, 设置'.center > span'的table-cell允许元素表现得像HTML元素。
 > text-align: center 使子元素水平居中。
 > vertical-align: middle 使子元素垂直居中。
-### 外部父级必须有固定的宽高。 
+### 外部父级必须有固定的宽高。

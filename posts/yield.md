@@ -1,12 +1,17 @@
 ---
-title: 'yield'
-date: 2021-07-27 22:06:11
+id: mUq5wW
+title: yield
+createdAt: "2021-07-27 22:06:11"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 function* search(node){ 
     if(!node){

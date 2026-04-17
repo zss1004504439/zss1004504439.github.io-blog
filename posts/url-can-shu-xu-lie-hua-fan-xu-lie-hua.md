@@ -1,12 +1,17 @@
 ---
-title: 'url参数 序列化 反序列化'
-date: 2020-07-21 10:44:21
+id: qurMD6
+title: url参数 序列化 反序列化
+createdAt: "2020-07-21 10:44:21"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## url参数反序列化
 一般会通过location.search拿到路由传递的参数，并进行反序列化得到对象
 ```js

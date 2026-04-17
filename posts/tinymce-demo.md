@@ -1,12 +1,19 @@
 ---
-title: 'Tinymce demo'
-date: 2021-01-27 13:43:36
-tags: [editor]
+id: 20CAGr
+title: Tinymce demo
+createdAt: "2021-01-27 13:43:36"
+updated: "2026-04-17 11:19:41"
+tags:
+    - editor
+tag_ids:
+    - editor
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 <template>
   <div class="editor">

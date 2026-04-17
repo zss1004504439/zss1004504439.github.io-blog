@@ -1,11 +1,17 @@
 ---
-title: 'JS 数组去重复'
-date: 2019-09-09 10:36:38
+id: 4aEUWh
+title: JS 数组去重复
+createdAt: "2019-09-09 10:36:38"
+updated: "2026-04-17 11:19:43"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 1. 使用 set 
 ```
 function uniquearray(array) { 

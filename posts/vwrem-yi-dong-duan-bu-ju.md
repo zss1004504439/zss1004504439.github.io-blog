@@ -1,12 +1,18 @@
 ---
-title: 'vw+rem 移动端布局'
-date: 2020-01-14 09:39:04
-tags: [CSS3]
+id: Ul3Xi5
+title: vw+rem 移动端布局
+createdAt: "2020-01-14 09:39:04"
+updated: "2026-04-17 11:19:42"
+tags:
+    - CSS3
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 [网易新闻移动端布局](https://static.ws.126.net/163/wap/f2e/milk-channel/common.a68191b4.css)
 ```css
 /**

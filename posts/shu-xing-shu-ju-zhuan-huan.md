@@ -1,12 +1,19 @@
 ---
-title: '🌴树形数据转换'
-date: 2019-09-19 17:52:17
-tags: [js utils,tree]
+id: D7GKOE
+title: "\U0001F334树形数据转换"
+createdAt: "2019-09-19 17:52:17"
+updated: "2026-04-17 11:19:42"
+tags:
+    - js utils
+    - tree
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```javascript
 /**
  * 树形数据转换

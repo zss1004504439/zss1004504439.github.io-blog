@@ -1,12 +1,17 @@
 ---
-title: 'css 多行文字和序号顶部对齐'
-date: 2021-03-12 18:22:01
+id: EbSfEK
+title: css 多行文字和序号顶部对齐
+createdAt: "2021-03-12 18:22:01"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```html
 <!doctype html>
 <html lang="en">

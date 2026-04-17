@@ -1,12 +1,17 @@
 ---
-title: '移动端触摸事件'
-date: 2020-10-16 09:04:59
+id: Zt380H
+title: 移动端触摸事件
+createdAt: "2020-10-16 09:04:59"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: false
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ①touchstart：当手指触碰到屏幕的时候触发
 ②touchmove：当手指在屏幕上滑动的时候触发
 ③touchend：当手指离开屏幕的时候时候触发

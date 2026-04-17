@@ -1,12 +1,17 @@
 ---
-title: 'Vue的生命周期'
-date: 2020-08-04 09:33:53
+id: tL3gCP
+title: Vue的生命周期
+createdAt: "2020-08-04 09:33:53"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## Vue的生命周期（四季轮回）
 ```js
 # src/core/shared/constants.js

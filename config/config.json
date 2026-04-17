@@ -1,0 +1,22 @@
+{
+  "themeName": "flavor-theme",
+  "postPageSize": 10,
+  "archivesPageSize": 50,
+  "siteName": "Gridea Pro",
+  "siteAuthor": "",
+  "siteEmail": "",
+  "siteDescription": "Welcome to Gridea Pro",
+  "footerInfo": "Powered by Gridea Pro",
+  "domain": "",
+  "postUrlFormat": "SLUG",
+  "tagUrlFormat": "SLUG",
+  "dateFormat": "YYYY-MM-DD",
+  "language": "zh-cn",
+  "feedFullText": true,
+  "feedCount": 10,
+  "postPath": "post",
+  "tagPath": "tag",
+  "tagsPath": "",
+  "linkPath": "links",
+  "memosPath": ""
+}

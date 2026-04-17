@@ -1,11 +1,17 @@
 ---
-title: '用 btoa 和 atob 来编码解码Base64'
-date: 2019-12-13 10:50:33
+id: cmEN2L
+title: 用 btoa 和 atob 来编码解码Base64
+createdAt: "2019-12-13 10:50:33"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 btoa和atob是window对象的两个函数，其中btoa是binary to ascii，用于将binary的数据用ascii码表示，即Base64的编码过程，而atob则是ascii to binary，用于将ascii码解析成binary数据，看一个例子：
 ```js
 // Define the string

@@ -1,12 +1,17 @@
 ---
-title: 'canvas 文字水印'
-date: 2020-07-21 08:37:32
+id: tqGkbI
+title: canvas 文字水印
+createdAt: "2020-07-21 08:37:32"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 /**
 * 为网页添加文字水印

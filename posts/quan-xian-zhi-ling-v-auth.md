@@ -1,12 +1,17 @@
 ---
-title: '权限指令 v-auth'
-date: 2020-10-09 10:54:31
+id: 5uUPnx
+title: 权限指令 v-auth
+createdAt: "2020-10-09 10:54:31"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 除了 Vue 内置的一些指令比如 v-model、v-if 等，Vue 还允许我们自定义指令。在 Vue2.0 中，代码复用和抽象的主要形式是组件。然而，有的情况下，你仍然需要对普通 DOM 元素进行底层操作，这时候就会用到自定义指令。比如我们可以通过自定义一个指令来控制按钮的权限。我们期望设计一个如下形式的指令来控制按钮权限：
 
 ```js

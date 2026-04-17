@@ -1,12 +1,17 @@
 ---
-title: 'treeData 2 flatData'
-date: 2020-08-26 17:46:04
+id: rFWI2Q
+title: treeData 2 flatData
+createdAt: "2020-08-26 17:46:04"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 let res = []        // 用于存储递归结果（扁平数据）
 // 递归函数

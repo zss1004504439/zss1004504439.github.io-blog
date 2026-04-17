@@ -1,11 +1,18 @@
 ---
-title: 'vue-content-loading'
-date: 2019-09-23 09:37:51
-tags: [骨架屏]
+id: rny2c3
+title: vue-content-loading
+createdAt: "2019-09-23 09:37:51"
+updated: "2026-04-17 11:19:42"
+tags:
+    - 骨架屏
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 [vue-content-loading](https://lucasleandro1204.github.io/vue-content-loading)
 ## 例子
 ``` html
@@ -256,4 +263,3 @@ feature:
 </style>
 
 ```
-

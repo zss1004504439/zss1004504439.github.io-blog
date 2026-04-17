@@ -1,11 +1,17 @@
 ---
-title: '✈JS 获取当前位置的地理坐标（经纬度）'
-date: 2019-09-10 12:03:19
+id: cy3Kg8
+title: ✈JS 获取当前位置的地理坐标（经纬度）
+createdAt: "2019-09-10 12:03:19"
+updated: "2026-04-17 11:19:43"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 使用getCurrentPosition方法实时获取当前Geolocation信息
 <!-- more -->
 

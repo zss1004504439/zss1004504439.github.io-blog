@@ -1,12 +1,17 @@
 ---
-title: 'createEnum'
-date: 2021-07-02 11:46:15
+id: 15CIHA
+title: createEnum
+createdAt: "2021-07-02 11:46:15"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 /**
  * 业务常量的使用方式扩展

@@ -1,11 +1,18 @@
 ---
-title: 'Vue.directive()'
-date: 2019-09-16 10:51:52
-tags: [Vue]
+id: Uqtuk7
+title: Vue.directive()
+createdAt: "2019-09-16 10:51:52"
+updated: "2026-04-17 11:19:42"
+tags:
+    - Vue
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ### v-copy.js
 ```
 import { Message } from 'ant-design-vue';

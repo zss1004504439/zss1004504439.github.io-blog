@@ -1,11 +1,17 @@
 ---
-title: '🌈彩虹 Loading'
-date: 2019-10-09 11:51:08
+id: n3L7Ds
+title: "\U0001F308彩虹 Loading"
+createdAt: "2019-10-09 11:51:08"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 # [codepen](https://codepen.io/krischan77/pen/OJJVbxJ)
 > https://cdpn.io/boomboom/v2/index.html?key=iFrameKey-5647e640-e7d1-ee18-99d4-c8d3837275bd
 ## HTML

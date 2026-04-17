@@ -1,12 +1,17 @@
 ---
-title: 'Vue-router 路由解耦'
-date: 2020-01-08 14:15:45
+id: fD16Pe
+title: Vue-router 路由解耦
+createdAt: "2020-01-08 14:15:45"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 在组件中使用 route 会使之与其对应路由形成高度耦合，从而使组件只能在某些特定的 URL 上使用，限制了其灵活性。
 简单滴说，就是解耦后你便可以在任何地方使用该组件，使得该组件更易于重用和测试，而不再依赖于this.$route来获取参数。[点击了解](https://router.vuejs.org/zh/guide/essentials/passing-props.html)
 ```json

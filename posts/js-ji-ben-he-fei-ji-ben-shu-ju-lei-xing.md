@@ -1,11 +1,17 @@
 ---
-title: 'JS 基本和非基本数据类型'
-date: 2019-09-09 10:39:35
+id: fRhXSD
+title: JS 基本和非基本数据类型
+createdAt: "2019-09-09 10:39:35"
+updated: "2026-04-17 11:19:43"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 1. 目前JS中有6种基本数据类型: Undefined、Null、Boolean、Number、Symbol 和 String。还有1种复杂的数据类型————Object，Object本质上是由一组无序的名值对组成的。Object、Array和Function则属于引用类型。
 2. 基本数据类型是不可变的，而非基本数据类型是可变的。
 3. 基本数据类型是不可变的，因为它们一旦创建就无法更改，但非基本数据类型刚可更改，意味着一旦创建了对象，就可以更改它。

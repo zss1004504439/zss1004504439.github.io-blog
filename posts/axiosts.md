@@ -1,12 +1,17 @@
 ---
-title: 'axios+ts'
-date: 2021-06-29 15:04:21
+id: 6Ofd8l
+title: axios+ts
+createdAt: "2021-06-29 15:04:21"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## shims-axios.d.ts
 ```js
 import { AxiosInstance, AxiosRequestConfig, AxiosPromise } from "axios"

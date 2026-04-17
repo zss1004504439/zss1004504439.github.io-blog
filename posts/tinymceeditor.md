@@ -1,10 +1,14 @@
 ---
-title: 'TinymceEditor'
-date: 2021-03-19 15:58:16
+id: gZyu3a
+title: TinymceEditor
+createdAt: "2021-03-19 15:58:16"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
 

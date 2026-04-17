@@ -1,12 +1,17 @@
 ---
-title: 'echarts vue封装'
-date: 2020-07-31 15:58:45
+id: pmUO3O
+title: echarts vue封装
+createdAt: "2020-07-31 15:58:45"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 <template>
   <div class="echarts"></div>

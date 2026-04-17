@@ -1,12 +1,17 @@
 ---
-title: '浏览器滚动的距离'
-date: 2020-07-31 09:37:28
+id: KFtE7Z
+title: 浏览器滚动的距离
+createdAt: "2020-07-31 09:37:28"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 浏览器内的内容即然可以滚动，那么我们就可以获取到浏览器滚动的距离思考一个问题？浏览器真的滚动了吗？其实我们的浏览器是没有滚动的，是一直在那里滚动的是什么？是我们的页面所以说，其实浏览器没有动，只不过是页面向上走了所以，这个已经不能单纯的算是浏览器的内容了，而是我们页面的内容所以不是在用 window 对象了，而是使用 document 对象
 
 ```js

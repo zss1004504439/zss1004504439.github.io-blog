@@ -1,12 +1,17 @@
 ---
-title: '金额格式化'
-date: 2020-07-17 09:39:17
+id: NKbSEi
+title: 金额格式化
+createdAt: "2020-07-17 09:39:17"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```html
 <!DOCTYPE html>
 <html lang="en">

@@ -1,12 +1,18 @@
 ---
-title: 'bff'
-date: 2021-06-23 18:01:17
-tags: [BFF]
+id: a6QsUq
+title: bff
+createdAt: "2021-06-23 18:01:17"
+updated: "2026-04-17 11:19:41"
+tags:
+    - BFF
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 1. 整理更合适的接口就是一个很好的意义，如果你的前端比较重，那前端就必须保持干净，别让不合理的接口污染代码
 2. 多接口调用合一的情况，BFF 与后端服务的通信速度远快于浏览器走网络
 3. SSR

@@ -1,12 +1,17 @@
 ---
-title: '格式化日期'
-date: 2020-12-28 14:48:49
+id: 2F9JEP
+title: 格式化日期
+createdAt: "2020-12-28 14:48:49"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 /**
  * 格式化日期

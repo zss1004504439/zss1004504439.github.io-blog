@@ -1,11 +1,17 @@
 ---
-title: 'vw&rem实现移动端布局'
-date: 2019-09-10 11:51:26
+id: nP6PuD
+title: vw&rem实现移动端布局
+createdAt: "2019-09-10 11:51:26"
+updated: "2026-04-17 11:19:43"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ``` html
 <!DOCTYPE html>
 <html lang="en">

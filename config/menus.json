@@ -1,0 +1,46 @@
+{
+  "menus": [
+    {
+      "id": "0ysiB1",
+      "name": "首页",
+      "link": "/",
+      "openType": "Internal"
+    },
+    {
+      "id": "1PJ87B",
+      "name": "博客",
+      "link": "/post",
+      "openType": "Internal"
+    },
+    {
+      "id": "wSsIoV",
+      "name": "闪念",
+      "link": "/memos",
+      "openType": "Internal"
+    },
+    {
+      "id": "xWQfJi",
+      "name": "归档",
+      "link": "/archives",
+      "openType": "Internal"
+    },
+    {
+      "id": "uzhwfZ",
+      "name": "标签",
+      "link": "/tags",
+      "openType": "Internal"
+    },
+    {
+      "id": "RFPVTj",
+      "name": "友链",
+      "link": "/links",
+      "openType": "Internal"
+    },
+    {
+      "id": "bheOTd",
+      "name": "关于",
+      "link": "/post/about",
+      "openType": "Internal"
+    }
+  ]
+}

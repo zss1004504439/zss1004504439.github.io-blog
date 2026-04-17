@@ -1,12 +1,17 @@
 ---
-title: 'swiper轮播图组件'
-date: 2020-12-28 14:40:46
+id: ulamd3
+title: swiper轮播图组件
+createdAt: "2020-12-28 14:40:46"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 /**
  * 轮播组件

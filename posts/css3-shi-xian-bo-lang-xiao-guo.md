@@ -1,11 +1,18 @@
 ---
-title: '🌊CSS3 实现波浪效果'
-date: 2019-09-12 15:57:08
-tags: [css 特效]
+id: T6n27Q
+title: "\U0001F30ACSS3 实现波浪效果"
+createdAt: "2019-09-12 15:57:08"
+updated: "2026-04-17 11:19:43"
+tags:
+    - css 特效
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ```html
 <div class="container">
     <div class="wave"></div>

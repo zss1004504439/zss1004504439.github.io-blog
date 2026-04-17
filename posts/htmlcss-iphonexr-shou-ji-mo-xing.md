@@ -1,12 +1,17 @@
 ---
-title: 'html+css iphoneXR手机模型'
-date: 2021-03-15 15:51:32
+id: Nojlz9
+title: html+css iphoneXR手机模型
+createdAt: "2021-03-15 15:51:32"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```html
 <div class="phone">
     <div class="phone_bg1">

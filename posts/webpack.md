@@ -1,11 +1,18 @@
 ---
-title: 'Webpack'
-date: 2019-10-21 09:55:18
-tags: [Webpack]
+id: VjSrBE
+title: Webpack
+createdAt: "2019-10-21 09:55:18"
+updated: "2026-04-17 11:19:42"
+tags:
+    - Webpack
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 [从WebPack 4.X 到 Vue-Cli 3.X 一篇就够](https://juejin.im/post/5dab320851882565f7660c5e)
 ```js
 /* 

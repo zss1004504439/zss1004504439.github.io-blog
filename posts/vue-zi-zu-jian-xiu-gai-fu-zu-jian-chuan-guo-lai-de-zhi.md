@@ -1,11 +1,18 @@
 ---
-title: 'Vue 子组件修改父组件传过来的值'
-date: 2019-09-27 14:46:10
-tags: [Vue]
+id: 6pxkNN
+title: Vue 子组件修改父组件传过来的值
+createdAt: "2019-09-27 14:46:10"
+updated: "2026-04-17 11:19:42"
+tags:
+    - Vue
+tag_ids: []
+categories: []
 published: false
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 v-model在使用的时候很像双向绑定的，但是 Vue 是单项数据流，v-model 只是语法糖而已：父组件用v-bind将值传给子组件，子组件通过 change/input 事件触发修改父组件的值。
 ```
 <input v-model="inputValue" />

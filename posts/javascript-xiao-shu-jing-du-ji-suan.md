@@ -1,12 +1,17 @@
 ---
-title: 'JavaScript小数精度计算'
-date: 2020-12-28 14:47:32
+id: duxP1y
+title: JavaScript小数精度计算
+createdAt: "2020-12-28 14:47:32"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 /**
  * 数字运算（主要用于小数点精度问题）

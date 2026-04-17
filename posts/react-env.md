@@ -1,12 +1,17 @@
 ---
+id: YKC5qf
 title: 'React .env '
-date: 2021-06-30 09:34:29
+createdAt: "2021-06-30 09:34:29"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 https://github.com/toddbluhm/env-cmd
 ```json
 "scripts": {
@@ -20,4 +25,4 @@ https://github.com/toddbluhm/env-cmd
     "eject": "react-scripts eject"
 }
 ```
-https://zhuanlan.zhihu.com/p/362418612 
+https://zhuanlan.zhihu.com/p/362418612

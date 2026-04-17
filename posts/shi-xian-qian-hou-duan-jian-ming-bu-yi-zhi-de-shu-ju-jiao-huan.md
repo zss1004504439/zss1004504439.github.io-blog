@@ -1,12 +1,17 @@
 ---
-title: '实现前后端键名不一致的数据交换'
-date: 2020-07-16 14:11:23
+id: HMQoJo
+title: 实现前后端键名不一致的数据交换
+createdAt: "2020-07-16 14:11:23"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 //后台数据的模拟：
     let dataList = [

@@ -1,12 +1,17 @@
 ---
-title: 'vue3 tsx/jsx css scoped'
-date: 2021-05-31 10:41:07
+id: FZuX4D
+title: vue3 tsx/jsx css scoped
+createdAt: "2021-05-31 10:41:07"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 <script lang="tsx">
 import { defineComponent, withScopeId, getCurrentInstance } from 'vue'

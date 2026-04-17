@@ -1,14 +1,19 @@
 ---
-title: 'css 实现内凹圆角'
-date: 2020-01-07 13:41:29
-tags: [CSS3]
+id: MixHyM
+title: css 实现内凹圆角
+createdAt: "2020-01-07 13:41:29"
+updated: "2026-04-17 11:19:42"
+tags:
+    - CSS3
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
 
-     我们经常会去实现那种圆角的按钮，图片等等，但是想要实现这种内凹的圆角形状的块状还是比较复杂，我先讲讲思路：
+我们经常会去实现那种圆角的按钮，图片等等，但是想要实现这种内凹的圆角形状的块状还是比较复杂，我先讲讲思路：
 -  第一，需要一个大块进行包裹，需要设置宽度和高度等；
 -  第二，需要四个小块，来使用圆角的属性border-radius，进行不同方向的圆角设置；
 -  第三，为这些块加上border属性。

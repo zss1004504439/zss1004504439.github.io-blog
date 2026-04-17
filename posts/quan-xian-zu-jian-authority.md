@@ -1,12 +1,18 @@
 ---
-title: '权限组件 authority'
-date: 2020-10-09 10:52:53
-tags: [权限组件]
+id: YW7U1N
+title: 权限组件 authority
+createdAt: "2020-10-09 10:52:53"
+updated: "2026-04-17 11:19:42"
+tags:
+    - 权限组件
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 这里将使用渲染函数实现上面介绍过的的权限按钮。使用方式如下，把需要控制权限的按钮包在权限组件 authority 里面，如果有该权限就显示，没有就不显示。
 ```js
 <authority :auth="['admin']">

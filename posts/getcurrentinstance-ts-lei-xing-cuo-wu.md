@@ -1,10 +1,14 @@
 ---
-title: 'getCurrentInstance ts类型错误'
-date: 2021-05-31 10:34:00
+id: rtcXJB
+title: getCurrentInstance ts类型错误
+createdAt: "2021-05-31 10:34:00"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
 

@@ -1,12 +1,17 @@
 ---
-title: '下拉刷新组件'
-date: 2020-12-28 14:45:01
+id: lv1L8M
+title: 下拉刷新组件
+createdAt: "2020-12-28 14:45:01"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 // 这里我做的不是用 window 的滚动事件，而是用最外层的绑定触摸下拉事件去实现
 // 好处是我用在Vue这类单页应用的时候，组件销毁时不用去解绑 window 的 scroll 事件

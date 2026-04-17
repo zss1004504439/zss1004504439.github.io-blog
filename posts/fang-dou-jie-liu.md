@@ -1,12 +1,17 @@
 ---
-title: '防抖-节流'
-date: 2020-11-17 19:02:33
+id: 5LF7Hs
+title: 防抖-节流
+createdAt: "2020-11-17 19:02:33"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 #  防抖
 ### 在当前点击完成后，我们等wait这么长的时间，看是否还会触发第二次，如果没有触发第二次，属于非频繁操作，我们直接执行想要执行的函数func：如果触发了第二次，则以前的不算了，从当前这次再开始等待...
 ```js

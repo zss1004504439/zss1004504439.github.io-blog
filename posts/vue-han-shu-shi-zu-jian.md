@@ -1,11 +1,18 @@
 ---
-title: 'Vue 函数式组件'
-date: 2019-06-03 10:35:06
-tags: [Vue]
+id: 8F7glG
+title: Vue 函数式组件
+createdAt: "2019-06-03 10:35:06"
+updated: "2026-04-17 11:19:43"
+tags:
+    - Vue
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ` tip 函数式组件, 无状态，无法实例化，内部没有任何生命周期处理方法，非常轻量，因而渲染性能高，特别适合用来只依赖外部数据传递而变化的组件。`
 
 > 在template标签里面标明functional

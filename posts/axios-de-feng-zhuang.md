@@ -1,11 +1,18 @@
 ---
-title: 'axios的封装'
-date: 2019-09-25 11:48:01
-tags: [axios]
+id: I4lbdg
+title: axios的封装
+createdAt: "2019-09-25 11:48:01"
+updated: "2026-04-17 11:19:42"
+tags:
+    - axios
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 # axios的封装
 ## ajax.js
 ``` js

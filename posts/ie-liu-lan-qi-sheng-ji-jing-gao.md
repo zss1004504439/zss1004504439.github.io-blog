@@ -1,12 +1,17 @@
 ---
-title: 'ie浏览器升级警告'
-date: 2021-04-02 08:43:04
+id: b7lhUU
+title: ie浏览器升级警告
+createdAt: "2021-04-02 08:43:04"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## ie10及以下识别
 ```js
 // ie10及更旧版提示

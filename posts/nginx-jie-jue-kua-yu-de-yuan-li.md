@@ -1,11 +1,17 @@
 ---
-title: 'Nginx 解决跨域的原理'
-date: 2019-09-16 14:58:43
+id: PFE1xD
+title: Nginx 解决跨域的原理
+createdAt: "2019-09-16 14:58:43"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 >前端server域名为：`http://xx_domain`
 >后端server域名为：`https://github.com`
 

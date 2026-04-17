@@ -1,11 +1,17 @@
 ---
-title: 'javascript判断IE浏览器版本和Edge代码'
-date: 2019-10-10 16:54:41
+id: e6cD2x
+title: javascript判断IE浏览器版本和Edge代码
+createdAt: "2019-10-10 16:54:41"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 [javascript判断IE浏览器版本和Edge代码](https://www.xinran001.com/frontend/284.html)
 
 ## IE不标准的地方，unshift方法会返回新数组的长度，但IE6与IE7则返回undefined。

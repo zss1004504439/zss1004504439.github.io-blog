@@ -1,12 +1,17 @@
 ---
-title: 'window和mac下设置NODE_ENV变量'
-date: 2021-03-10 09:45:52
+id: x1hkez
+title: window和mac下设置NODE_ENV变量
+createdAt: "2021-03-10 09:45:52"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## mac `export`设置变量
 ```json
 "scripts": {

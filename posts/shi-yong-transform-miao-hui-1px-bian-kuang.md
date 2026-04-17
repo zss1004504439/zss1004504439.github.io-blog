@@ -1,11 +1,18 @@
 ---
-title: '使用transform描绘1px边框'
-date: 2019-10-10 17:11:13
-tags: [scss]
+id: f4CTf4
+title: 使用transform描绘1px边框
+createdAt: "2019-10-10 17:11:13"
+updated: "2026-04-17 11:19:42"
+tags:
+    - scss
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 分辨率比较低的屏幕下显示1px的边框会显得模糊，通过::before或::after和transform模拟细腻的1px边框
 ```scss
 .onepx-border {

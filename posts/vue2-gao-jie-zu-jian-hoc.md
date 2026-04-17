@@ -1,12 +1,17 @@
 ---
-title: 'Vue2 高阶组件 HOC'
-date: 2021-06-30 11:21:47
+id: cPurNQ
+title: Vue2 高阶组件 HOC
+createdAt: "2021-06-30 11:21:47"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 // hoc.js
 export default function EnhanceWrapper (WrappedComponent) {

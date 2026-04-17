@@ -1,12 +1,18 @@
 ---
-title: '树形数据 查找指定节点的父节点'
-date: 2021-06-09 10:19:23
-tags: [tree-data]
+id: uSei4z
+title: 树形数据 查找指定节点的父节点
+createdAt: "2021-06-09 10:19:23"
+updated: "2026-04-17 11:19:41"
+tags:
+    - tree-data
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 const data = [
   {

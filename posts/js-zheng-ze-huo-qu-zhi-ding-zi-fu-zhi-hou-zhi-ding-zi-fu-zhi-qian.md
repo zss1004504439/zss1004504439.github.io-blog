@@ -1,11 +1,17 @@
 ---
-title: 'js 正则获取指定字符之后指定字符之前'
-date: 2019-12-18 13:38:01
+id: kEDrRe
+title: js 正则获取指定字符之后指定字符之前
+createdAt: "2019-12-18 13:38:01"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ## JS正则表达式获取指定字符之后指定字符之前的字符串
 ```js
 var bgImg = "url(\"https://img30.360buyimg.com/sku/jfs/t26203/262/100869187/204098/1d1479e9/5b84b80bNf39db45f.jpg\")";

@@ -1,11 +1,18 @@
 ---
-title: 'jQ serializeJSON 表单格式化，支持数组'
-date: 2019-12-19 08:50:16
-tags: [表单]
+id: sgORPF
+title: jQ serializeJSON 表单格式化，支持数组
+createdAt: "2019-12-19 08:50:16"
+updated: "2026-04-17 11:19:42"
+tags:
+    - 表单
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ```js
 jQuery.fn.serializeJSON = function () {
     var json = {};

@@ -1,12 +1,18 @@
 ---
-title: 'resetRouter'
-date: 2020-10-15 17:56:01
-tags: [vue-router]
+id: qRryYv
+title: resetRouter
+createdAt: "2020-10-15 17:56:01"
+updated: "2026-04-17 11:19:42"
+tags:
+    - vue-router
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 //写一个重置路由的方法，切换用户后，或者退出时清除动态加载的路由
 export function resetRouter() {

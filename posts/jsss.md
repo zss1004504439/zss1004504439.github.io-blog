@@ -1,11 +1,17 @@
 ---
-title: 'js 基础知识'
-date: 2019-01-09 10:04:34
+id: XfFWuT
+title: js 基础知识
+createdAt: "2019-01-09 10:04:34"
+updated: "2026-04-17 11:19:43"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ## JS中如何将页面重定向到另一个页面？
 * 使用 location.href：`window.location.href ="https://www.baidu.com/"`
 * 使用  location.replace：`window.location.replace(" https://www.baidu.com/")`

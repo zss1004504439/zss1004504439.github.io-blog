@@ -1,11 +1,17 @@
 ---
-title: 'Vue -- inheritAttrs'
-date: 2019-12-10 16:01:11
+id: hEgbur
+title: Vue -- inheritAttrs
+createdAt: "2019-12-10 16:01:11"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ## 子组件替换/合并已有的特性
 在Vue中对于绝大多数特性来说，从外部提供给组件的值会替换掉组件内部设置好的值。所以如果传入type="text"就会替换掉 type="date"并把它破坏！庆幸的是，class和 style特性会稍微智能一些，即两边的值会被合并起来，从而得到最终的值，举个例子：
 

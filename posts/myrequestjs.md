@@ -1,11 +1,17 @@
 ---
-title: 'Myrequest.js'
-date: 2019-11-06 16:39:12
+id: 4mvur6
+title: Myrequest.js
+createdAt: "2019-11-06 16:39:12"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ```
 import {notification} from 'ant-design-vue';
 

@@ -1,12 +1,17 @@
 ---
-title: 'bind call 快排 数组的扁平化'
-date: 2020-10-15 15:01:31
+id: ZAxIeD
+title: bind call 快排 数组的扁平化
+createdAt: "2020-10-15 15:01:31"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## 数组扁平化
 ```js
 function flatDeep(arr) {

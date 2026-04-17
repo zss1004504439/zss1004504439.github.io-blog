@@ -1,12 +1,17 @@
 ---
-title: 'vue jsx directives 指令'
-date: 2020-12-22 14:20:13
+id: He9n6B
+title: vue jsx directives 指令
+createdAt: "2020-12-22 14:20:13"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## v-action:edit
 ```js
            customRender: (text, record) => {

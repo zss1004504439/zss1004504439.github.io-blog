@@ -1,12 +1,17 @@
 ---
-title: '实现一个可以拖拽的DIV'
-date: 2020-10-15 14:57:45
+id: U92G0b
+title: 实现一个可以拖拽的DIV
+createdAt: "2020-10-15 14:57:45"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 微信公众号：世界上有意思的事
 

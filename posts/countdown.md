@@ -1,11 +1,17 @@
 ---
-title: '⏳CountDown 倒计时'
-date: 2019-09-17 11:43:16
+id: a37fdk
+title: ⏳CountDown 倒计时
+createdAt: "2019-09-17 11:43:16"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 [CountDown](https://github.com/any86/useful-utils/blob/master/docs/CountDown.md)
 ## 倒计时小例子
 ```

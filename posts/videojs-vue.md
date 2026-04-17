@@ -1,11 +1,18 @@
 ---
-title: 'videojs-vue'
-date: 2019-11-04 18:30:52
-tags: [video]
+id: v74ZBJ
+title: videojs-vue
+createdAt: "2019-11-04 18:30:52"
+updated: "2026-04-17 11:19:42"
+tags:
+    - video
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ## videojs 使用
 ### 安装 npm 包
 #### vue-video-player

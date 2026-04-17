@@ -1,12 +1,17 @@
 ---
-title: 'npm 常用命令行'
-date: 2021-03-15 09:41:36
+id: Se1C1W
+title: npm 常用命令行
+createdAt: "2021-03-15 09:41:36"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## 清理缓存
 ```bat
 :: 查看缓存地址

@@ -1,0 +1,116 @@
+{{/* header.html - Go Template partial for site header */}}
+<header class="site-header" id="siteHeader">
+  <div class="header-inner container">
+    <div class="header-left">
+      <a href="/" class="header-logo">
+        {{ if notEmpty (index .Site.CustomConfig "siteLogo") }}
+        <img src="{{ index .Site.CustomConfig "siteLogo" }}" alt="{{ .ThemeConfig.SiteName }}" width="32" height="32" />
+        {{ else }}
+        <span class="header-logo-text">{{ truncate 1 .ThemeConfig.SiteName }}</span>
+        {{ end }}
+        <span class="header-site-name">{{ .ThemeConfig.SiteName }}</span>
+      </a>
+      <nav class="header-nav" id="headerNav">
+        {{ range .Menus }}
+        {{ if .Children }}
+        <span class="header-nav-item has-subnav" data-subnav="{{ .Name }}">{{ .Name }}</span>
+        {{ else }}
+        <a class="header-nav-item" href="{{ .Link }}"{{ if eq .OpenType "External" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Name }}</a>
+        {{ end }}
+        {{ end }}
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+        <svg class="theme-toggle-icon theme-toggle-light" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg class="theme-toggle-icon theme-toggle-dark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      {{ if notEmpty (index .Site.CustomConfig "showSearch") }}
+      <button class="header-btn search-btn" id="btnSearch" aria-label="搜索">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </button>
+      {{ end }}
+      <button class="header-menu-toggle" id="menuToggle" aria-label="菜单">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+  </div>
+
+  {{/* Sub-nav bars — one per parent menu with children */}}
+  {{ range .Menus }}
+  {{ if .Children }}
+  <div class="header-subnav" data-subnav="{{ .Name }}">
+    <div class="header-subnav-inner container">
+      {{ $first := true }}
+      {{ range .Children }}
+      {{ if not $first }}<span class="header-subnav-sep"></span>{{ end }}
+      <a class="header-subnav-item" href="{{ .Link }}"{{ if eq .OpenType "External" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Name }}</a>
+      {{ $first = false }}
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+  {{ end }}
+</header>
+
+<!-- Mobile Nav -->
+<nav class="mobile-nav" id="mobileNav">
+  {{ range .Menus }}
+  <a class="mobile-nav-item" href="{{ .Link }}"{{ if eq .OpenType "External" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Name }}</a>
+  {{ if .Children }}
+  {{ range .Children }}
+  <a class="mobile-nav-item mobile-nav-subitem" href="{{ .Link }}"{{ if eq .OpenType "External" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Name }}</a>
+  {{ end }}
+  {{ end }}
+  {{ end }}
+</nav>
+
+<script>
+(function () {
+  /* ── Mobile Nav ── */
+  var menuToggle = document.getElementById('menuToggle');
+  var mobileNav = document.getElementById('mobileNav');
+  if (menuToggle && mobileNav) {
+    menuToggle.addEventListener('click', function () {
+      mobileNav.classList.toggle('open');
+    });
+    mobileNav.querySelectorAll('.mobile-nav-item').forEach(function (item) {
+      item.addEventListener('click', function () { mobileNav.classList.remove('open'); });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') mobileNav.classList.remove('open');
+    });
+  }
+
+  /* ── Sub-nav hover ── */
+  var header = document.getElementById('siteHeader');
+  var subnavs = document.querySelectorAll('.header-subnav');
+  var hasSubnavItems = document.querySelectorAll('.has-subnav');
+
+  function hideAllSubnavs() {
+    subnavs.forEach(function (s) { s.classList.remove('active'); });
+    hasSubnavItems.forEach(function (i) { i.classList.remove('active'); });
+  }
+
+  hasSubnavItems.forEach(function (item) {
+    var id = item.getAttribute('data-subnav');
+    item.addEventListener('mouseenter', function () {
+      hideAllSubnavs();
+      item.classList.add('active');
+      var subnav = document.querySelector('.header-subnav[data-subnav="' + id + '"]');
+      if (subnav) subnav.classList.add('active');
+    });
+  });
+
+  /* Hide subnav when leaving the header area */
+  if (header) {
+    header.addEventListener('mouseleave', hideAllSubnavs);
+  }
+
+  /* Regular nav items dismiss subnav */
+  document.querySelectorAll('.header-nav-item:not(.has-subnav)').forEach(function (item) {
+    item.addEventListener('mouseenter', hideAllSubnavs);
+  });
+})();
+</script>

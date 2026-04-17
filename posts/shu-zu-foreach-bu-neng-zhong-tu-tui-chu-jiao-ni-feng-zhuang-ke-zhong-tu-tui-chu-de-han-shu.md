@@ -1,12 +1,17 @@
 ---
-title: '数组forEach不能中途退出？教你封装可中途退出的函数'
-date: 2021-05-17 08:49:16
+id: YDs6Gw
+title: 数组forEach不能中途退出？教你封装可中途退出的函数
+createdAt: "2021-05-17 08:49:16"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
     Array.prototype.nextEach = function (callback) {
       let _this = this;

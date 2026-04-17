@@ -1,12 +1,17 @@
 ---
-title: 'tinymce.vue'
-date: 2020-11-09 09:08:56
+id: k6bxMv
+title: tinymce.vue
+createdAt: "2020-11-09 09:08:56"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 <template>
   <div class="tinymce-editor">

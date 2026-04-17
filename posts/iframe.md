@@ -1,12 +1,17 @@
 ---
-title: 'iframe'
-date: 2020-01-01 11:04:02
+id: Z0kH8P
+title: iframe
+createdAt: "2020-01-01 11:04:02"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ## iframe常用属性:
 ```
 1. frameborder:是否显示边框，1(yes),0(no)

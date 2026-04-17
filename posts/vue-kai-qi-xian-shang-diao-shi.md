@@ -1,12 +1,17 @@
 ---
+id: tVlxNF
 title: 'Vue 开启线上调试 '
-date: 2021-06-30 11:20:56
+createdAt: "2021-06-30 11:20:56"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 var Vue = $0.__vue__.$root.constructor
 while(Vue.super) {Vue = Vue.super}

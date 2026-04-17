@@ -1,11 +1,18 @@
 ---
-title: 'Vue.observable'
-date: 2019-09-16 10:27:50
-tags: [Vue]
+id: rywyFH
+title: Vue.observable
+createdAt: "2019-09-16 10:27:50"
+updated: "2026-04-17 11:19:42"
+tags:
+    - Vue
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
+isTop: false
 ---
+
 ## 不使用Vuex创建Store(Vue.observable)
 `Vue.observable({})`返回的对象可以直接用于渲染函数和计算属性内，并且会在发生改变时触发相应的更新。也可以作为最小化的跨组件状态存储器，用于简单的场景：
 ```

@@ -1,12 +1,17 @@
 ---
-title: 'node cors 跨域设置'
-date: 2020-08-04 11:01:05
+id: RTdT5Q
+title: node cors 跨域设置
+createdAt: "2020-08-04 11:01:05"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 // 设置跨域
 app.use(cors({

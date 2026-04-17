@@ -1,12 +1,17 @@
 ---
-title: 'node path'
-date: 2021-01-27 10:06:19
+id: 33FHSJ
+title: node path
+createdAt: "2021-01-27 10:06:19"
+updated: "2026-04-17 11:19:41"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 ```js
 console.log('*** app start ***');
 console.log('***      module.filename = ' + module.filename + ' ***');

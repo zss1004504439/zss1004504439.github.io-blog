@@ -1,12 +1,17 @@
 ---
-title: 'js获取屏幕的高宽度'
-date: 2020-07-21 09:07:34
+id: h2c70h
+title: js获取屏幕的高宽度
+createdAt: "2020-07-21 09:07:34"
+updated: "2026-04-17 11:19:42"
 tags: []
+tag_ids: []
+categories: []
 published: true
 hideInList: false
-feature: 
+feature: ""
 isTop: false
 ---
+
 网页可见区域宽：document.body.clientWidth
 网页可见区域高：document.body.clientHeight
 网页可见区域宽：document.body.offsetWidth (包括边线的宽)
