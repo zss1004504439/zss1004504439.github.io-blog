@@ -1,6 +1,35 @@
 {
   "posts": [
     {
+      "id": "yncnnH",
+      "title": "Nitro 缓存 maxAge 和 staleMaxAge 区别",
+      "createdAt": "2023-11-06T13:57:34+08:00",
+      "updatedAt": "2026-04-17T14:00:54+08:00",
+      "tags": [
+        "Nitro",
+        "缓存"
+      ],
+      "tagIds": [
+        "ruSqJm",
+        "AqlvyI"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": true,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "简单理解：\r\n- **maxAge**：缓存正经“保质期”。\r\n  这段时间内，数据直接用，不用重新计算/请求，干净又新鲜。\r\n\r\n- **staleMaxAge**：过期“宽限期”。\r\n  过了 maxAge 但还在 staleMaxAge 里，先给你旧数据用着，后台悄悄去更新，不卡请求、不报错。\r\n\r\n一句话总结：\r\n**maxAge 管新鲜多久，staleMaxAge 管过期了还能先用多久。**\r\n\r\n实际用的时候，一般这么配：\r\n先设一个正常更新周期 `maxAge`，再给一段容错时间 `staleMaxAge`，既能保证速度，又不至于在服务波动时直接崩掉。\r\n```js\r\nexport default defineCachedFunction(\r\n  () =\u003e {\r\n    // 生成响应的逻辑\r\n    return \"Cached response\";\r\n  },\r\n  {\r\n    maxAge: 60, // 缓存1分钟（60秒）\r\n    staleMaxAge: 300, // 过期后仍可用5分钟（300秒）\r\n  }\r\n);\r\n```",
+      "fileName": "nitro-huan-cun-maxage-he-stalemaxage-qu-bie",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "D2N3nP",
       "title": "都 2026 年了，我们为什么还要写博客",
       "createdAt": "2026-04-17T11:11:06+08:00",
@@ -82,10 +111,37 @@
       "abstract": ""
     },
     {
+      "id": "DP9MML",
+      "title": "什么是最小mvp",
+      "createdAt": "2024-08-09T14:09:08Z",
+      "updatedAt": "0001-01-01T00:00:00Z",
+      "tags": [
+        "mvp"
+      ],
+      "tagIds": [
+        "tU5hba"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "MVP 是 Minimum Viable Product（最小可行产品）的缩写，是产品开发领域的一个重要概念，尤其在精益创业等方法论中被广泛应用。\r\n\r\n最小 MVP 的核心思想是：用最少的资源和时间，开发出一个包含核心功能的产品版本，这个版本足以满足早期用户的核心需求，并能验证产品的核心假设。\r\n\r\n它有几个关键特点：\r\n- **最小化**：只保留实现核心价值必不可少的功能，去掉所有非核心的、次要的功能，避免过度开发。\r\n- **可行性**：必须是一个可以实际使用的产品，能够完成核心功能的闭环，而不是一个概念或原型。\r\n- **可验证**：能够通过这个版本收集用户反馈、数据，用来验证产品的市场需求、商业模式等核心假设是否成立。\r\n\r\n比如，一个外卖平台的 MVP 可能只包含最基本的功能：展示几家餐厅的菜单、用户能下单、商家能接单、有简单的配送机制，而不需要复杂的评价系统、会员体系等。通过这个 MVP 可以验证用户是否愿意在线上点餐，商业模式是否可行，再根据反馈迭代完善产品。\r\n\r\nMVP 的目的不是交付一个完美的产品，而是快速推向市场，获取真实反馈，降低开发风险，避免在没有市场验证的情况下投入大量资源开发不必要的功能。",
+      "fileName": "shi-me-shi-zui-xiao-mvp",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "nyBbNL",
       "title": "解决 window.addEventListener('storage') 监听不生效问题",
-      "createdAt": "2022-02-17T10:11:03Z",
-      "updatedAt": "0001-01-01T00:00:00Z",
+      "createdAt": "2022-02-17T10:11:03+08:00",
+      "updatedAt": "2026-04-17T13:48:26+08:00",
       "tags": [
         "通信",
         "storage"
@@ -1567,29 +1623,6 @@
       "abstract": ""
     },
     {
-      "id": "lW4a90",
-      "title": "打包编译时间 buildTime",
-      "createdAt": "2020-08-20T08:42:45+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
-      "fileName": "da-bao-bian-yi-shi-jian-buildtime",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "WEpoVC",
       "title": "vue cli \u0026 create-react-app 打包编译时间 buildTime",
       "createdAt": "2020-08-20T08:42:45+08:00",
@@ -1609,6 +1642,29 @@
       },
       "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
       "fileName": "vue-cli-and-create-react-app-da-bao-bian-yi-shi-jian-buildtime",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "lW4a90",
+      "title": "打包编译时间 buildTime",
+      "createdAt": "2020-08-20T08:42:45+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
+      "fileName": "da-bao-bian-yi-shi-jian-buildtime",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -1981,29 +2037,6 @@
       "abstract": ""
     },
     {
-      "id": "Kl4nFz",
-      "title": "自定义指令directive 表单按钮重复提交",
-      "createdAt": "2020-05-12T20:21:32+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
-      "fileName": "zi-ding-yi-zhi-ling-directive-biao-dan-an-niu-chong-fu-ti-jiao",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "uasAeF",
       "title": "自定义指令directive",
       "createdAt": "2020-05-12T20:21:32+08:00",
@@ -2023,6 +2056,29 @@
       },
       "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
       "fileName": "zi-ding-yi-zhi-ling-directive",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "Kl4nFz",
+      "title": "自定义指令directive 表单按钮重复提交",
+      "createdAt": "2020-05-12T20:21:32+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
+      "fileName": "zi-ding-yi-zhi-ling-directive-biao-dan-an-niu-chong-fu-ti-jiao",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -2115,6 +2171,33 @@
       },
       "content": "## prerender-spa-plugin\r\n### webpack配置\r\n```js\r\n        new PrerenderSPAPlugin({\r\n            staticDir: path.join(__dirname, '../dist'),\r\n            //需要进行渲染的的页面路由\r\n            routes: ['/', '/aaa'],\r\n            renderer: new Renderer({\r\n                // 触发渲染的时间，用于获取数据后再保存渲染结果\r\n                renderAfterTime: 10000,\r\n                // 是否打开浏览器，false 是打开。可用于 debug 检查渲染结果\r\n                headless: false,\r\n                // 在项目的main.js入口中使用 `document.dispatchEvent(new Event('render-event'))` \r\n                renderAfterDocumentEvent: 'render-event', // render-event: 声明的方法名 \r\n            })\r\n        })\r\n        })\r\n\r\n```\r\n### main.js配置\r\n```js\r\nnew Vue({\r\n    el: '#app',\r\n    router,\r\n    components: { App },\r\n    template: '\u003cApp/\u003e',\r\n    render: h =\u003e h(App),\r\n    mounted() {\r\n        document.dispatchEvent(new Event('render-event'))\r\n    },\r\n})\r\n\r\n```\r\nhttps://juejin.im/post/5e8bedb9f265da47a741253f",
       "fileName": "prerender-spa-plugin",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "ghRGle",
+      "title": "Git 小技巧：一个本地仓库关联两个远程仓库",
+      "createdAt": "2020-01-17T13:53:10+08:00",
+      "updatedAt": "2020-01-17T13:53:10+08:00",
+      "tags": [
+        "Git"
+      ],
+      "tagIds": [
+        "chD1ia"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "# Git 小技巧：一个本地仓库关联两个远程仓库\r\n日常开发经常需要把代码同时同步到 GitHub、Gitee 或公司内网 Git，一个本地仓库绑定两个远程仓库，一次提交就能两边同步，非常省事。\r\n\r\n### 一、先看现有关联\r\n```bash\r\ngit remote -v\r\n```\r\n\r\n### 二、添加第二个远程仓库\r\n给第二个仓库起个名字，比如 gitee：\r\n```bash\r\ngit remote add gitee 仓库地址\r\n```\r\n\r\n### 三、分别推送\r\n```bash\r\ngit push origin main\r\ngit push gitee main\r\n```\r\n\r\n### 四、一键推两个（更省事）\r\n给 origin 追加推送地址，之后 git push 就会同时推两个：\r\n```bash\r\ngit remote set-url --add --push origin 第一个地址\r\ngit remote set-url --add --push origin 第二个地址\r\n```\r\n\r\n### 五、常用命令\r\n- 重命名远程：`git remote rename old new`\r\n- 修改地址：`git remote set-url 名称 新地址`\r\n- 删除关联：`git remote remove 名称`\r\n\r\n---\r\n一句话总结：用 `git remote add` 加第二个仓库，想一键同步就用 `set-url --add --push` 追加推送地址，复制即用，不用记复杂配置。\r\n\r\n要不要我再给你写一段**一键双推的 Git 别名配置**，直接贴进配置文件就能用？",
+      "fileName": "git-xiao-ji-qiaoyi-ge-ben-di-cang-ku-guan-lian-liang-ge-yuan-cheng-cang-ku",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -3682,6 +3765,29 @@
       "abstract": ""
     },
     {
+      "id": "jwMBYc",
+      "title": "Vue 作用域插槽",
+      "createdAt": "2019-09-16T10:38:35+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
+      "fileName": "vue-zuo-yong-yu-cha-cao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "LzWYUj",
       "title": "Vue 生疏知识\u0026实用开发技巧",
       "createdAt": "2019-09-16T10:38:35+08:00",
@@ -3704,29 +3810,6 @@
       },
       "content": "## 一些 Vue 生疏知识\r\n[Vue 实用开发技巧](https://juejin.im/post/5d790819e51d453b5e465bc7)",
       "fileName": "vue-shi-yong-kai-fa-ji-qiao",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
-      "id": "jwMBYc",
-      "title": "Vue 作用域插槽",
-      "createdAt": "2019-09-16T10:38:35+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
-      "fileName": "vue-zuo-yong-yu-cha-cao",
       "deleteFileName": "",
       "abstract": ""
     },

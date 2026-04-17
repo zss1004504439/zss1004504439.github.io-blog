@@ -41,6 +41,34 @@
       "slug": "storage",
       "used": true,
       "color": "#5DAFC4"
+    },
+    {
+      "id": "chD1ia",
+      "name": "Git",
+      "slug": "git",
+      "used": true,
+      "color": "#7CC45D"
+    },
+    {
+      "id": "ruSqJm",
+      "name": "Nitro",
+      "slug": "nitro",
+      "used": true,
+      "color": "#C45DB6"
+    },
+    {
+      "id": "AqlvyI",
+      "name": "缓存",
+      "slug": "huan-cun",
+      "used": true,
+      "color": "#5DC499"
+    },
+    {
+      "id": "tU5hba",
+      "name": "mvp",
+      "slug": "mvp",
+      "used": true,
+      "color": "#5D70C4"
     }
   ]
 }
