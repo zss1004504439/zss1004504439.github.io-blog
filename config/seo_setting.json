@@ -1,0 +1,10 @@
+{
+  "enableJsonLD": true,
+  "enableOpenGraph": true,
+  "enableCanonicalURL": true,
+  "metaKeywords": "",
+  "googleAnalyticsId": "",
+  "googleSearchConsoleCode": "",
+  "baiduAnalyticsId": "",
+  "customHeadCode": ""
+}
