@@ -30,10 +30,33 @@
       "abstract": ""
     },
     {
+      "id": "gKrrpM",
+      "title": "JS 跑，渲染停；渲染跑，JS 停。",
+      "createdAt": "2026-04-21T19:52:28Z",
+      "updatedAt": "0001-01-01T00:00:00Z",
+      "tags": [],
+      "tagIds": null,
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## JS 跑渲染停：那个困扰我很久的“草台班子”真相\r\n\r\n前两天突然悟到一个前端最底层的逻辑，虽然入行这么多年，但那一刻才算真正把代码和浏览器运行联系在了一起：\r\n\r\n**JS 跑，渲染就得停；渲染跑，JS 就得停。**\r\n\r\n这两位就像是在抢一把椅子，谁坐上去了，另一位就得在门口站岗。如果 JS 霸占椅子时间太长，渲染进不来，用户看到的页面就会掉帧、卡顿，甚至死锁。\r\n\r\n这种“互斥”关系，其实就是前端所有性能优化的逻辑原点。\r\n\r\n### 1. 为什么不能“双赛道”？\r\n很多人（包括以前的我）可能会想：现在电脑都是多核 CPU，为什么浏览器不能一边跑 JS 一边渲染页面？\r\n\r\n原因很简单：**怕乱套**。\r\n如果 JS 正在修改一个 DOM 节点的宽度，而渲染引擎同时在计算这个位置并绘图，那最后出来的效果到底是改之前的还是改之后的？为了保证页面表现的一致性，浏览器强制规定：**GUI 渲染线程与 JS 引擎线程互斥**。\r\n\r\n### 2. 掉帧：就是 JS 抢戏太久\r\n我们常说 60FPS 才算流畅，算下来一帧只有 **16.7ms**。\r\n在这不到 17 毫秒的时间里，浏览器要干这么多事：\r\n* 处理用户交互（点击、滚动）\r\n* **执行 JS**\r\n* 计算样式（Recalculate Style）\r\n* 计算布局（Layout）\r\n* 绘图（Paint）\r\n\r\n如果你的 JS 逻辑（比如一个复杂的数组遍历或递归）跑了 100ms，那接下来的 5 帧渲染全部会被堵在门外。用户眼里看到的就是：点一下没反应，页面卡住了。\r\n\r\n### 3. 我们这些年做的优化，到底在优什么？\r\n明白了这个“抢椅子”的逻辑，回头看那些耳熟能详的技术点，你会发现它们其实都在给渲染“让路”：\r\n\r\n* **React Fiber：** 为什么要搞时间切片？因为以前的同步渲染太霸道，椅子一坐到底。Fiber 把任务拆碎，每跑一小段就停下来问问浏览器：“渲染大叔，你要用椅子吗？”要用就先让你。\r\n* **requestAnimationFrame (rAF)：** 以前用 `setTimeout` 做动画是盲目插队。rAF 则是“有序接力”，它会在浏览器下次重绘前精准触发 JS，保证动作和渲染节奏合拍。\r\n* **Web Workers：** 既然主线程椅子少，那就另开一间房。把费劲的计算任务丢到 Worker 线程里去，算好了把结果传回来，别在主线程门口排队。\r\n* **虚拟 DOM：** 别改一下 DOM 就让浏览器算一次布局。攒一波，一次性改完，让渲染线程只坐一次椅子，把活干完。\r\n\r\n### 4. 感悟\r\n以前觉得前端性能优化是背面试题，现在觉得更像是在做**主线程的时间管理**。\r\n\r\n作为开发者，我们写的每一行代码其实都在和浏览器“分利”。如果 JS 拿得多了，给到渲染和交互的时间就少了。理解了这层互斥关系，写代码时自然就会多一个心眼：我这段逻辑，会不会让页面“断气”？\r\n\r\n别觉得自己是“草台班子”，看透了这层底层博弈，你才算真正摸到了前端性能的门槛。",
+      "fileName": "js-paoxuan-ran-tingxuan-ran-paojs-ting-",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "jxhW9j",
       "title": "如何设计一个高质量的 Skill？需要考虑哪些要素？",
-      "createdAt": "2026-04-21T19:42:07Z",
-      "updatedAt": "0001-01-01T00:00:00Z",
+      "createdAt": "2026-04-21T19:42:07+08:00",
+      "updatedAt": "2026-04-21T19:42:07+08:00",
       "tags": [
         "skills"
       ],
@@ -51,7 +74,7 @@
         "name": "",
         "path": ""
       },
-      "content": "## 参考\r\n**触发条件：**明确 Skill 的适用场景和触发时机，与其他Skill无重复\r\n**指令清晰度：**步骤化、无歧义的操作指引，步骤尽可能简化\r\n**资源引用：**必要的上下文、示例数据，优先脚本调用\r\n**边界定义：**明确 Skill 的能力边界，足够清晰的约束条件\r\n**可测试性：**能通过 eval 衡量 Skill 的执行效果\r\n\r\n每一点能结合实际例子说明更佳",
+      "content": "## 参考\n**触发条件：**明确 Skill 的适用场景和触发时机，与其他Skill无重复\n**指令清晰度：**步骤化、无歧义的操作指引，步骤尽可能简化\n**资源引用：**必要的上下文、示例数据，优先脚本调用\n**边界定义：**明确 Skill 的能力边界，足够清晰的约束条件\n**可测试性：**能通过 eval 衡量 Skill 的执行效果\n\n每一点能结合实际例子说明更佳",
       "fileName": "ru-he-she-ji-yi-ge-gao-zhi-liang-de-skillxu-yao-kao-lu-na-xie-yao-su",
       "deleteFileName": "",
       "abstract": ""
@@ -2174,29 +2197,6 @@
       "abstract": ""
     },
     {
-      "id": "uasAeF",
-      "title": "自定义指令directive",
-      "createdAt": "2020-05-12T20:21:32+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
-      "fileName": "zi-ding-yi-zhi-ling-directive",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "Kl4nFz",
       "title": "自定义指令directive 表单按钮重复提交",
       "createdAt": "2020-05-12T20:21:32+08:00",
@@ -2216,6 +2216,29 @@
       },
       "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
       "fileName": "zi-ding-yi-zhi-ling-directive-biao-dan-an-niu-chong-fu-ti-jiao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "uasAeF",
+      "title": "自定义指令directive",
+      "createdAt": "2020-05-12T20:21:32+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
+      "fileName": "zi-ding-yi-zhi-ling-directive",
       "deleteFileName": "",
       "abstract": ""
     },
