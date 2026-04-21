@@ -90,6 +90,13 @@
       "slug": "seo",
       "used": true,
       "color": "#99C45D"
+    },
+    {
+      "id": "0nC3BS",
+      "name": "skills",
+      "slug": "skills",
+      "used": true,
+      "color": "#5D91C4"
     }
   ]
 }
