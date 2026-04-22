@@ -97,6 +97,13 @@
       "slug": "skills",
       "used": true,
       "color": "#5D91C4"
+    },
+    {
+      "id": "6sA0AI",
+      "name": "vue3",
+      "slug": "vue3",
+      "used": true,
+      "color": "#C45D5D"
     }
   ]
 }

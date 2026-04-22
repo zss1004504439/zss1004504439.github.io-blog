@@ -30,12 +30,39 @@
       "abstract": ""
     },
     {
+      "id": "CvtMXn",
+      "title": "defineModel 的编译过程",
+      "createdAt": "2026-04-22T14:47:00Z",
+      "updatedAt": "0001-01-01T00:00:00Z",
+      "tags": [
+        "vue3"
+      ],
+      "tagIds": [
+        "6sA0AI"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```\r\n// defineModel 编译前（我们写的代码）\r\nconst model = defineModel({ type: Number, required: true })\r\n\r\n// 编译后（编译器自动生成的代码）\r\nconst props = defineProps({ modelValue: { type: Number, required: true } })\r\nconst emit = defineEmits(['update:modelValue'])\r\n\r\n// 生成一个 ref 对象，关联 props.modelValue 和 emit\r\nconst model = computed({\r\n  get: () =\u003e props.modelValue, // 读取父组件传递的 props（数据父→子）\r\n  set: (newVal) =\u003e emit('update:modelValue', newVal) // 修改时触发 emit，通知父组件更新\r\n})\r\n\r\n```\r\n\r\n## 双向绑定\r\n```\r\n\u003c!-- 父组件 --\u003e\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e父组件 count: {{ count }}\u003c/div\u003e\r\n  \u003cChild v-model=\"count\" /\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript setup lang=\"ts\"\u003e\r\nimport { ref } from 'vue'\r\nimport Child from './Child.vue'\r\n\r\nconst count = ref(0)\r\n// 父组件可主动修改数据，子组件仅能通过 emit 通知修改\r\nconst resetCount = () =\u003e {\r\n  count.value = 0\r\n}\r\n\u003c/script\u003e\r\n\r\n\u003c!-- 子组件 --\u003e\r\n\u003cscript setup lang=\"ts\"\u003e\r\n// 显式指定类型，TS 自动校验 props 规则\r\nconst model = defineModel\u003cnumber\u003e({\r\n  required: true,\r\n  validator: (val) =\u003e val \u003e= 0 // 子组件可对 props 进行校验，无法修改\r\n})\r\n\r\n// 子组件只能通过修改 model.value 触发 emit，无法直接修改父组件 count\r\nconst increment = () =\u003e {\r\n  model.value++ // 触发 emit('update:modelValue', model.value + 1)\r\n}\r\n\u003c/script\u003e\r\n\r\n```",
+      "fileName": "definemodel-de-bian-yi-guo-cheng",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "gKrrpM",
       "title": "JS 跑，渲染停；渲染跑，JS 停。",
-      "createdAt": "2026-04-21T19:52:28Z",
-      "updatedAt": "0001-01-01T00:00:00Z",
+      "createdAt": "2026-04-21T19:52:28+08:00",
+      "updatedAt": "2026-04-21T19:53:49+08:00",
       "tags": [],
-      "tagIds": null,
+      "tagIds": [],
       "categories": [],
       "categoryIds": null,
       "published": true,

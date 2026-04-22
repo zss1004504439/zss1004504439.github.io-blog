@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-21T11:54:34.0707636Z",
+  "generatedAt": "2026-04-22T06:49:49.5609533Z",
   "files": [
     ".current_theme",
     "404.html",
@@ -77,6 +77,7 @@
     "post/dan-chu-shi-huan-xing-cai-dan/index.html",
     "post/dan-xing-ju-zhong-liang-xing-ju-zuo-duo-xing-sheng-lue/index.html",
     "post/dao-hang/index.html",
+    "post/definemodel-de-bian-yi-guo-cheng/index.html",
     "post/dollaroptionsdata-chong-zhi-data/index.html",
     "post/echarts-vue-feng-zhuang/index.html",
     "post/es6-jie-gou-fu-zhi-bian-liang-ming-cheng-de-ling-yi-chong-yong-fa/index.html",
@@ -307,6 +308,7 @@
     "tag/uniapp/index.html",
     "tag/video/index.html",
     "tag/vue-router/index.html",
+    "tag/vue3/index.html",
     "tag/富文本/index.html",
     "tag/导航/index.html",
     "tag/小程序/index.html",
