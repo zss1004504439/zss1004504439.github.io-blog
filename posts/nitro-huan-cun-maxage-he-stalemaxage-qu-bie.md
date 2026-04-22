@@ -1,7 +1,7 @@
 ---
 id: yncnnH
 title: Nitro 缓存 maxAge 和 staleMaxAge 区别
-createdAt: "2023-11-06 13:57:34"
+createdAt: "2024-11-06 13:57:34"
 updated: "2026-04-17 14:00:54"
 tags:
     - Nitro
