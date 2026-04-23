@@ -30,75 +30,6 @@
       "abstract": ""
     },
     {
-      "id": "VNcBGM",
-      "title": "自定义错误类",
-      "createdAt": "2026-04-23T15:06:18Z",
-      "updatedAt": "0001-01-01T00:00:00Z",
-      "tags": [],
-      "tagIds": null,
-      "categories": [],
-      "categoryIds": null,
-      "published": false,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "```typescript\r\n// errors/base.ts\r\nexport class AppError extends Error {\r\n  public readonly statusCode: number;\r\n  public readonly isOperational: boolean;\r\n  public readonly code: string;\r\n\r\n  constructor(message: string, statusCode: number, code: string) {\r\n    super(message);\r\n    this.statusCode = statusCode;\r\n    this.isOperational = true; // 可预期的业务错误\r\n    this.code = code;\r\n    Error.captureStackTrace(this, this.constructor);\r\n  }\r\n}\r\n\r\n// 具体错误类\r\nexport class NotFoundError extends AppError {\r\n  constructor(resource: string, id?: string | number) {\r\n    const msg = id ? `${resource} (id: ${id}) 不存在` : `${resource}不存在`;\r\n    super(msg, 404, 'NOT_FOUND');\r\n  }\r\n}\r\n\r\nexport class ValidationError extends AppError {\r\n  public readonly errors: Array\u003c{ field: string; message: string }\u003e;\r\n\r\n  constructor(errors: Array\u003c{ field: string; message: string }\u003e) {\r\n    super('请求参数验证失败', 422, 'VALIDATION_ERROR');\r\n    this.errors = errors;\r\n  }\r\n}\r\n\r\nexport class UnauthorizedError extends AppError {\r\n  constructor(message = '请先登录') {\r\n    super(message, 401, 'UNAUTHORIZED');\r\n  }\r\n}\r\n\r\nexport class ForbiddenError extends AppError {\r\n  constructor(message = '无权访问') {\r\n    super(message, 403, 'FORBIDDEN');\r\n  }\r\n}\r\n\r\nexport class ConflictError extends AppError {\r\n  constructor(message: string) {\r\n    super(message, 409, 'CONFLICT');\r\n  }\r\n}\r\n```",
-      "fileName": "zi-ding-yi-cuo-wu-lei",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
-      "id": "VKZ84N",
-      "title": "res.finish vs 重写 res.end",
-      "createdAt": "2026-04-23T14:50:27+08:00",
-      "updatedAt": "2026-04-23T14:50:27+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": false,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "## 监听 res.finish 事件\r\nres.finish 是 Node.js HTTP 原生事件，响应数据全部发送到客户端后触发，无需修改原生 API，安全规范。\r\n```js\r\nexport function logger() {\r\n  return async (req, res, next) =\u003e {\r\n    const start = Date.now();\r\n    const { method, url } = req;\r\n\r\n    await next();\r\n\r\n    res.on('finish', () =\u003e {\r\n      const duration = Date.now() - start;\r\n      const status = res.statusCode;\r\n      const color = status \u003e= 500 ? '\\x1b[31m' : status \u003e= 400 ? '\\x1b[33m' : '\\x1b[32m';\r\n      console.log(`${color}${status}\\x1b[0m ${method} ${url} — ${duration}ms`);\r\n    });\r\n  };\r\n}\r\n```\r\n\r\n## res.end 是发送响应的核心方法，重写它可在响应发送前，捕获传入的响应数据（chunk），获取完整业务返回内容。\r\n\r\n```js\r\nexport function logger() {\r\n  return async (req, res, next) =\u003e {\r\n    const start = Date.now();\r\n    const { method, url } = req;\r\n    const originalEnd = res.end; // 保存原生方法\r\n\r\n    res.end = function (chunk, encoding) {\r\n      res.end = originalEnd; // 立即恢复，避免污染\r\n      const result = originalEnd.call(this, chunk, encoding);\r\n      \r\n      const responseBody = chunk?.toString(encoding) || '';\r\n      const duration = Date.now() - start;\r\n      const status = res.statusCode;\r\n      const color = status \u003e= 500 ? '\\x1b[31m' : status \u003e= 400 ? '\\x1b[33m' : '\\x1b[32m';\r\n      \r\n      console.log(`${color}${status}\\x1b[0m ${method} ${url} — ${duration}ms`, '响应体：', responseBody);\r\n      return result;\r\n    };\r\n\r\n    await next();\r\n  };\r\n}\r\n```",
-      "fileName": "resfinish-vs-chong-xie-resend",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
-      "id": "cuMT6k",
-      "title": "throw 可以抛任何东西",
-      "createdAt": "2026-04-23T09:45:49+08:00",
-      "updatedAt": "2026-04-23T09:45:49+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": false,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "在 JavaScript 中：\r\n```\r\n// 全部都合法！！！\r\nthrow 123;\r\nthrow \"字符串\";\r\nthrow { name: \"对象\" };\r\nthrow new Response(); // 注意这个\r\nthrow null;\r\nthrow undefined;\r\n```\r\n**没有任何语法限制！**\r\n平时我们抛 throw new Error(\"xxx\") 只是习惯，不是规定。\r\n\r\n```js\r\ntry {\r\n  await yourHandler();\r\n} catch (err) {\r\n  // 如果 catch 到的是 Response，直接返回给前端\r\n  if (err instanceof Response) {\r\n    return err; \r\n  } else if(xxx){\r\n    return xxx\r\n  }\r\n  // 否则才当成真正的错误处理\r\n}\r\n```",
-      "fileName": "throw-ke-yi-pao-ren-he-dong-xi",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "gKrrpM",
       "title": "JS 跑，渲染停；渲染跑，JS 停。",
       "createdAt": "2026-04-21T19:52:28+08:00",
@@ -284,6 +215,83 @@
       "abstract": ""
     },
     {
+      "id": "VNcBGM",
+      "title": "自定义错误类",
+      "createdAt": "2025-04-23T15:06:18Z",
+      "updatedAt": "0001-01-01T00:00:00Z",
+      "tags": [],
+      "tagIds": null,
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```typescript\r\n// errors/base.ts\r\nexport class AppError extends Error {\r\n  public readonly statusCode: number;\r\n  public readonly isOperational: boolean;\r\n  public readonly code: string;\r\n\r\n  constructor(message: string, statusCode: number, code: string) {\r\n    super(message);\r\n    this.statusCode = statusCode;\r\n    this.isOperational = true; // 可预期的业务错误\r\n    this.code = code;\r\n    Error.captureStackTrace(this, this.constructor);\r\n  }\r\n}\r\n\r\n// 具体错误类\r\nexport class NotFoundError extends AppError {\r\n  constructor(resource: string, id?: string | number) {\r\n    const msg = id ? `${resource} (id: ${id}) 不存在` : `${resource}不存在`;\r\n    super(msg, 404, 'NOT_FOUND');\r\n  }\r\n}\r\n\r\nexport class ValidationError extends AppError {\r\n  public readonly errors: Array\u003c{ field: string; message: string }\u003e;\r\n\r\n  constructor(errors: Array\u003c{ field: string; message: string }\u003e) {\r\n    super('请求参数验证失败', 422, 'VALIDATION_ERROR');\r\n    this.errors = errors;\r\n  }\r\n}\r\n\r\nexport class UnauthorizedError extends AppError {\r\n  constructor(message = '请先登录') {\r\n    super(message, 401, 'UNAUTHORIZED');\r\n  }\r\n}\r\n\r\nexport class ForbiddenError extends AppError {\r\n  constructor(message = '无权访问') {\r\n    super(message, 403, 'FORBIDDEN');\r\n  }\r\n}\r\n\r\nexport class ConflictError extends AppError {\r\n  constructor(message: string) {\r\n    super(message, 409, 'CONFLICT');\r\n  }\r\n}\r\n```",
+      "fileName": "zi-ding-yi-cuo-wu-lei",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "MSxVQU",
+      "title": "Vue 3 动态路由 Pinia 状态同步踩坑",
+      "createdAt": "2025-04-23T18:41:23+08:00",
+      "updatedAt": "2025-04-23T18:51:57+08:00",
+      "tags": [
+        "pinia"
+      ],
+      "tagIds": [
+        "JHyI1j"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "在 Vue 3 中结合动态路由（`/course/:id`）和 Pinia 设计 Store 时，核心挑战在于**确保 Store 的状态与当前路由参数同步**，尤其是在同一个组件实例被复用（即从 `/course/1` 跳转到 `/course/2`）时。\r\n\r\n以下是三种推荐的设计方案：\r\n\r\n---\r\n\r\n### 1. 组合式设计（推荐）：以 ID 为核心的响应式 Store\r\n这种方式最符合 Vue 3 的心智模型。不再是在组件里手动调用 `fetch`，而是让 Store 监听 ID 的变化。\r\n\r\n```javascript\r\nimport { defineStore } from 'pinia';\r\nimport { ref, watch } from 'vue';\r\n\r\nexport const useCourseStore = defineStore('course-detail', () =\u003e {\r\n  const courseId = ref(null);\r\n  const details = ref(null);\r\n  const loading = ref(false);\r\n\r\n  // 设置 ID 并自动触发更新\r\n  const setCourseId = async (id) =\u003e {\r\n    if (courseId.value === id) return;\r\n    courseId.value = id;\r\n    await fetchCourseDetail();\r\n  };\r\n\r\n  const fetchCourseDetail = async () =\u003e {\r\n    loading.value = true;\r\n    try {\r\n      // 模拟 API 请求\r\n      // const res = await api.getCourse(courseId.value);\r\n      // details.value = res.data;\r\n    } finally {\r\n      loading.value = false;\r\n    }\r\n  };\r\n\r\n  // 重置状态（离开页面时调用）\r\n  const reset = () =\u003e {\r\n    courseId.value = null;\r\n    details.value = null;\r\n  };\r\n\r\n  return { courseId, details, loading, setCourseId, reset };\r\n});\r\n```\r\n\r\n---\r\n\r\n### 2. 路由守卫集成：确保“数据先于页面”\r\n为了避免页面渲染后出现瞬间的空白或旧数据，可以在组件的 `onBeforeRouteUpdate` 或全局守卫中触发 Store 更新。\r\n\r\n**在组件中使用：**\r\n```vue\r\n\u003cscript setup\u003e\r\nimport { useCourseStore } from '@/stores/course';\r\nimport { onMounted } from 'vue';\r\nimport { useRoute, onBeforeRouteUpdate } from 'vue-router';\r\n\r\nconst store = useCourseStore();\r\nconst route = useRoute();\r\n\r\n// 初始进入\r\nonMounted(() =\u003e {\r\n  store.setCourseId(route.params.id);\r\n});\r\n\r\n// 路由参数变化（如同一个页面切换不同课程）\r\nonBeforeRouteUpdate((to) =\u003e {\r\n  store.setCourseId(to.params.id);\r\n});\r\n\u003c/script\u003e\r\n```\r\n\r\n---\r\n\r\n### 3. 设计要点总结\r\n\r\n| 关注点 | 建议方案 |\r\n| :--- | :--- |\r\n| **状态清理** | 在 `onUnmounted` 时调用 `store.$reset()` 或自定义 `reset()`。防止用户进入新课程时先看到上一个课程的残余数据。 |\r\n| **数据缓存** | 如果不需要实时性，可以在 `fetchCourseDetail` 中根据 ID 判断，如果缓存中已有数据则跳过请求。 |\r\n| **唯一性** | 如果你的应用支持多开 Tab（如某些后台系统），考虑使用 `Map\u003cid, data\u003e` 结构存储，而不是单一的 `details` 对象。 |\r\n\r\n### 进阶：多实例管理（针对复杂场景）\r\n如果你的系统允许同时打开多个课程页面（例如在 Monorepo 或标签页架构中），建议在 Store 内部使用对象存储：\r\n\r\n```javascript\r\nconst courses = ref({}); // { '101': { name: 'Vue' }, '102': { name: 'Nuxt' } }\r\n\r\nconst currentCourse = computed(() =\u003e courses.value[courseId.value]);\r\n```\r\n\r\n**建议技巧：** 由于你正在处理 Vue 项目，可以利用 **Pinia 的 `$onAction`** 订阅功能。如果需要对所有课程详情页进行埋点或统一错误处理，这比在每个组件写 `try...catch` 更优雅。",
+      "fileName": "vue-3-dong-tai-lu-you-pinia-zhuang-tai-tong-bu-cai-keng",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "VKZ84N",
+      "title": "res.finish vs 重写 res.end",
+      "createdAt": "2025-04-23T14:50:27+08:00",
+      "updatedAt": "2026-04-23T18:52:49+08:00",
+      "tags": [
+        "nodejs"
+      ],
+      "tagIds": [
+        "Z2j88k"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 监听 res.finish 事件\r\nres.finish 是 Node.js HTTP 原生事件，响应数据全部发送到客户端后触发，无需修改原生 API，安全规范。\r\n```js\r\nexport function logger() {\r\n  return async (req, res, next) =\u003e {\r\n    const start = Date.now();\r\n    const { method, url } = req;\r\n\r\n    await next();\r\n\r\n    res.on('finish', () =\u003e {\r\n      const duration = Date.now() - start;\r\n      const status = res.statusCode;\r\n      const color = status \u003e= 500 ? '\\x1b[31m' : status \u003e= 400 ? '\\x1b[33m' : '\\x1b[32m';\r\n      console.log(`${color}${status}\\x1b[0m ${method} ${url} — ${duration}ms`);\r\n    });\r\n  };\r\n}\r\n```\r\n\r\n## res.end 是发送响应的核心方法，重写它可在响应发送前，捕获传入的响应数据（chunk），获取完整业务返回内容。\r\n\r\n```js\r\nexport function logger() {\r\n  return async (req, res, next) =\u003e {\r\n    const start = Date.now();\r\n    const { method, url } = req;\r\n    const originalEnd = res.end; // 保存原生方法\r\n\r\n    res.end = function (chunk, encoding) {\r\n      res.end = originalEnd; // 立即恢复，避免污染\r\n      const result = originalEnd.call(this, chunk, encoding);\r\n      \r\n      const responseBody = chunk?.toString(encoding) || '';\r\n      const duration = Date.now() - start;\r\n      const status = res.statusCode;\r\n      const color = status \u003e= 500 ? '\\x1b[31m' : status \u003e= 400 ? '\\x1b[33m' : '\\x1b[32m';\r\n      \r\n      console.log(`${color}${status}\\x1b[0m ${method} ${url} — ${duration}ms`, '响应体：', responseBody);\r\n      return result;\r\n    };\r\n\r\n    await next();\r\n  };\r\n}\r\n```",
+      "fileName": "resfinish-vs-chong-xie-resend",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "mxjx7Q",
       "title": "express + redis 实现接口缓存最佳实践",
       "createdAt": "2025-03-05T14:23:31+08:00",
@@ -363,6 +371,29 @@
       },
       "content": "MVP 是 Minimum Viable Product（最小可行产品）的缩写，是产品开发领域的一个重要概念，尤其在精益创业等方法论中被广泛应用。\r\n\r\n最小 MVP 的核心思想是：用最少的资源和时间，开发出一个包含核心功能的产品版本，这个版本足以满足早期用户的核心需求，并能验证产品的核心假设。\r\n\r\n它有几个关键特点：\r\n- **最小化**：只保留实现核心价值必不可少的功能，去掉所有非核心的、次要的功能，避免过度开发。\r\n- **可行性**：必须是一个可以实际使用的产品，能够完成核心功能的闭环，而不是一个概念或原型。\r\n- **可验证**：能够通过这个版本收集用户反馈、数据，用来验证产品的市场需求、商业模式等核心假设是否成立。\r\n\r\n比如，一个外卖平台的 MVP 可能只包含最基本的功能：展示几家餐厅的菜单、用户能下单、商家能接单、有简单的配送机制，而不需要复杂的评价系统、会员体系等。通过这个 MVP 可以验证用户是否愿意在线上点餐，商业模式是否可行，再根据反馈迭代完善产品。\r\n\r\nMVP 的目的不是交付一个完美的产品，而是快速推向市场，获取真实反馈，降低开发风险，避免在没有市场验证的情况下投入大量资源开发不必要的功能。",
       "fileName": "shi-me-shi-zui-xiao-mvp",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "cuMT6k",
+      "title": "throw 可以抛任何东西",
+      "createdAt": "2024-04-23T09:45:49+08:00",
+      "updatedAt": "2024-04-23T09:45:49+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": false,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "在 JavaScript 中：\r\n```\r\n// 全部都合法！！！\r\nthrow 123;\r\nthrow \"字符串\";\r\nthrow { name: \"对象\" };\r\nthrow new Response(); // 注意这个\r\nthrow null;\r\nthrow undefined;\r\n```\r\n**没有任何语法限制！**\r\n平时我们抛 throw new Error(\"xxx\") 只是习惯，不是规定。\r\n\r\n```js\r\ntry {\r\n  await yourHandler();\r\n} catch (err) {\r\n  // 如果 catch 到的是 Response，直接返回给前端\r\n  if (err instanceof Response) {\r\n    return err; \r\n  } else if(xxx){\r\n    return xxx\r\n  }\r\n  // 否则才当成真正的错误处理\r\n}\r\n```",
+      "fileName": "throw-ke-yi-pao-ren-he-dong-xi",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -1852,29 +1883,6 @@
       "abstract": ""
     },
     {
-      "id": "WEpoVC",
-      "title": "vue cli \u0026 create-react-app 打包编译时间 buildTime",
-      "createdAt": "2020-08-20T08:42:45+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
-      "fileName": "vue-cli-and-create-react-app-da-bao-bian-yi-shi-jian-buildtime",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "lW4a90",
       "title": "打包编译时间 buildTime",
       "createdAt": "2020-08-20T08:42:45+08:00",
@@ -1894,6 +1902,29 @@
       },
       "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
       "fileName": "da-bao-bian-yi-shi-jian-buildtime",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "WEpoVC",
+      "title": "vue cli \u0026 create-react-app 打包编译时间 buildTime",
+      "createdAt": "2020-08-20T08:42:45+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
+      "fileName": "vue-cli-and-create-react-app-da-bao-bian-yi-shi-jian-buildtime",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -2293,29 +2324,6 @@
       "abstract": ""
     },
     {
-      "id": "Kl4nFz",
-      "title": "自定义指令directive 表单按钮重复提交",
-      "createdAt": "2020-05-12T20:21:32+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
-      "fileName": "zi-ding-yi-zhi-ling-directive-biao-dan-an-niu-chong-fu-ti-jiao",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "uasAeF",
       "title": "自定义指令directive",
       "createdAt": "2020-05-12T20:21:32+08:00",
@@ -2335,6 +2343,29 @@
       },
       "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
       "fileName": "zi-ding-yi-zhi-ling-directive",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "Kl4nFz",
+      "title": "自定义指令directive 表单按钮重复提交",
+      "createdAt": "2020-05-12T20:21:32+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
+      "fileName": "zi-ding-yi-zhi-ling-directive-biao-dan-an-niu-chong-fu-ti-jiao",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -4021,29 +4052,6 @@
       "abstract": ""
     },
     {
-      "id": "jwMBYc",
-      "title": "Vue 作用域插槽",
-      "createdAt": "2019-09-16T10:38:35+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
-      "fileName": "vue-zuo-yong-yu-cha-cao",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "LzWYUj",
       "title": "Vue 生疏知识\u0026实用开发技巧",
       "createdAt": "2019-09-16T10:38:35+08:00",
@@ -4066,6 +4074,29 @@
       },
       "content": "## 一些 Vue 生疏知识\r\n[Vue 实用开发技巧](https://juejin.im/post/5d790819e51d453b5e465bc7)",
       "fileName": "vue-shi-yong-kai-fa-ji-qiao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "jwMBYc",
+      "title": "Vue 作用域插槽",
+      "createdAt": "2019-09-16T10:38:35+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
+      "fileName": "vue-zuo-yong-yu-cha-cao",
       "deleteFileName": "",
       "abstract": ""
     },

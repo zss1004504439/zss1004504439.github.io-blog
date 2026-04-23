@@ -2,11 +2,13 @@
 id: VKZ84N
 title: res.finish vs 重写 res.end
 createdAt: "2025-04-23 14:50:27"
-updated: "2025-04-23 14:50:27"
-tags: []
-tag_ids: []
+updated: "2026-04-23 18:52:49"
+tags:
+    - nodejs
+tag_ids:
+    - Z2j88k
 categories: []
-published: false
+published: true
 hideInList: false
 feature: ""
 isTop: false

@@ -2,11 +2,11 @@
 id: VNcBGM
 title: 自定义错误类
 createdAt: "2025-04-23 15:06:18"
-updated: "2025-04-23 15:06:18"
+updated: "2026-04-23 18:53:10"
 tags: []
 tag_ids: []
 categories: []
-published: false
+published: true
 hideInList: false
 feature: ""
 isTop: false

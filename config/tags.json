@@ -104,6 +104,20 @@
       "slug": "vue3",
       "used": true,
       "color": "#C45D5D"
+    },
+    {
+      "id": "JHyI1j",
+      "name": "pinia",
+      "slug": "pinia",
+      "used": true,
+      "color": "#C4995D"
+    },
+    {
+      "id": "Z2j88k",
+      "name": "nodejs",
+      "slug": "nodejs",
+      "used": true,
+      "color": "#AF5DC4"
     }
   ]
 }
