@@ -3,7 +3,7 @@
     {
       "id": "yncnnH",
       "title": "Nitro 缓存 maxAge 和 staleMaxAge 区别",
-      "createdAt": "2023-11-06T13:57:34+08:00",
+      "createdAt": "2024-11-06T13:57:34+08:00",
       "updatedAt": "2026-04-17T14:00:54+08:00",
       "tags": [
         "Nitro",
@@ -30,19 +30,15 @@
       "abstract": ""
     },
     {
-      "id": "CvtMXn",
-      "title": "defineModel 的编译过程",
-      "createdAt": "2026-04-22T14:47:00Z",
+      "id": "VNcBGM",
+      "title": "自定义错误类",
+      "createdAt": "2026-04-23T15:06:18Z",
       "updatedAt": "0001-01-01T00:00:00Z",
-      "tags": [
-        "vue3"
-      ],
-      "tagIds": [
-        "6sA0AI"
-      ],
+      "tags": [],
+      "tagIds": null,
       "categories": [],
       "categoryIds": null,
-      "published": true,
+      "published": false,
       "hideInList": false,
       "isTop": false,
       "feature": "",
@@ -51,8 +47,54 @@
         "name": "",
         "path": ""
       },
-      "content": "```\r\n// defineModel 编译前（我们写的代码）\r\nconst model = defineModel({ type: Number, required: true })\r\n\r\n// 编译后（编译器自动生成的代码）\r\nconst props = defineProps({ modelValue: { type: Number, required: true } })\r\nconst emit = defineEmits(['update:modelValue'])\r\n\r\n// 生成一个 ref 对象，关联 props.modelValue 和 emit\r\nconst model = computed({\r\n  get: () =\u003e props.modelValue, // 读取父组件传递的 props（数据父→子）\r\n  set: (newVal) =\u003e emit('update:modelValue', newVal) // 修改时触发 emit，通知父组件更新\r\n})\r\n\r\n```\r\n\r\n## 双向绑定\r\n```\r\n\u003c!-- 父组件 --\u003e\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e父组件 count: {{ count }}\u003c/div\u003e\r\n  \u003cChild v-model=\"count\" /\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript setup lang=\"ts\"\u003e\r\nimport { ref } from 'vue'\r\nimport Child from './Child.vue'\r\n\r\nconst count = ref(0)\r\n// 父组件可主动修改数据，子组件仅能通过 emit 通知修改\r\nconst resetCount = () =\u003e {\r\n  count.value = 0\r\n}\r\n\u003c/script\u003e\r\n\r\n\u003c!-- 子组件 --\u003e\r\n\u003cscript setup lang=\"ts\"\u003e\r\n// 显式指定类型，TS 自动校验 props 规则\r\nconst model = defineModel\u003cnumber\u003e({\r\n  required: true,\r\n  validator: (val) =\u003e val \u003e= 0 // 子组件可对 props 进行校验，无法修改\r\n})\r\n\r\n// 子组件只能通过修改 model.value 触发 emit，无法直接修改父组件 count\r\nconst increment = () =\u003e {\r\n  model.value++ // 触发 emit('update:modelValue', model.value + 1)\r\n}\r\n\u003c/script\u003e\r\n\r\n```",
-      "fileName": "definemodel-de-bian-yi-guo-cheng",
+      "content": "```typescript\r\n// errors/base.ts\r\nexport class AppError extends Error {\r\n  public readonly statusCode: number;\r\n  public readonly isOperational: boolean;\r\n  public readonly code: string;\r\n\r\n  constructor(message: string, statusCode: number, code: string) {\r\n    super(message);\r\n    this.statusCode = statusCode;\r\n    this.isOperational = true; // 可预期的业务错误\r\n    this.code = code;\r\n    Error.captureStackTrace(this, this.constructor);\r\n  }\r\n}\r\n\r\n// 具体错误类\r\nexport class NotFoundError extends AppError {\r\n  constructor(resource: string, id?: string | number) {\r\n    const msg = id ? `${resource} (id: ${id}) 不存在` : `${resource}不存在`;\r\n    super(msg, 404, 'NOT_FOUND');\r\n  }\r\n}\r\n\r\nexport class ValidationError extends AppError {\r\n  public readonly errors: Array\u003c{ field: string; message: string }\u003e;\r\n\r\n  constructor(errors: Array\u003c{ field: string; message: string }\u003e) {\r\n    super('请求参数验证失败', 422, 'VALIDATION_ERROR');\r\n    this.errors = errors;\r\n  }\r\n}\r\n\r\nexport class UnauthorizedError extends AppError {\r\n  constructor(message = '请先登录') {\r\n    super(message, 401, 'UNAUTHORIZED');\r\n  }\r\n}\r\n\r\nexport class ForbiddenError extends AppError {\r\n  constructor(message = '无权访问') {\r\n    super(message, 403, 'FORBIDDEN');\r\n  }\r\n}\r\n\r\nexport class ConflictError extends AppError {\r\n  constructor(message: string) {\r\n    super(message, 409, 'CONFLICT');\r\n  }\r\n}\r\n```",
+      "fileName": "zi-ding-yi-cuo-wu-lei",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "VKZ84N",
+      "title": "res.finish vs 重写 res.end",
+      "createdAt": "2026-04-23T14:50:27+08:00",
+      "updatedAt": "2026-04-23T14:50:27+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": false,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 监听 res.finish 事件\r\nres.finish 是 Node.js HTTP 原生事件，响应数据全部发送到客户端后触发，无需修改原生 API，安全规范。\r\n```js\r\nexport function logger() {\r\n  return async (req, res, next) =\u003e {\r\n    const start = Date.now();\r\n    const { method, url } = req;\r\n\r\n    await next();\r\n\r\n    res.on('finish', () =\u003e {\r\n      const duration = Date.now() - start;\r\n      const status = res.statusCode;\r\n      const color = status \u003e= 500 ? '\\x1b[31m' : status \u003e= 400 ? '\\x1b[33m' : '\\x1b[32m';\r\n      console.log(`${color}${status}\\x1b[0m ${method} ${url} — ${duration}ms`);\r\n    });\r\n  };\r\n}\r\n```\r\n\r\n## res.end 是发送响应的核心方法，重写它可在响应发送前，捕获传入的响应数据（chunk），获取完整业务返回内容。\r\n\r\n```js\r\nexport function logger() {\r\n  return async (req, res, next) =\u003e {\r\n    const start = Date.now();\r\n    const { method, url } = req;\r\n    const originalEnd = res.end; // 保存原生方法\r\n\r\n    res.end = function (chunk, encoding) {\r\n      res.end = originalEnd; // 立即恢复，避免污染\r\n      const result = originalEnd.call(this, chunk, encoding);\r\n      \r\n      const responseBody = chunk?.toString(encoding) || '';\r\n      const duration = Date.now() - start;\r\n      const status = res.statusCode;\r\n      const color = status \u003e= 500 ? '\\x1b[31m' : status \u003e= 400 ? '\\x1b[33m' : '\\x1b[32m';\r\n      \r\n      console.log(`${color}${status}\\x1b[0m ${method} ${url} — ${duration}ms`, '响应体：', responseBody);\r\n      return result;\r\n    };\r\n\r\n    await next();\r\n  };\r\n}\r\n```",
+      "fileName": "resfinish-vs-chong-xie-resend",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "cuMT6k",
+      "title": "throw 可以抛任何东西",
+      "createdAt": "2026-04-23T09:45:49+08:00",
+      "updatedAt": "2026-04-23T09:45:49+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": false,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "在 JavaScript 中：\r\n```\r\n// 全部都合法！！！\r\nthrow 123;\r\nthrow \"字符串\";\r\nthrow { name: \"对象\" };\r\nthrow new Response(); // 注意这个\r\nthrow null;\r\nthrow undefined;\r\n```\r\n**没有任何语法限制！**\r\n平时我们抛 throw new Error(\"xxx\") 只是习惯，不是规定。\r\n\r\n```js\r\ntry {\r\n  await yourHandler();\r\n} catch (err) {\r\n  // 如果 catch 到的是 Response，直接返回给前端\r\n  if (err instanceof Response) {\r\n    return err; \r\n  } else if(xxx){\r\n    return xxx\r\n  }\r\n  // 否则才当成真正的错误处理\r\n}\r\n```",
+      "fileName": "throw-ke-yi-pao-ren-he-dong-xi",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -184,6 +226,33 @@
       },
       "content": "# 前端实用工具：矩形四点坐标一键转 x/y/宽/高\r\n在前端开发（尤其是Canvas、图片标注、UI自动化、可视化编辑场景）中，我们经常会遇到**矩形四个顶点坐标**，但业务需要的却是**左上角坐标 + 宽 + 高**的标准矩形格式。\r\n\r\n手动计算不仅繁琐，还容易出错。今天给大家封装一个**通用、健壮、支持任意坐标顺序**的 JS 工具函数，一行代码完成转换！\r\n\r\n---\r\n\r\n## 一、需求场景\r\n输入：矩形 4 个顶点坐标数组（顺序任意）\r\n```js\r\n[[31, 312], [347, 312], [347, 394], [31, 394]]\r\n```\r\n\r\n输出：标准矩形格式\r\n```js\r\n{ x: 31, y: 312, width: 316, height: 82 }\r\n```\r\n\r\n---\r\n\r\n## 二、核心思路\r\n不管四个点顺序如何，只需要抓住两个关键值：\r\n1. **最小 x、最小 y** → 矩形左上角坐标\r\n2. **最大 x、最大 y** → 用于计算宽高\r\n3. 宽 = maxX - minX\r\n4. 高 = maxY - minY\r\n\r\n这种方式**不依赖坐标点顺序**，鲁棒性极强。\r\n\r\n---\r\n\r\n## 三、完整工具函数（可直接复制使用）\r\n新建 `rectUtils.js`：\r\n\r\n```javascript\r\n/**\r\n * 将矩形四个顶点坐标 转换为 {x, y, width, height}\r\n * @param {number[][]} coordinates - 四个点坐标 [[x1,y1], [x2,y2], [x3,y3], [x4,y4]]\r\n * @returns { {x: number, y: number, width: number, height: number} }\r\n */\r\nexport function convertPointsToRect(coordinates) {\r\n  // 输入校验\r\n  if (!Array.isArray(coordinates) || coordinates.length !== 4) {\r\n    throw new Error('必须传入包含4个坐标点的数组')\r\n  }\r\n\r\n  // 提取所有 x、y\r\n  const xs = coordinates.map(p =\u003e p[0])\r\n  const ys = coordinates.map(p =\u003e p[1])\r\n\r\n  // 计算极值\r\n  const minX = Math.min(...xs)\r\n  const maxX = Math.max(...xs)\r\n  const minY = Math.min(...ys)\r\n  const maxY = Math.max(...ys)\r\n\r\n  // 生成结果\r\n  return {\r\n    x: minX,\r\n    y: minY,\r\n    width: maxX - minX,\r\n    height: maxY - minY\r\n  }\r\n}\r\n\r\n/**\r\n * 批量转换\r\n * @param {number[][][]} list\r\n * @returns {Array\u003c{x,y,width,height}\u003e}\r\n */\r\nexport function batchConvertPointsToRect(list) {\r\n  return list.map(item =\u003e convertPointsToRect(item))\r\n}\r\n```\r\n\r\n---\r\n\r\n## 四、使用示例\r\n```javascript\r\nimport { convertPointsToRect } from './rectUtils'\r\n\r\nconst points = [\r\n  [35, 507],\r\n  [312, 507],\r\n  [312, 605],\r\n  [35, 605]\r\n]\r\n\r\nconst rect = convertPointsToRect(points)\r\nconsole.log(rect)\r\n// { x: 35, y: 507, width: 277, height: 98 }\r\n```\r\n\r\n**批量转换：**\r\n```javascript\r\nconst rects = batchConvertPointsToRect([\r\n  [[31,312],[347,312],[347,394],[31,394]],\r\n  [[37,244],[324,244],[324,275],[37,275]]\r\n])\r\n```\r\n\r\n---\r\n\r\n## 五、工具亮点\r\n✅ **不依赖坐标点顺序**（左上/右上/右下/左下 任意乱序都能正确转换）  \r\n✅ **输入校验**（避免非法数据导致报错）  \r\n✅ **支持负数坐标**（适合屏幕外、偏移场景）  \r\n✅ **支持批量转换**  \r\n✅ **轻量无依赖**（纯 JS，可在浏览器/Node/小程序中使用）\r\n\r\n---\r\n\r\n## 六、适用场景\r\n- Canvas 绘制矩形\r\n- 图片标注/选区工具\r\n- 截图区域坐标转换\r\n- UI 自动化元素定位\r\n- 可视化图表矩形计算\r\n- PDF/画布坐标转换\r\n\r\n---\r\n\r\n## 七、总结\r\n这个工具函数虽然简单，但**解决了前端坐标转换中最常见的重复劳动**。\r\n\r\n以后遇到四点坐标转矩形，直接调用这行代码即可，再也不用手动算来算去啦！\r\n\r\n---\r\n\r\n需要我再给你生成一个**可在线预览的 HTML Demo** 吗？你可以直接打开页面粘贴坐标并实时看到转换结果～",
       "fileName": "ju-xing-si-dian-zuo-biao-yi-jian-zhuan-xykuangao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "CvtMXn",
+      "title": "defineModel 的编译过程",
+      "createdAt": "2025-12-22T14:47:00+08:00",
+      "updatedAt": "2025-12-22T14:47:00+08:00",
+      "tags": [
+        "vue3"
+      ],
+      "tagIds": [
+        "6sA0AI"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```\r\n// defineModel 编译前（我们写的代码）\r\nconst model = defineModel({ type: Number, required: true })\r\n\r\n// 编译后（编译器自动生成的代码）\r\nconst props = defineProps({ modelValue: { type: Number, required: true } })\r\nconst emit = defineEmits(['update:modelValue'])\r\n\r\n// 生成一个 ref 对象，关联 props.modelValue 和 emit\r\nconst model = computed({\r\n  get: () =\u003e props.modelValue, // 读取父组件传递的 props（数据父→子）\r\n  set: (newVal) =\u003e emit('update:modelValue', newVal) // 修改时触发 emit，通知父组件更新\r\n})\r\n\r\n```\r\n\r\n## 双向绑定\r\n```\r\n\u003c!-- 父组件 --\u003e\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e父组件 count: {{ count }}\u003c/div\u003e\r\n  \u003cChild v-model=\"count\" /\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript setup lang=\"ts\"\u003e\r\nimport { ref } from 'vue'\r\nimport Child from './Child.vue'\r\n\r\nconst count = ref(0)\r\n// 父组件可主动修改数据，子组件仅能通过 emit 通知修改\r\nconst resetCount = () =\u003e {\r\n  count.value = 0\r\n}\r\n\u003c/script\u003e\r\n\r\n\u003c!-- 子组件 --\u003e\r\n\u003cscript setup lang=\"ts\"\u003e\r\n// 显式指定类型，TS 自动校验 props 规则\r\nconst model = defineModel\u003cnumber\u003e({\r\n  required: true,\r\n  validator: (val) =\u003e val \u003e= 0 // 子组件可对 props 进行校验，无法修改\r\n})\r\n\r\n// 子组件只能通过修改 model.value 触发 emit，无法直接修改父组件 count\r\nconst increment = () =\u003e {\r\n  model.value++ // 触发 emit('update:modelValue', model.value + 1)\r\n}\r\n\u003c/script\u003e\r\n\r\n```",
+      "fileName": "definemodel-de-bian-yi-guo-cheng",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -1783,29 +1852,6 @@
       "abstract": ""
     },
     {
-      "id": "lW4a90",
-      "title": "打包编译时间 buildTime",
-      "createdAt": "2020-08-20T08:42:45+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
-      "fileName": "da-bao-bian-yi-shi-jian-buildtime",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "WEpoVC",
       "title": "vue cli \u0026 create-react-app 打包编译时间 buildTime",
       "createdAt": "2020-08-20T08:42:45+08:00",
@@ -1825,6 +1871,29 @@
       },
       "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
       "fileName": "vue-cli-and-create-react-app-da-bao-bian-yi-shi-jian-buildtime",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "lW4a90",
+      "title": "打包编译时间 buildTime",
+      "createdAt": "2020-08-20T08:42:45+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
+      "fileName": "da-bao-bian-yi-shi-jian-buildtime",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -3310,31 +3379,6 @@
       "abstract": ""
     },
     {
-      "id": "JsvNfK",
-      "title": "getTargetObject",
-      "createdAt": "2019-09-19T18:16:00+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [
-        "js utils"
-      ],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
-      "fileName": "gettargetobject",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "AqFF3L",
       "title": "filter Object",
       "createdAt": "2019-09-19T18:16:00+08:00",
@@ -3356,6 +3400,31 @@
       },
       "content": "# 过滤目标对象 / 过滤掉两个对象相等的值\r\n## 过滤目标对象 getTargetObject\r\n/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}\r\n## 过滤掉两个对象相等的值\r\n```\r\n/**\r\n * 比较两个对象是否相等\r\n * 相等返回obj2\r\n * 不等 返回不相同的值 和 reserveArray数组保留的值\r\n *\r\n * @export\r\n * @param {*} obj1\r\n * @param {*} obj2\r\n * @param {*} reserveArray\r\n * @returns\r\n */\r\nexport function getObjectDifferent(obj1, obj2, reserveArray) {\r\n  var data = {}\r\n  var isEqually = true\r\n  for (var key in obj1) {\r\n    if (obj1.hasOwnProperty(key) \u0026\u0026 obj1[key] !== obj2[key]) {\r\n      data[key] = obj2[key]\r\n      isEqually = false\r\n    }\r\n  }\r\n\r\n  if (isEqually) {\r\n    data = obj2\r\n  } else {\r\n    for (var i = 0; i \u003c reserveArray.length; i++) {\r\n      var item = reserveArray[i]\r\n      data[item] = obj2[item]\r\n    }\r\n  }\r\n  // reserveArray.forEach(item =\u003e {\r\n  //   data[item] = obj2[item];\r\n  // })\r\n  return {\r\n    isEqually: isEqually,\r\n    data: data\r\n  }\r\n}\r\n```",
       "fileName": "filter-object",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "JsvNfK",
+      "title": "getTargetObject",
+      "createdAt": "2019-09-19T18:16:00+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [
+        "js utils"
+      ],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
+      "fileName": "gettargetobject",
       "deleteFileName": "",
       "abstract": ""
     },
