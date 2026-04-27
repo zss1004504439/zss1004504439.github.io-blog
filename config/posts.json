@@ -30,6 +30,52 @@
       "abstract": ""
     },
     {
+      "id": "L6GaJl",
+      "title": "v-if 与 v-for 优先级",
+      "createdAt": "2026-04-27T17:50:44Z",
+      "updatedAt": "0001-01-01T00:00:00Z",
+      "tags": [],
+      "tagIds": null,
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "\r\n\r\n## **`v-if` 与 `v-for` 优先级变了**\r\n\r\n- Vue2： `v-for` 优先级 **高于** `v-if`\r\n- Vue3： `v-if` 优先级 **高于** `v-for` （所以不建议同时用，用 `\u003ctemplate\u003e` 隔开）",
+      "fileName": "v-if-yu-v-for-you-xian-ji",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "nHBIC7",
+      "title": "css动效外边框",
+      "createdAt": "2026-04-27T17:44:56+08:00",
+      "updatedAt": "2026-04-27T17:44:56+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```html\r\n\u003c!DOCTYPE html\u003e\r\n\u003chtml lang=\"zh-CN\"\u003e\r\n\u003chead\u003e\r\n  \u003cmeta charset=\"UTF-8\" /\u003e\r\n  \u003cmeta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /\u003e\r\n  \u003ctitle\u003e紫色发光边框\u003c/title\u003e\r\n  \u003cstyle\u003e\r\n    * {\r\n      box-sizing: border-box;\r\n    }\r\n\r\n    body {\r\n      margin: 0;\r\n      min-height: 100vh;\r\n      display: flex;\r\n      align-items: center;\r\n      justify-content: center;\r\n      background:\r\n        radial-gradient(circle at center, rgba(68, 55, 145, 0.18), transparent 34%),\r\n        linear-gradient(180deg, #030712 0%, #05091c 100%);\r\n      font-family: Arial, Helvetica, sans-serif;\r\n    }\r\n\r\n    .card-wrap {\r\n      position: relative;\r\n      width: 460px;\r\n      height: 285px;\r\n      border-radius: 28px;\r\n      padding: 2px;\r\n      background: linear-gradient(\r\n        135deg,\r\n        rgba(196, 158, 255, 0.95) 0%,\r\n        rgba(105, 80, 210, 0.75) 18%,\r\n        rgba(64, 55, 145, 0.28) 55%,\r\n        rgba(113, 83, 210, 0.6) 78%,\r\n        rgba(184, 139, 255, 0.9) 100%\r\n      );\r\n      /* box-shadow:\r\n        0 0 4px rgba(210, 180, 255, 0.8),\r\n        0 0 14px rgba(132, 88, 255, 0.65),\r\n        0 0 30px rgba(77, 56, 202, 0.35); */\r\n      overflow: hidden;\r\n    }\r\n\r\n    /* 某一段边框高亮扫光 */\r\n    .card-wrap::before {\r\n      content: \"\";\r\n      position: absolute;\r\n      inset: -45%;\r\n      background: conic-gradient(\r\n        from 228deg,\r\n        transparent 0deg,\r\n        transparent 245deg,\r\n        rgba(148, 92, 255, 0.1) 260deg,\r\n        rgba(217, 193, 255, 0.95) 280deg,\r\n        rgba(255, 255, 255, 1) 292deg,\r\n        rgba(174, 115, 255, 0.9) 308deg,\r\n        transparent 330deg,\r\n        transparent 360deg\r\n      );\r\n      filter: blur(3px);\r\n      animation: borderFlow 5s linear infinite;\r\n      opacity: 0.9;\r\n    }\r\n\r\n    .card {\r\n      position: relative;\r\n      width: 100%;\r\n      height: 100%;\r\n      border-radius: 26px;\r\n      overflow: hidden;\r\n      background:\r\n        radial-gradient(circle at 18% 0%, rgba(123, 78, 255, 0.5), transparent 34%),\r\n        radial-gradient(circle at 100% 14%, rgba(52, 63, 145, 0.38), transparent 35%),\r\n        linear-gradient(135deg, #342174 0%, #15174d 43%, #080d28 100%);\r\n      padding: 34px 32px;\r\n      color: #fff;\r\n      z-index: 1;\r\n    }\r\n\r\n    @keyframes borderFlow {\r\n      to {\r\n        transform: rotate(360deg);\r\n      }\r\n    }\r\n  \u003c/style\u003e\r\n\u003c/head\u003e\r\n\u003cbody\u003e\r\n  \u003cdiv class=\"card-wrap\"\u003e\r\n    \u003cdiv class=\"card\"\u003e\r\n    \u003c/div\u003e\r\n  \u003c/div\u003e\r\n\u003c/body\u003e\r\n\u003c/html\u003e\r\n\r\n```",
+      "fileName": "cssdong-xiao-wai-bian-kuang",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "gKrrpM",
       "title": "JS 跑，渲染停；渲染跑，JS 停。",
       "createdAt": "2026-04-21T19:52:28+08:00",
@@ -215,29 +261,6 @@
       "abstract": ""
     },
     {
-      "id": "VNcBGM",
-      "title": "自定义错误类",
-      "createdAt": "2025-04-23T15:06:18Z",
-      "updatedAt": "0001-01-01T00:00:00Z",
-      "tags": [],
-      "tagIds": null,
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "```typescript\r\n// errors/base.ts\r\nexport class AppError extends Error {\r\n  public readonly statusCode: number;\r\n  public readonly isOperational: boolean;\r\n  public readonly code: string;\r\n\r\n  constructor(message: string, statusCode: number, code: string) {\r\n    super(message);\r\n    this.statusCode = statusCode;\r\n    this.isOperational = true; // 可预期的业务错误\r\n    this.code = code;\r\n    Error.captureStackTrace(this, this.constructor);\r\n  }\r\n}\r\n\r\n// 具体错误类\r\nexport class NotFoundError extends AppError {\r\n  constructor(resource: string, id?: string | number) {\r\n    const msg = id ? `${resource} (id: ${id}) 不存在` : `${resource}不存在`;\r\n    super(msg, 404, 'NOT_FOUND');\r\n  }\r\n}\r\n\r\nexport class ValidationError extends AppError {\r\n  public readonly errors: Array\u003c{ field: string; message: string }\u003e;\r\n\r\n  constructor(errors: Array\u003c{ field: string; message: string }\u003e) {\r\n    super('请求参数验证失败', 422, 'VALIDATION_ERROR');\r\n    this.errors = errors;\r\n  }\r\n}\r\n\r\nexport class UnauthorizedError extends AppError {\r\n  constructor(message = '请先登录') {\r\n    super(message, 401, 'UNAUTHORIZED');\r\n  }\r\n}\r\n\r\nexport class ForbiddenError extends AppError {\r\n  constructor(message = '无权访问') {\r\n    super(message, 403, 'FORBIDDEN');\r\n  }\r\n}\r\n\r\nexport class ConflictError extends AppError {\r\n  constructor(message: string) {\r\n    super(message, 409, 'CONFLICT');\r\n  }\r\n}\r\n```",
-      "fileName": "zi-ding-yi-cuo-wu-lei",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "MSxVQU",
       "title": "Vue 3 动态路由 Pinia 状态同步踩坑",
       "createdAt": "2025-04-23T18:41:23+08:00",
@@ -261,6 +284,29 @@
       },
       "content": "在 Vue 3 中结合动态路由（`/course/:id`）和 Pinia 设计 Store 时，核心挑战在于**确保 Store 的状态与当前路由参数同步**，尤其是在同一个组件实例被复用（即从 `/course/1` 跳转到 `/course/2`）时。\r\n\r\n以下是三种推荐的设计方案：\r\n\r\n---\r\n\r\n### 1. 组合式设计（推荐）：以 ID 为核心的响应式 Store\r\n这种方式最符合 Vue 3 的心智模型。不再是在组件里手动调用 `fetch`，而是让 Store 监听 ID 的变化。\r\n\r\n```javascript\r\nimport { defineStore } from 'pinia';\r\nimport { ref, watch } from 'vue';\r\n\r\nexport const useCourseStore = defineStore('course-detail', () =\u003e {\r\n  const courseId = ref(null);\r\n  const details = ref(null);\r\n  const loading = ref(false);\r\n\r\n  // 设置 ID 并自动触发更新\r\n  const setCourseId = async (id) =\u003e {\r\n    if (courseId.value === id) return;\r\n    courseId.value = id;\r\n    await fetchCourseDetail();\r\n  };\r\n\r\n  const fetchCourseDetail = async () =\u003e {\r\n    loading.value = true;\r\n    try {\r\n      // 模拟 API 请求\r\n      // const res = await api.getCourse(courseId.value);\r\n      // details.value = res.data;\r\n    } finally {\r\n      loading.value = false;\r\n    }\r\n  };\r\n\r\n  // 重置状态（离开页面时调用）\r\n  const reset = () =\u003e {\r\n    courseId.value = null;\r\n    details.value = null;\r\n  };\r\n\r\n  return { courseId, details, loading, setCourseId, reset };\r\n});\r\n```\r\n\r\n---\r\n\r\n### 2. 路由守卫集成：确保“数据先于页面”\r\n为了避免页面渲染后出现瞬间的空白或旧数据，可以在组件的 `onBeforeRouteUpdate` 或全局守卫中触发 Store 更新。\r\n\r\n**在组件中使用：**\r\n```vue\r\n\u003cscript setup\u003e\r\nimport { useCourseStore } from '@/stores/course';\r\nimport { onMounted } from 'vue';\r\nimport { useRoute, onBeforeRouteUpdate } from 'vue-router';\r\n\r\nconst store = useCourseStore();\r\nconst route = useRoute();\r\n\r\n// 初始进入\r\nonMounted(() =\u003e {\r\n  store.setCourseId(route.params.id);\r\n});\r\n\r\n// 路由参数变化（如同一个页面切换不同课程）\r\nonBeforeRouteUpdate((to) =\u003e {\r\n  store.setCourseId(to.params.id);\r\n});\r\n\u003c/script\u003e\r\n```\r\n\r\n---\r\n\r\n### 3. 设计要点总结\r\n\r\n| 关注点 | 建议方案 |\r\n| :--- | :--- |\r\n| **状态清理** | 在 `onUnmounted` 时调用 `store.$reset()` 或自定义 `reset()`。防止用户进入新课程时先看到上一个课程的残余数据。 |\r\n| **数据缓存** | 如果不需要实时性，可以在 `fetchCourseDetail` 中根据 ID 判断，如果缓存中已有数据则跳过请求。 |\r\n| **唯一性** | 如果你的应用支持多开 Tab（如某些后台系统），考虑使用 `Map\u003cid, data\u003e` 结构存储，而不是单一的 `details` 对象。 |\r\n\r\n### 进阶：多实例管理（针对复杂场景）\r\n如果你的系统允许同时打开多个课程页面（例如在 Monorepo 或标签页架构中），建议在 Store 内部使用对象存储：\r\n\r\n```javascript\r\nconst courses = ref({}); // { '101': { name: 'Vue' }, '102': { name: 'Nuxt' } }\r\n\r\nconst currentCourse = computed(() =\u003e courses.value[courseId.value]);\r\n```\r\n\r\n**建议技巧：** 由于你正在处理 Vue 项目，可以利用 **Pinia 的 `$onAction`** 订阅功能。如果需要对所有课程详情页进行埋点或统一错误处理，这比在每个组件写 `try...catch` 更优雅。",
       "fileName": "vue-3-dong-tai-lu-you-pinia-zhuang-tai-tong-bu-cai-keng",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "VNcBGM",
+      "title": "自定义错误类",
+      "createdAt": "2025-04-23T15:06:18+08:00",
+      "updatedAt": "2026-04-23T18:53:10+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```typescript\r\n// errors/base.ts\r\nexport class AppError extends Error {\r\n  public readonly statusCode: number;\r\n  public readonly isOperational: boolean;\r\n  public readonly code: string;\r\n\r\n  constructor(message: string, statusCode: number, code: string) {\r\n    super(message);\r\n    this.statusCode = statusCode;\r\n    this.isOperational = true; // 可预期的业务错误\r\n    this.code = code;\r\n    Error.captureStackTrace(this, this.constructor);\r\n  }\r\n}\r\n\r\n// 具体错误类\r\nexport class NotFoundError extends AppError {\r\n  constructor(resource: string, id?: string | number) {\r\n    const msg = id ? `${resource} (id: ${id}) 不存在` : `${resource}不存在`;\r\n    super(msg, 404, 'NOT_FOUND');\r\n  }\r\n}\r\n\r\nexport class ValidationError extends AppError {\r\n  public readonly errors: Array\u003c{ field: string; message: string }\u003e;\r\n\r\n  constructor(errors: Array\u003c{ field: string; message: string }\u003e) {\r\n    super('请求参数验证失败', 422, 'VALIDATION_ERROR');\r\n    this.errors = errors;\r\n  }\r\n}\r\n\r\nexport class UnauthorizedError extends AppError {\r\n  constructor(message = '请先登录') {\r\n    super(message, 401, 'UNAUTHORIZED');\r\n  }\r\n}\r\n\r\nexport class ForbiddenError extends AppError {\r\n  constructor(message = '无权访问') {\r\n    super(message, 403, 'FORBIDDEN');\r\n  }\r\n}\r\n\r\nexport class ConflictError extends AppError {\r\n  constructor(message: string) {\r\n    super(message, 409, 'CONFLICT');\r\n  }\r\n}\r\n```",
+      "fileName": "zi-ding-yi-cuo-wu-lei",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -755,31 +801,6 @@
       },
       "content": "```js\r\n\u003ctemplate\u003e\r\n    \u003cdiv class=\"ceshi\" @click=\"ceshi()\"\u003e\r\n        \u003crun-line-canvas v-model=\"showIndex\" class=\"canvas-set\" :width=\"102\" :height=\"600\" :option=\"option\"\u003e\u003c/run-line-canvas\u003e\r\n    \u003c/div\u003e\r\n\u003c/template\u003e\r\n\u003cscript\u003e\r\n    export default {\r\n        data() {\r\n            return {\r\n                option: {\r\n                    speed: 5,\r\n                    tailLine: {\r\n                        length: 0.98,\r\n                        moveColor: 'red',\r\n                        shadowBlur: 1,\r\n                        radius: 5,\r\n                        tailColor: 'orange'\r\n                    },\r\n                    series: [\r\n                        {\r\n                            data: [\r\n                                [4, 540],\r\n                                [38, 540],\r\n                                [48, 530],\r\n                                [48, 30],\r\n                                [78, 10],\r\n                                [102, 10],\r\n                                [600, 100],\r\n                            ]\r\n                        }\r\n                    ]\r\n                },\r\n                showIndex: null\r\n            }\r\n        },\r\n        mounted() {\r\n            this.showIndex = 0;\r\n            setinterval(function(){this.ceshi()},1000)\r\n        },\r\n        methods: {\r\n            ceshi() {\r\n                this.showIndex = 0;\r\n            }\r\n        }\r\n    }\r\n\u003c/script\u003e\r\n\u003cstyle\u003e\r\n    body{\r\n        .ceshi{\r\n            cursor: pointer;\r\n            color: rgb(30, 94, 54);\r\n        }\r\n    }\r\n\u003c/style\u003e\r\n```\r\n```js\r\n \u003ctemplate\u003e\r\n    \u003cdiv\u003e\r\n        \u003ccanvas ref=\"myCanvas\" :width=\"width\" :height=\"height\" class=\"all100\"\u003e\u003c/canvas\u003e\r\n    \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n    name: 'RunLineCanvas',\r\n    model: {\r\n        prop: 'sendRun',\r\n        event: 'reback'\r\n    },\r\n    props: {\r\n        // 绘制canvas逻辑宽度\r\n        width: {\r\n            type: Number,\r\n            default: null\r\n        },\r\n        // 绘制canvas逻辑高度\r\n        height: {\r\n            type: Number,\r\n            default: null\r\n        },\r\n        // 传入的参数配置以及线条数据\r\n        option: {\r\n            type: Object,\r\n            default: null\r\n        },\r\n        // 控制点运动\r\n        sendRun: {\r\n            type: Number,\r\n            default: null\r\n        }\r\n    },\r\n    data() {\r\n        return {\r\n            // 判断是否重复绘制\r\n            isReDraw: false,\r\n            // canvas对象\r\n            canvas: null,\r\n            // canvas 2D对象\r\n            ctx: null,\r\n            // 线条数据\r\n            lineData: [],\r\n            // 基础配置\r\n            canvasOption: {\r\n                color: '#3d7ab9',\r\n                width: 2,\r\n                speed: 5,\r\n                // 运动点配置参数\r\n                tailLine: {\r\n                    length: 0.95, // 该参数无法单独配置\r\n                    moveColor: '#ff8d68',\r\n                    shadowBlur: 2,\r\n                    radius: 3,\r\n                    tailColor: '#ff8d68'\r\n                },\r\n                // 线条两头的样式\r\n                lineCap: {\r\n                    type: 'circle',\r\n                    size: 5,\r\n                    show: true\r\n                }\r\n            },\r\n            // 动画list数组\r\n            runList: [],\r\n            // 正在动画的线\r\n            runningLine: 0,\r\n            // 每一个动画的临时存贮\r\n            chooseCheckTime: []\r\n        };\r\n    },\r\n    computed: {\r\n        /**\r\n         * 计算两个点之间的距离\r\n         * @returns {function(*, *): number}\r\n         */\r\n        getDistance() {\r\n            return function getDistance(p1, p2) {\r\n                return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]));\r\n            };\r\n        }\r\n    },\r\n    mounted() {\r\n        this.canvasCreate();\r\n        this.$watch('option', () =\u003e {\r\n            if (this.option.series \u0026\u0026 this.option.series.length \u003e 0) {\r\n                this.seriesDataDue();\r\n                this.drawlineRun();\r\n            }\r\n        }, { immediate: true });\r\n        this.$watch('sendRun', () =\u003e {\r\n            if (this.sendRun !== null) {\r\n                this.addNewRun(this.sendRun);\r\n                this.$emit('reback', null);\r\n            }\r\n        }, { immediate: true });\r\n    },\r\n    beforeDestroy() {\r\n        this.drawlineRun = () =\u003e {};\r\n    },\r\n    methods: {\r\n        /**\r\n         * 数据初始化，给每一条线赋予参数\r\n         */\r\n        seriesDataDue() {\r\n            this.runList.splice(0);\r\n            const object = JSON.parse(JSON.stringify(this.option));\r\n            delete object.series;\r\n            this.canvasOption = Object.assign(this.canvasOption, object, true);\r\n            this.option.series.forEach((item, index) =\u003e {\r\n                this.option.series[index] = Object.assign(this.canvasOption, this.option.series[index], true);\r\n            });\r\n            this.lineData = this.option.series;\r\n        },\r\n        /**\r\n         * 页面初始化渲染canvas对象\r\n         */\r\n        canvasCreate() {\r\n            this.canvas = this.$refs.myCanvas;\r\n            this.ctx = this.canvas.getContext('2d');\r\n        },\r\n        /**\r\n         * 通过传入数据进行线条绘制\r\n         */\r\n        drawLine() {\r\n            this.lineData.forEach((line, index) =\u003e {\r\n                this.ctx.beginPath();\r\n                this.ctx.strokeStyle = line.color;\r\n                this.ctx.lineWidth = line.width;\r\n                line.data.forEach((point, index) =\u003e {\r\n                    if (index === 0) {\r\n                        this.ctx.moveTo(point[0], point[1]);\r\n                    } else {\r\n                        this.ctx.lineTo(point[0], point[1]);\r\n                    }\r\n                });\r\n                this.ctx.stroke();\r\n                this.lineCapCheck(line);\r\n                if (this.runList.length === 0) {\r\n                    this.moveLineData(line);\r\n                }\r\n            });\r\n        },\r\n\r\n        /**\r\n         * 线条两头样式处理\r\n         * @param line\r\n         */\r\n        lineCapCheck(line) {\r\n            const lineCapData = {\r\n                color: line.color,\r\n                data: line.data,\r\n                lineCap: line.lineCap\r\n            };\r\n            if (lineCapData.lineCap.show) {\r\n                this[`LineCap${lineCapData.lineCap.type}`](lineCapData);\r\n            }\r\n        },\r\n\r\n        /**\r\n         * 线条两端圆形样式\r\n         * @constructor\r\n         */\r\n        LineCapcircle(lineCapData) {\r\n            const moveList1 = this.mathMove(lineCapData.data[0], lineCapData.data[1], lineCapData.lineCap.size);\r\n            const moveList2 = this.mathMove(lineCapData.data[lineCapData.data.length - 1], lineCapData.data[lineCapData.data.length - 2], lineCapData.lineCap.size);\r\n            // 画线开始圆\r\n            this.ctx.beginPath();\r\n            this.ctx.arc(lineCapData.data[0][0] + moveList1[0], lineCapData.data[0][1] + moveList1[1], lineCapData.lineCap.size, 0, Math.PI * 2, true);\r\n            this.ctx.stroke();\r\n            this.ctx.fillStyle = lineCapData.color;\r\n            this.ctx.fill();\r\n            // 画线结束圆\r\n            this.ctx.beginPath();\r\n            this.ctx.arc(lineCapData.data[lineCapData.data.length - 1][0] + moveList2[0], lineCapData.data[lineCapData.data.length - 1][1] + moveList2[1], lineCapData.lineCap.size, 0, Math.PI * 2, true);\r\n            this.ctx.stroke();\r\n            this.ctx.fillStyle = lineCapData.color;\r\n            this.ctx.fill();\r\n        },\r\n\r\n        /**\r\n         * 计算点位头部位置计算\r\n         * @param ponit1\r\n         * @param point2\r\n         * @param size\r\n         * @returns {[number, number]}\r\n         */\r\n        mathMove(ponit1, point2, size) {\r\n            const bigSize = Math.pow((Math.pow(point2[0] - ponit1[0], 2) + Math.pow(point2[1] - ponit1[1], 2)), 1 / 2) / size;\r\n            const movex = (point2[0] - ponit1[0]) / bigSize;\r\n            const movey = (point2[1] - ponit1[1]) / bigSize;\r\n            return [movex, movey];\r\n        },\r\n\r\n        /**\r\n         * 动画数据数组处理\r\n         * @param data\r\n         */\r\n        moveLineData(series) {\r\n            const pointList = [];\r\n            for (var i = 0; i \u003c series.data.length; i++) {\r\n                var start = series.data[i];\r\n                var end = series.data[i + 1];\r\n                if (start \u0026\u0026 end) {\r\n                    var distance = Math.floor(this.getDistance(start, end));\r\n                    var vx = (end[0] - start[0]) / distance;\r\n                    var vy = (end[1] - start[1]) / distance;\r\n                    for (var j = 0; j \u003c distance; j++) {\r\n                        pointList.push([start[0] + vx * j, start[1] + vy * j]);\r\n                    }\r\n                }\r\n            }\r\n            series.data = pointList;\r\n            this.runList.push(series);\r\n        },\r\n\r\n        /**\r\n         * 绘制移动点\r\n         */\r\n        drawlineRun() {\r\n            let runNum = 0;\r\n            this.ctx.fillStyle = `rgba(0,0,0,${this.canvasOption.tailLine.length})`;\r\n            const prev = this.ctx.globalCompositeOperation;\r\n            this.ctx.globalCompositeOperation = 'destination-in';\r\n            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);\r\n            this.ctx.globalCompositeOperation = prev;\r\n            this.ctx.shadowColor = '';\r\n            this.ctx.shadowBlur = 0;\r\n            this.drawLine();\r\n            this.chooseCheckTime.forEach((item, index) =\u003e {\r\n                if (this.runList[item.index].data.length \u003e= item.runIndex) {\r\n                    this.drawPoint(item.runIndex, item.index);\r\n                    this.chooseCheckTime[index].runIndex += this.runList[item.index].speed;\r\n                    runNum++;\r\n                }\r\n            });\r\n            if (runNum === 0 \u0026\u0026 this.isReDraw) {\r\n                this.ctx.shadowColor = '';\r\n                this.ctx.shadowBlur = 0;\r\n                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);\r\n                this.drawLine();\r\n                this.isReDraw = false;\r\n            } else {\r\n                this.isReDraw = true;\r\n            }\r\n            requestAnimationFrame(this.drawlineRun.bind(this));\r\n        },\r\n\r\n        /**\r\n         * 动画绘点函数\r\n         * @param checkLength\r\n         * @param index\r\n         */\r\n        drawPoint(checkLength, index) {\r\n            this.ctx.shadowColor = this.runList[index].tailLine.moveColor;\r\n            this.ctx.shadowBlur = this.runList[index].tailLine.shadowBlur;\r\n            this.ctx.beginPath();\r\n            this.ctx.arc(this.runList[0].data[checkLength - 1][0], this.runList[0].data[checkLength - 1][1], this.runList[index].tailLine.radius, 0, Math.PI * 2);\r\n            this.ctx.stroke();\r\n            this.ctx.fillStyle = this.runList[index].tailLine.tailColor;\r\n            this.ctx.fill();\r\n        },\r\n\r\n        /**\r\n         * 新动画创建(动画触发)\r\n         * @param index\r\n         */\r\n        addNewRun(index) {\r\n            this.chooseCheckTime.push({ index: index, runIndex: 1 });\r\n        }\r\n    }\r\n};\r\n\u003c/script\u003e\r\n\r\n\u003cstyle scoped\u003e\r\n\r\n\u003c/style\u003e\r\n\r\n```",
       "fileName": "canvas-xian-tiao-dong-hua",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
-      "id": "cGF4YC",
-      "title": "正则",
-      "createdAt": "2021-06-04T11:12:54+08:00",
-      "updatedAt": "2026-04-17T11:19:41+08:00",
-      "tags": [
-        "正则"
-      ],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "## 大写字母分割字符串 \r\n```js\r\n\"taxAdmin\".split(/(?=[A-Z])/) // [\"tax\", \"Admin\"]\r\n```",
-      "fileName": "zheng-ze",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -1568,29 +1589,6 @@
       },
       "content": "```js\r\n\u003ctemplate\u003e\r\n  \u003cdiv style=\"width:100%\"\u003e\r\n    \u003ceditor v-model=\"myValue\" :init=\"init\" :disabled=\"disabled\" @onClick=\"onClick\"\u003e\u003c/editor\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\u003cscript\u003e\r\nimport tinymce from \"tinymce/tinymce\";\r\nimport Editor from \"@tinymce/tinymce-vue\";\r\nimport \"tinymce/themes/silver\";\r\n// 编辑器插件plugins\r\n// 更多插件参考：https://www.tiny.cloud/docs/plugins/\r\n//--------------------插入引入--------------------\r\nimport \"tinymce/plugins/image\"; // 插入上传图片插件\r\nimport \"tinymce/plugins/media\"; // 插入视频插件\r\nimport \"tinymce/plugins/table\"; // 插入表格插件\r\nimport \"tinymce/plugins/link\"; //超链接插件\r\nimport \"tinymce/plugins/code\"; //代码块插件\r\nimport \"tinymce/plugins/lists\"; // 列表插件\r\nimport \"tinymce/plugins/contextmenu\"; //右键菜单插件\r\nimport \"tinymce/plugins/wordcount\"; // 字数统计插件\r\nimport \"tinymce/plugins/colorpicker\"; //选择颜色插件\r\nimport \"tinymce/plugins/textcolor\"; //文本颜色插件\r\nimport \"tinymce/plugins/fullscreen\"; //全屏\r\nimport \"tinymce/plugins/help\";\r\nimport \"tinymce/plugins/charmap\";\r\nimport \"tinymce/plugins/paste\";\r\nimport \"tinymce/plugins/print\";\r\nimport \"tinymce/plugins/preview\";\r\nimport \"tinymce/plugins/hr\";\r\nimport \"tinymce/plugins/anchor\";\r\nimport \"tinymce/plugins/pagebreak\";\r\nimport \"tinymce/plugins/spellchecker\";\r\nimport \"tinymce/plugins/searchreplace\";\r\nimport \"tinymce/plugins/visualblocks\";\r\nimport \"tinymce/plugins/visualchars\";\r\nimport \"tinymce/plugins/insertdatetime\";\r\nimport \"tinymce/plugins/nonbreaking\";\r\nimport \"tinymce/plugins/autosave\";\r\nimport \"tinymce/plugins/fullpage\";\r\nimport \"tinymce/plugins/toc\";\r\n//必须引用\r\nimport \"tinymce/icons/default/icons.min.js\";\r\nimport \"@/assets/langs/zh_CN.js\";\r\nimport \"tinymce/skins/ui/oxide/skin.css\";\r\nexport default {\r\n  components: {\r\n    Editor,\r\n  },\r\n  props: {\r\n    value: {\r\n      type: String,\r\n      default: \"\",\r\n    },\r\n    // 基本路径，默认为空根目录，如果你的项目发布后的地址为目录形式，\r\n    // 即abc.com/tinymce，baseUrl需要配置成tinymce，不然发布后资源会找不到\r\n    baseUrl: {\r\n      type: String,\r\n      default: \"\",\r\n    },\r\n    disabled: {\r\n      type: Boolean,\r\n      default: false,\r\n    },\r\n  },\r\n  data() {\r\n    return {\r\n      myValue: this.value,\r\n      web:'http://api.euiadmin.com',//网站链接，与返回文件地址拼接形成完整地址\r\n      url: \"/upload/image\",//上传api\r\n      init: {\r\n        selector: \"Editor\", //选择HTML元素\r\n        language_url: \"@/assets/langs/zh_CN.js\", //导入语言文件\r\n        language: \"zh_CN\", //语言设置\r\n        //disabled:true, //禁用\r\n        skin_url: \"/tinymce/skins/ui/oxide\", //主题样式\r\n        height: 300, //高度\r\n        menubar: false, // 隐藏最上方menu菜单\r\n        // toolbar: true,//false禁用工具栏（隐藏工具栏）\r\n        browser_spellcheck: true, // 拼写检查\r\n        branding: false, // 去水印\r\n        statusbar: false, // 隐藏编辑器底部的状态栏\r\n        elementpath: false, //禁用下角的当前标签路径\r\n        paste_data_images: true, // 允许粘贴图像\r\n        plugins:\r\n          \"lists image media table wordcount code fullscreen help  toc fullpage autosave nonbreaking insertdatetime visualchars visualblocks searchreplace spellchecker pagebreak link charmap paste print preview hr anchor\",\r\n\r\n        toolbar: [\r\n          \"newdocument undo redo | formatselect visualaid|cut copy paste selectall| bold italic underline strikethrough |codeformat blockformats| superscript subscript  | forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent |  removeformat \",\r\n          \"code  bullist numlist | lists image media table link |fullscreen help toc fullpage restoredraft nonbreaking insertdatetime visualchars visualblocks searchreplace spellchecker pagebreak anchor charmap  pastetext print preview hr\",\r\n        ],\r\n        // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，\r\n        // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler\r\n        images_upload_handler: (blobInfo, success, failure) =\u003e {\r\n          console.log(blobInfo + success + failure);\r\n            let formData = new FormData();\r\n            // 服务端接收文件的参数名，文件数据，文件名\r\n            formData.append(\"file\", blobInfo.blob(), blobInfo.filename());\r\n            this.$axios({\r\n              method: \"POST\",\r\n              url: this.url,// 这里是你的上传地址\r\n              data: formData\r\n            })\r\n              .then(res =\u003e {\r\n                // 这里返回的是你图片的地址\r\n                // console.log(this.web+res.data)\r\n                success(this.web+res.data);\r\n              })\r\n              .catch(() =\u003e {\r\n                failure(\"上传失败\");\r\n              });\r\n        },\r\n      },\r\n    };\r\n  },\r\n  mounted() {\r\n    tinymce.init({});\r\n  },\r\n  methods: {\r\n    // 添加相关的事件，可用的事件参照文档=\u003e https://github.com/tinymce/tinymce-vue =\u003e All available events\r\n    // 需要什么事件可以自己增加\r\n    onClick(e) {\r\n      this.$emit(\"onClick\", e, tinymce);\r\n    },\r\n    // 可以添加一些自己的自定义事件，如清空内容\r\n    clear() {\r\n      this.myValue = \"\";\r\n    },\r\n  },\r\n  watch: {\r\n    value(newValue) {\r\n      this.myValue = newValue;\r\n    },\r\n    myValue(newValue) {\r\n      this.$emit(\"input\", newValue);\r\n    },\r\n  },\r\n};\r\n\u003c/script\u003e\r\n```",
       "fileName": "tinymceeditorvue",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
-      "id": "Ml5PtJ",
-      "title": "伪类 :nth-child",
-      "createdAt": "2020-10-26T10:09:12+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "```css\r\n选中前5个 ------------------------------ :nth-child(-n+5)\r\n选中第5个元素开始的后面的孩子 ----------- :nth-child(n+5)\r\n选中第 5-10 个孩子 ---------------------- :nth-child(n+5):nth-child(-n+9)\r\n\r\n```",
-      "fileName": "wei-lei-nth-child",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -2462,6 +2460,31 @@
       "abstract": ""
     },
     {
+      "id": "cGF4YC",
+      "title": "split 正则",
+      "createdAt": "2020-02-04T11:12:54+08:00",
+      "updatedAt": "2020-04-17T11:19:41+08:00",
+      "tags": [
+        "正则"
+      ],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 大写字母分割字符串 \n```js\n\"taxAdmin\".split(/(?=[A-Z])/) // [\"tax\", \"Admin\"]\n```",
+      "fileName": "zheng-ze",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "ghRGle",
       "title": "Git 小技巧：一个本地仓库关联两个远程仓库",
       "createdAt": "2020-01-17T13:53:10+08:00",
@@ -2840,6 +2863,29 @@
       },
       "content": "## 将\"激活时的CSS类名\"应用在外层元素\r\n\r\n有时候我们要让 \"激活时的CSS类名\" 应用在外层元素，而不是 `\u003ca\u003e` 标签本身，那么可以用 `\u003crouter-link\u003e `渲染外层元素，包裹着内层的原生`\u003ca\u003e` 标签：\r\n```\r\n\u003crouter-link tag=\"li\" to=\"/foo\"\u003e \r\n  \u003ca\u003e/foo\u003c/a\u003e\r\n\u003c/router-link\u003e\r\n```\r\n在这种情况下，`\u003ca\u003e `将作为真实的链接（它会获得正确的 href 的），而 \"激活时的CSS类名\" 则设置到外层的 `\u003cli\u003e`。 \r\n\r\n原文链接：https://blog.csdn.net/qq_35624642/article/details/78910194",
       "fileName": "vue-router",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "Ml5PtJ",
+      "title": "css伪类 :nth-child",
+      "createdAt": "2019-10-26T10:09:12+08:00",
+      "updatedAt": "2020-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```css\n选中前5个 ------------------------------ :nth-child(-n+5)\n选中第5个元素开始的后面的孩子 ----------- :nth-child(n+5)\n选中第 5-10 个孩子 ---------------------- :nth-child(n+5):nth-child(-n+9)\n\n```",
+      "fileName": "wei-lei-nth-child",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -3410,31 +3456,6 @@
       "abstract": ""
     },
     {
-      "id": "AqFF3L",
-      "title": "filter Object",
-      "createdAt": "2019-09-19T18:16:00+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [
-        "js utils"
-      ],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "# 过滤目标对象 / 过滤掉两个对象相等的值\r\n## 过滤目标对象 getTargetObject\r\n/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}\r\n## 过滤掉两个对象相等的值\r\n```\r\n/**\r\n * 比较两个对象是否相等\r\n * 相等返回obj2\r\n * 不等 返回不相同的值 和 reserveArray数组保留的值\r\n *\r\n * @export\r\n * @param {*} obj1\r\n * @param {*} obj2\r\n * @param {*} reserveArray\r\n * @returns\r\n */\r\nexport function getObjectDifferent(obj1, obj2, reserveArray) {\r\n  var data = {}\r\n  var isEqually = true\r\n  for (var key in obj1) {\r\n    if (obj1.hasOwnProperty(key) \u0026\u0026 obj1[key] !== obj2[key]) {\r\n      data[key] = obj2[key]\r\n      isEqually = false\r\n    }\r\n  }\r\n\r\n  if (isEqually) {\r\n    data = obj2\r\n  } else {\r\n    for (var i = 0; i \u003c reserveArray.length; i++) {\r\n      var item = reserveArray[i]\r\n      data[item] = obj2[item]\r\n    }\r\n  }\r\n  // reserveArray.forEach(item =\u003e {\r\n  //   data[item] = obj2[item];\r\n  // })\r\n  return {\r\n    isEqually: isEqually,\r\n    data: data\r\n  }\r\n}\r\n```",
-      "fileName": "filter-object",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "JsvNfK",
       "title": "getTargetObject",
       "createdAt": "2019-09-19T18:16:00+08:00",
@@ -3456,6 +3477,31 @@
       },
       "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
       "fileName": "gettargetobject",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "AqFF3L",
+      "title": "filter Object",
+      "createdAt": "2019-09-19T18:16:00+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [
+        "js utils"
+      ],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "# 过滤目标对象 / 过滤掉两个对象相等的值\r\n## 过滤目标对象 getTargetObject\r\n/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}\r\n## 过滤掉两个对象相等的值\r\n```\r\n/**\r\n * 比较两个对象是否相等\r\n * 相等返回obj2\r\n * 不等 返回不相同的值 和 reserveArray数组保留的值\r\n *\r\n * @export\r\n * @param {*} obj1\r\n * @param {*} obj2\r\n * @param {*} reserveArray\r\n * @returns\r\n */\r\nexport function getObjectDifferent(obj1, obj2, reserveArray) {\r\n  var data = {}\r\n  var isEqually = true\r\n  for (var key in obj1) {\r\n    if (obj1.hasOwnProperty(key) \u0026\u0026 obj1[key] !== obj2[key]) {\r\n      data[key] = obj2[key]\r\n      isEqually = false\r\n    }\r\n  }\r\n\r\n  if (isEqually) {\r\n    data = obj2\r\n  } else {\r\n    for (var i = 0; i \u003c reserveArray.length; i++) {\r\n      var item = reserveArray[i]\r\n      data[item] = obj2[item]\r\n    }\r\n  }\r\n  // reserveArray.forEach(item =\u003e {\r\n  //   data[item] = obj2[item];\r\n  // })\r\n  return {\r\n    isEqually: isEqually,\r\n    data: data\r\n  }\r\n}\r\n```",
+      "fileName": "filter-object",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -4052,6 +4098,29 @@
       "abstract": ""
     },
     {
+      "id": "jwMBYc",
+      "title": "Vue 作用域插槽",
+      "createdAt": "2019-09-16T10:38:35+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
+      "fileName": "vue-zuo-yong-yu-cha-cao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "LzWYUj",
       "title": "Vue 生疏知识\u0026实用开发技巧",
       "createdAt": "2019-09-16T10:38:35+08:00",
@@ -4074,29 +4143,6 @@
       },
       "content": "## 一些 Vue 生疏知识\r\n[Vue 实用开发技巧](https://juejin.im/post/5d790819e51d453b5e465bc7)",
       "fileName": "vue-shi-yong-kai-fa-ji-qiao",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
-      "id": "jwMBYc",
-      "title": "Vue 作用域插槽",
-      "createdAt": "2019-09-16T10:38:35+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
-      "fileName": "vue-zuo-yong-yu-cha-cao",
       "deleteFileName": "",
       "abstract": ""
     },
