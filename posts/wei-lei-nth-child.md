@@ -1,8 +1,8 @@
 ---
 id: Ml5PtJ
-title: 伪类 :nth-child
-createdAt: "2020-10-26 10:09:12"
-updated: "2026-04-17 11:19:42"
+title: css伪类 :nth-child
+createdAt: "2019-10-26 10:09:12"
+updated: "2020-04-17 11:19:42"
 tags: []
 tag_ids: []
 categories: []
