@@ -30,12 +30,18 @@
       "abstract": ""
     },
     {
-      "id": "L6GaJl",
-      "title": "v-if 与 v-for 优先级",
-      "createdAt": "2026-04-27T17:50:44Z",
+      "id": "7fNn3f",
+      "title": "Redis 高并发库存处理系列专栏：从避坑到落地",
+      "createdAt": "2026-04-30T16:36:07Z",
       "updatedAt": "0001-01-01T00:00:00Z",
-      "tags": [],
-      "tagIds": null,
+      "tags": [
+        "redis",
+        "Lua"
+      ],
+      "tagIds": [
+        "R7tksN",
+        "W8OOP6"
+      ],
       "categories": [],
       "categoryIds": null,
       "published": true,
@@ -47,8 +53,54 @@
         "name": "",
         "path": ""
       },
-      "content": "\r\n\r\n## **`v-if` 与 `v-for` 优先级变了**\r\n\r\n- Vue2： `v-for` 优先级 **高于** `v-if`\r\n- Vue3： `v-if` 优先级 **高于** `v-for` （所以不建议同时用，用 `\u003ctemplate\u003e` 隔开）",
-      "fileName": "v-if-yu-v-for-you-xian-ji",
+      "content": "# Redis 高并发库存处理系列专栏：从避坑到落地\r\n\r\n**专栏导语**：在电商、秒杀等高频场景中，库存超卖是最容易踩的坑，而 Redis 作为高并发场景下的首选缓存，其分布式锁与 Lua 原子脚本是解决库存问题的两大核心方案。很多开发者容易混淆两者的适用场景，要么滥用分布式锁导致并发低下，要么用分步查扣库存导致超卖。本专栏将从“避坑”“原理”“落地”三个维度，彻底讲透 Redis 高并发库存处理的核心逻辑，三篇文章层层递进，从问题分析到方案选型，再到可直接上线的代码，新手也能轻松掌握，快速应用到生产环境。\r\n\r\n## 专栏合集目录\r\n\r\n1. Redis 分布式锁 vs Lua 原子脚本：适用场景、优缺点、到底该怎么选\r\n\r\n2. 为什么普通分步查库存 \\+ 扣库存 一定会超卖\r\n\r\n3. Redis \\+ Lua 原子扣库存 完整可运行代码\r\n\r\n---\r\n\r\n# 第一篇：Redis 分布式锁 vs Lua 原子脚本：适用场景、优缺点、到底该怎么选\r\n\r\n## 前言\r\n\r\n很多初学者容易混淆两个方案：Redis 分布式锁（set NX EX）与 Redis Lua 原子脚本。有人以为所有并发问题都能用分布式锁，有人不知道什么时候该换 Lua。本文一次性讲透：原理、区别、适用场景、选型标准，看完以后业务直接不会选错。\r\n\r\n## 一、两种方案核心原理回顾\r\n\r\n### 1\\. Redis 分布式锁（setNX EX）\r\n\r\n伪代码示例（新手可直接参考，关键步骤带注释）：\r\n\r\n```javascript\r\n// 抢锁：NX=只有key不存在时才能设置成功，EX=设置10秒过期时间（防止死锁）\r\n// 锁key：lock:buy（自定义，建议按业务命名，如lock:goods:1001）\r\n// 锁值：1（无实际意义，仅用于占位）\r\nconst lock = await redis.set('lock:buy', '1', 'NX', 'EX', 10);\r\n// 抢锁失败：返回null，提示用户排队重试\r\nif (!lock) return '排队中，请重试';\r\n\r\ntry {\r\n  // 抢锁成功：执行业务逻辑（查库存、创建订单、扣库存等）\r\n  // 此处业务逻辑执行期间，其他请求会因抢不到锁而排队\r\n} finally {\r\n  // 无论业务成功/失败，最终都要删除锁，释放资源（防止死锁）\r\n  await redis.del('lock:buy');\r\n}\r\n\r\n```\r\n\r\n核心逻辑：同一时间只允许一个请求执行业务，其他人全部排队等待，通过“互斥”保证数据安全。\r\n\r\n### 2\\. Redis Lua 原子脚本\r\n\r\n把「查库存 → 判断 → 扣库存」多条 Redis 命令，写到一段 Lua 脚本里。Redis 内部单线程串行执行整条脚本，中途不允许其他请求插队，天然具备原子性，从根源上防止超卖，无需手动控制互斥。\r\n\r\n## 二、核心区别对比表\r\n\r\n|维度|分布式锁（setNX）|Lua 原子脚本|\r\n|---|---|---|\r\n|并发能力|同一时间只能1人执行业务|有多少库存就支持多少并发|\r\n|原子保障|靠锁互斥，锁住整个业务流程|Redis 单线程 \\+ 脚本原子，命令级不插队|\r\n|性能|低，串行排队等业务逻辑（耗时久）|极高，只在Redis内存微秒级执行（耗时短）|\r\n|超卖风险|锁设计不好有风险（误删、过期、续命）|天然无超卖，原子执行无间隙|\r\n|代码复杂度|高，需处理锁过期、锁续命、防误删等坑|低，脚本一次写完，无需关心锁相关逻辑|\r\n|适用业务|唯一名额、抢单、抢优惠券、独占资源|普通商品库存、秒杀多库存、限流、扣余额|\r\n|维护成本|高，坑多容易出线上bug，需持续维护锁逻辑|低，一次脚本通用所有商品，无需额外维护|\r\n\r\n## 三、分布式锁适合什么场景？\r\n\r\n### 适用场景\r\n\r\n资源只有 1 个，同一时刻只能有一个人操作（核心是“独占”）：\r\n\r\n- 抢唯一优惠券、抢限量1个的名额（如限量签名照）\r\n\r\n- 任务独占执行（定时任务防止多实例重复跑，如每日凌晨统计订单）\r\n\r\n- 单笔独占操作、不能多人同时进入业务（如用户提现审核）\r\n\r\n### 致命缺点\r\n\r\n1. 多库存商品（库存10、100）不能用：明明有10个库存，也只能一个一个排队买，浪费并发，用户体验差。\r\n\r\n2. 坑非常多，新手极易踩雷：\r\n      \r\n\r\n3. 锁超时业务没执行完：10秒锁过期，业务还在执行，其他请求抢锁成功，导致并发错乱\r\n\r\n4. 业务没走完锁被误删：比如A执行业务时，误删了B的锁，导致B的业务被打断\r\n\r\n5. 需要做锁续命、防删除误判：需额外写代码处理锁续命（业务超时自动续期），复杂度飙升\r\n\r\n一句话：只有「独占唯一资源」才用分布式锁，多库存场景绝对不推荐。\r\n\r\n## 四、Lua 脚本适合什么场景？\r\n\r\n### 适用场景\r\n\r\n有多库存、允许高并发、要防超卖（核心是“原子扣减”）：\r\n\r\n- 电商商品扣库存（如库存100件，允许100人同时下单）\r\n\r\n- 秒杀多件商品（如秒杀100件，支持100人并发抢购）\r\n\r\n- 用户扣余额、扣积分、扣次数（如用户积分扣减，需原子操作防多扣）\r\n\r\n- 接口限流、防重复提交（如IP限流，原子计数防并发错乱）\r\n\r\n- 批量原子操作、多条件判断扣减（如“库存\\\u0026gt;0且用户未购买”才能扣减）\r\n\r\n### 优势\r\n\r\n1. 不限制并发人数：有多少库存就支持多少人同时操作，并发拉满\r\n\r\n2. 执行速度极快：只锁住 Redis 命令执行阶段（微秒级），不阻塞业务逻辑，用户无感知\r\n\r\n3. 零额外坑：无需关心锁、释放锁、续命，脚本写完直接用\r\n\r\n4. 业内标准：电商、秒杀场景的最优解，各大公司均采用此方案\r\n\r\n一句话：但凡多库存、高并发、要原子扣减，优先用 Lua，简单又安全。\r\n\r\n## 五、经典业务选型结论\r\n\r\n- 场景1：商品库存 10件、100件 售卖 → 选 Lua 原子脚本（不要用分布式锁，浪费并发、用户排队体验差）\r\n\r\n- 场景2：秒杀只有 1 个名额、抢唯一奖品 → 选 Redis 分布式锁（用 Lua 没必要，本来就只能卖1个）\r\n\r\n- 场景3：微服务定时任务，防止多实例同时执行 → 分布式锁\r\n\r\n- 场景4：用户限流、防重复下单、扣积分余额 → Lua 脚本\r\n\r\n## 六、常见误区纠正\r\n\r\n- 误区1：只要并发问题，都用分布式锁 → 错！分布式锁是业务级别串行，并发极低；Lua 是 Redis 命令级别原子，并发拉满，多库存场景用分布式锁会严重影响性能。\r\n\r\n- 误区2：Lua 也能当分布式锁用 → 可以，但没必要。Lua 擅长多并发原子扣减；分布式锁擅长独占资源互斥，用 Lua 实现互斥会浪费其高并发优势。\r\n\r\n- 误区3：Redis 多线程会不会破坏 Lua 原子性 → 不会。Redis 新版网络IO是多线程（提高网络传输效率），但命令执行依然是单线程串行，Lua 脚本作为一条命令，原子性不受影响。\r\n\r\n## 七、最终总结\r\n\r\n1. 抢唯一、独占资源 → 用 Redis 分布式锁（核心：互斥）\r\n\r\n2. 多库存、高并发、扣库存/扣余额/限流 → 用 Lua 原子脚本（核心：原子）\r\n\r\n3. 普通电商商品下单、秒杀多件，Lua 是首选、最简单最稳，新手优先掌握\r\n\r\n4. 分布式锁不要滥用，多库存业务乱用会严重限制并发、影响用户体验，甚至引发性能问题\r\n\r\n---\r\n\r\n# 第二篇：为什么普通分步查库存 \\+ 扣库存 一定会超卖\r\n\r\n## 前言\r\n\r\n很多新手写电商下单逻辑，习惯用直观的两步写法：1\\. 先从 Redis 查出当前库存；2\\. 前端/业务层判断库存 \\\u0026gt; 0，再执行扣库存。本地单机测试没问题，一上高并发、多请求同时进来，立马超卖。本文讲透底层原因、时序流程、根本问题，帮新手避开这个高频坑。\r\n\r\n## 一、错误代码示范（新手常写，必超卖）\r\n\r\n```javascript\r\n// 错误写法：分步查库存、扣库存（高并发必超卖）\r\nasync function buyWrong(goodsId) {\r\n  // 拼接库存key：格式为 goods:stock:商品ID，方便区分不同商品库存\r\n  const key = `goods:stock:${goodsId}`;\r\n  // 第一步：查库存（从Redis获取当前库存值）\r\n  let stock = await redis.get(key);\r\n  // 转成数字类型（Redis返回的是字符串，需手动转数字）\r\n  stock = Number(stock);\r\n\r\n  // 第二步：业务层判断（在Node.js代码中判断，非Redis内部判断）\r\n  if (stock \u003e 0) {\r\n    // 第三步：扣库存（库存充足，执行扣减1操作）\r\n    await redis.decr(key);\r\n    // 创建订单...（后续业务逻辑，如写入数据库）\r\n  }\r\n}\r\n\r\n```\r\n\r\n逻辑看着没问题，本地单机测试（一次只有一个请求）也能正常运行，但高并发下必超卖，核心问题出在“分步操作”上。\r\n\r\n## 二、超卖现场还原（直观理解为什么会超卖）\r\n\r\n初始库存：1（商品只有1件），同时两个请求 A、B 并发进来（高并发场景常见）：\r\n\r\n1. 请求A：执行 get 命令，查到库存 = 1\r\n\r\n2. 请求B：同时执行 get 命令，也查到库存 = 1（两步操作有间隙，B趁机插队查库存）\r\n\r\n3. A 判断 1\\\u0026gt;0，准备执行扣库存操作\r\n\r\n4. B 判断 1\\\u0026gt;0，也准备执行扣库存操作\r\n\r\n5. A 先执行 decr 命令 → 库存变 0\r\n\r\n6. B 后执行 decr 命令 → 库存变 \\-1（库存为负，超卖）\r\n\r\n结果：1件库存，卖出去2次，直接超卖，造成商家损失，这是高并发场景下的致命bug。\r\n\r\n## 三、根本原因（3个核心，新手必懂）\r\n\r\n### 1\\. 两次网络请求，中间有时间窗口\r\n\r\nget 是一次 Redis 网络请求（从Node\\.js发送到Redis，再返回结果），decr 是第二次 Redis 网络请求。两次命令不连续，中间有空闲间隙（哪怕只有几毫秒），其他并发请求可以完美插队，查到相同的旧库存。\r\n\r\n### 2\\. 业务代码层面做判断，不是 Redis 原子判断\r\n\r\n库存判断放在了 Node\\.js 业务层，不是在 Redis 内部执行。Redis 无法保证“查库存”和“扣库存”的连续性，所有并发请求都能读到旧库存，进而全部通过判断、执行扣减。\r\n\r\n### 3\\. Redis 命令执行虽单线程，但管不了你分步逻辑\r\n\r\nRedis 内部命令是单线程串行执行的，但它只能保证“单个命令”的原子性，管不了你“先调 get、再隔一会调 decr”的分步逻辑，中间的间隙依然会被其他请求插队。\r\n\r\n## 四、一句话总结坑点\r\n\r\n\\- 先查后扣是两条独立命令，有间隙可插队；\\- 库存校验放在业务代码，不是 Redis 内部，无法保证原子性；\\- 高并发下大量请求同时读到相同旧库存，集体通过判断 → 超卖。\r\n\r\n## 五、正确解决方案\r\n\r\n不要在业务层拆分「查、判、扣」三个步骤，把整套逻辑交给 Redis Lua 脚本原子执行：查库存 → 判断 → 扣库存，Redis 内部一次性跑完，不允许任何请求插队，从根源上杜绝超卖。\r\n\r\n---\r\n\r\n# 第三篇：Redis \\+ Lua 原子扣库存 完整可运行代码\r\n\r\n## 前言\r\n\r\n解决超卖最优方案：Redis Lua 原子脚本。利用 Redis 单线程特性，把查库存、判断、扣减合并成一条原子命令，天然防超卖，并发性能拉满，新手可直接复制到项目中使用，无需额外修改核心逻辑。\r\n\r\n## 一、安装依赖\r\n\r\n使用 Node\\.js 开发，需先安装 Redis 客户端 ioredis（轻量、易用，业内常用）：\r\n\r\n```bash\r\nnpm i ioredis\r\n```\r\n\r\n## 二、完整可运行代码（带详细注释，新手易懂）\r\n\r\n```javascript\r\n// 1. 引入并初始化 Redis 客户端（连接本地Redis，默认端口6379）\r\n// 若Redis部署在远程服务器，需修改host、port，如需密码添加password字段\r\nconst Redis = require('ioredis');\r\nconst redis = new Redis({\r\n  host: '127.0.0.1', // 本地Redis地址，远程请替换为服务器IP\r\n  port: 6379         // Redis默认端口，未修改过则无需改动\r\n});\r\n\r\n// 2. Lua 原子扣库存脚本（核心逻辑，一次性执行查、判、扣，无间隙）\r\nconst stockLua = `\r\n  -- 接收外部传入的库存key（从JS中通过KEYS[1]传入，对应goods:stock:商品ID）\r\n  local stockKey = KEYS[1]\r\n  -- 获取当前库存：redis.call('get', stockKey)查库存，不存在则默认0，转成数字类型\r\n  local stock = tonumber(redis.call('get', stockKey) or 0)\r\n  -- 判断库存是否充足（大于0则可扣减）\r\n  if stock \u003e 0 then\r\n      -- 库存充足：执行扣减1操作（decr命令自动减1）\r\n      redis.call('decr', stockKey)\r\n      return 1  -- 返回1，告诉JS：扣库存成功，可以下单\r\n  else\r\n      -- 库存不足：不执行扣减，返回0\r\n      return 0  -- 返回0，告诉JS：商品已售罄\r\n  end\r\n`;\r\n\r\n/**\r\n * 3. 购买下单核心函数（对外提供的接口，可直接调用）\r\n * @param {string|number} goodsId 商品ID（区分不同商品，如1001、1002）\r\n * @returns {string} 下单结果（成功、售罄、失败）\r\n */\r\nasync function buy(goodsId) {\r\n  // 拼接当前商品的库存key，格式：goods:stock:商品ID\r\n  const stockKey = `goods:stock:${goodsId}`;\r\n\r\n  // 执行Lua脚本：参数1=脚本内容，参数2=传入Lua的KEYS数量（此处1个），参数3=具体的KEY值\r\n  const res = await redis.eval(stockLua, 1, stockKey);\r\n\r\n  // 判断Lua返回结果：0=库存不足，直接返回售罄\r\n  if (res === 0) {\r\n    return '商品已售罄';\r\n  }\r\n\r\n  // 走到这里：Lua扣库存成功，开始执行业务逻辑（创建订单、写库等）\r\n  try {\r\n    // 此处写你的真实业务逻辑（根据自己的项目修改）\r\n    // 1. 创建订单（生成订单号、关联商品和用户）\r\n    // 2. 写入数据库（订单表、用户订单关联表等）\r\n    // 3. 其他业务（扣减用户余额、发放优惠券、发送下单通知等）\r\n    return '下单成功';\r\n  } catch (err) {\r\n    // 异常处理：业务执行失败（如数据库报错），必须回补库存\r\n    // 防止“库存扣了，但订单没创建成功”，导致库存数据不一致\r\n    await redis.incr(stockKey); // incr命令：库存加1，回补之前扣减的数量\r\n    return '下单失败，库存已回补';\r\n  }\r\n}\r\n\r\n// 4. 初始化商品库存示例（仅首次执行，给商品设置初始库存）\r\n// 商品ID=1001，初始库存=10件（根据实际商品修改ID和库存数量）\r\n// await redis.set('goods:stock:1001', 10);\r\n\r\n// 5. 导出函数（供其他文件调用，如接口层、服务层）\r\nmodule.exports = { buy };\r\n\r\n```\r\n\r\n## 三、核心代码解释（新手必看，理清逻辑）\r\n\r\n### 1\\. redis\\.eval 作用（执行Lua脚本的核心方法）\r\n\r\neval 是 Redis 官方提供的、执行 Lua 脚本的专属方法，语法固定，新手直接套用即可：\r\n\r\n```javascript\r\nredis.eval(脚本内容, KEYS数量, KEYS1)\r\n```\r\n\r\n示例中：脚本内容=stockLua（我们写的扣库存脚本），KEYS数量=1（只传入1个库存key），KEYS1=stockKey（当前商品的库存key）；Lua脚本中通过 KEYS\\[1\\] 接收这个key，实现灵活复用（适配所有商品）。\r\n\r\n### 2\\. Lua 脚本逻辑（核心中的核心）\r\n\r\n1. 接收商品库存 key：通过 KEYS\\[1\\] 接收JS传入的库存key，适配不同商品，无需重复写脚本。\r\n\r\n2. 获取库存值：查不到库存时默认0（避免null报错），转成数字类型方便判断。\r\n\r\n3. 库存大于0则扣减 1，返回 1 代表可下单：decr命令自动扣减1，原子执行，无间隙。\r\n\r\n4. 无库存返回 0 代表售罄：不执行扣减，直接返回结果，避免超卖。\r\n\r\n### 3\\. try/catch 回补库存（关键细节，防止数据不一致）\r\n\r\nLua 扣库存成功后，如果创建订单、写库等业务报错（如数据库宕机、网络异常），会出现“Redis 库存扣了，但订单没生成”的问题，导致库存数据不一致。此时通过 catch 捕获异常，用 incr 命令把库存加回去，保证“要么下单成功，要么库存退回”，数据最终一致。\r\n\r\n## 四、使用方式（新手直接复制使用）\r\n\r\n```javascript\r\n// 1. 先初始化库存（仅首次执行，后续无需重复）\r\n// 商品ID=1001，库存=10件（根据实际需求修改）\r\nawait redis.set('goods:stock:1001', 10);\r\n\r\n// 2. 调用下单函数（传入商品ID，获取下单结果）\r\nlet ret = await buy(1001);\r\n// 3. 打印结果（可根据需求返回给前端）\r\nconsole.log(ret); // 输出：下单成功 / 商品已售罄 / 下单失败，库存已回补\r\n\r\n```\r\n\r\n## 五、优势总结（为什么选这个方案）\r\n\r\n1. 原子执行：Redis 单线程串行执行 Lua，不会插队，永久防超卖，从根源解决问题。\r\n\r\n2. 高并发：有多少库存支持多少并发，不人为串行阻塞，用户体验好，性能拉满。\r\n\r\n3. 代码简单：不用写分布式锁、不用处理锁过期、锁续命，新手也能快速上手。\r\n\r\n4. 数据安全：业务异常自动回补库存，保证数据最终一致，避免少卖、超卖。\r\n\r\n## 六、适用场景\r\n\r\n- 电商商品下单扣库存（核心场景）\r\n\r\n- 秒杀、抢购多件商品（高并发场景）\r\n\r\n- 用户积分、余额扣减（原子操作需求）\r\n\r\n- 接口限流、防重复提交（高并发计数场景）\r\n\r\n- 优惠券名额扣减（限量多名额场景）\r\n\r\n---\r\n\r\n**专栏结尾**：本专栏从“方案选型”到“问题避坑”，再到“代码落地”，完整覆盖了 Redis 高并发库存处理的核心场景。掌握 Lua 原子脚本的使用，能解决大部分电商、秒杀场景的超卖问题；理解分布式锁的适用场景，能避免滥用锁导致的并发瓶颈。建议收藏本文，实际业务开发中直接参考，少踩坑、提效率。\r\n\r\n\u003e （注：文档部分内容可能由 AI 生成）",
+      "fileName": "lua1",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "sDIZm1",
+      "title": "lua3",
+      "createdAt": "2026-04-30T16:49:53+08:00",
+      "updatedAt": "2026-04-30T16:51:11+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": true,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "lua3",
+      "fileName": "lua3",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "y4Gdwo",
+      "title": "lua2",
+      "createdAt": "2026-04-30T16:49:34+08:00",
+      "updatedAt": "2026-04-30T16:51:04+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": true,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "lua2",
+      "fileName": "lua2",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -440,6 +492,29 @@
       },
       "content": "在 JavaScript 中：\r\n```\r\n// 全部都合法！！！\r\nthrow 123;\r\nthrow \"字符串\";\r\nthrow { name: \"对象\" };\r\nthrow new Response(); // 注意这个\r\nthrow null;\r\nthrow undefined;\r\n```\r\n**没有任何语法限制！**\r\n平时我们抛 throw new Error(\"xxx\") 只是习惯，不是规定。\r\n\r\n```js\r\ntry {\r\n  await yourHandler();\r\n} catch (err) {\r\n  // 如果 catch 到的是 Response，直接返回给前端\r\n  if (err instanceof Response) {\r\n    return err; \r\n  } else if(xxx){\r\n    return xxx\r\n  }\r\n  // 否则才当成真正的错误处理\r\n}\r\n```",
       "fileName": "throw-ke-yi-pao-ren-he-dong-xi",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "L6GaJl",
+      "title": "v-if 与 v-for 优先级",
+      "createdAt": "2023-04-27T17:50:44+08:00",
+      "updatedAt": "2023-04-27T17:50:44+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## **`v-if` 与 `v-for` 优先级变了**\n\n- Vue2： `v-for` 优先级 **高于** `v-if`\n- Vue3： `v-if` 优先级 **高于** `v-for` （所以不建议同时用，用 `\u003ctemplate\u003e` 隔开）",
+      "fileName": "v-if-yu-v-for-you-xian-ji",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -1881,29 +1956,6 @@
       "abstract": ""
     },
     {
-      "id": "lW4a90",
-      "title": "打包编译时间 buildTime",
-      "createdAt": "2020-08-20T08:42:45+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
-      "fileName": "da-bao-bian-yi-shi-jian-buildtime",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "WEpoVC",
       "title": "vue cli \u0026 create-react-app 打包编译时间 buildTime",
       "createdAt": "2020-08-20T08:42:45+08:00",
@@ -1923,6 +1975,29 @@
       },
       "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
       "fileName": "vue-cli-and-create-react-app-da-bao-bian-yi-shi-jian-buildtime",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "lW4a90",
+      "title": "打包编译时间 buildTime",
+      "createdAt": "2020-08-20T08:42:45+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
+      "fileName": "da-bao-bian-yi-shi-jian-buildtime",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -3456,31 +3531,6 @@
       "abstract": ""
     },
     {
-      "id": "JsvNfK",
-      "title": "getTargetObject",
-      "createdAt": "2019-09-19T18:16:00+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [
-        "js utils"
-      ],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
-      "fileName": "gettargetobject",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "AqFF3L",
       "title": "filter Object",
       "createdAt": "2019-09-19T18:16:00+08:00",
@@ -3502,6 +3552,31 @@
       },
       "content": "# 过滤目标对象 / 过滤掉两个对象相等的值\r\n## 过滤目标对象 getTargetObject\r\n/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}\r\n## 过滤掉两个对象相等的值\r\n```\r\n/**\r\n * 比较两个对象是否相等\r\n * 相等返回obj2\r\n * 不等 返回不相同的值 和 reserveArray数组保留的值\r\n *\r\n * @export\r\n * @param {*} obj1\r\n * @param {*} obj2\r\n * @param {*} reserveArray\r\n * @returns\r\n */\r\nexport function getObjectDifferent(obj1, obj2, reserveArray) {\r\n  var data = {}\r\n  var isEqually = true\r\n  for (var key in obj1) {\r\n    if (obj1.hasOwnProperty(key) \u0026\u0026 obj1[key] !== obj2[key]) {\r\n      data[key] = obj2[key]\r\n      isEqually = false\r\n    }\r\n  }\r\n\r\n  if (isEqually) {\r\n    data = obj2\r\n  } else {\r\n    for (var i = 0; i \u003c reserveArray.length; i++) {\r\n      var item = reserveArray[i]\r\n      data[item] = obj2[item]\r\n    }\r\n  }\r\n  // reserveArray.forEach(item =\u003e {\r\n  //   data[item] = obj2[item];\r\n  // })\r\n  return {\r\n    isEqually: isEqually,\r\n    data: data\r\n  }\r\n}\r\n```",
       "fileName": "filter-object",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "JsvNfK",
+      "title": "getTargetObject",
+      "createdAt": "2019-09-19T18:16:00+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [
+        "js utils"
+      ],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
+      "fileName": "gettargetobject",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -4098,29 +4173,6 @@
       "abstract": ""
     },
     {
-      "id": "jwMBYc",
-      "title": "Vue 作用域插槽",
-      "createdAt": "2019-09-16T10:38:35+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
-      "fileName": "vue-zuo-yong-yu-cha-cao",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "LzWYUj",
       "title": "Vue 生疏知识\u0026实用开发技巧",
       "createdAt": "2019-09-16T10:38:35+08:00",
@@ -4143,6 +4195,29 @@
       },
       "content": "## 一些 Vue 生疏知识\r\n[Vue 实用开发技巧](https://juejin.im/post/5d790819e51d453b5e465bc7)",
       "fileName": "vue-shi-yong-kai-fa-ji-qiao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "jwMBYc",
+      "title": "Vue 作用域插槽",
+      "createdAt": "2019-09-16T10:38:35+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
+      "fileName": "vue-zuo-yong-yu-cha-cao",
       "deleteFileName": "",
       "abstract": ""
     },

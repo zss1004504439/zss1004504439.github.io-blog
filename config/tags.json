@@ -118,6 +118,13 @@
       "slug": "nodejs",
       "used": true,
       "color": "#AF5DC4"
+    },
+    {
+      "id": "W8OOP6",
+      "name": "Lua",
+      "slug": "lua",
+      "used": true,
+      "color": "#B6C45D"
     }
   ]
 }
