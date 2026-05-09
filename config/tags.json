@@ -125,6 +125,13 @@
       "slug": "lua",
       "used": true,
       "color": "#B6C45D"
+    },
+    {
+      "id": "HWq3VY",
+      "name": "Monorepo",
+      "slug": "monorepo",
+      "used": true,
+      "color": "#C45D5D"
     }
   ]
 }
