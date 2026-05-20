@@ -30,10 +30,56 @@
       "abstract": ""
     },
     {
+      "id": "YSzBHm",
+      "title": "如何避免 $router.back() 返回到外部网站",
+      "createdAt": "2026-05-20T10:45:46Z",
+      "updatedAt": "0001-01-01T00:00:00Z",
+      "tags": [],
+      "tagIds": null,
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "# 如何避免 $router.back() 返回到外部网站\r\n\r\n\u003e 当用户从外部网站跳入你的页面时，`router.back()` 会把用户带回到那个外部网站，而不是你的首页。本文介绍 Vue 和 React 项目的解决方案。\r\n\r\n## 问题场景\r\n\r\n- 用户通过搜索引擎、广告链接、微信分享等从外部网站进入你的页面\r\n- 页面上有返回按钮，调用 `$router.back()` 或 `window.history.back()`\r\n- 点击返回 → 用户被送回外部网站，脱离了你的站点\r\n\r\n这不是预期行为，我们希望：**有站内历史就返回上一页，没有就跳首页**。\r\n\r\n---\r\n\r\n## Vue 项目方案：history.state.position\r\n\r\n### vue-router@4 的内部机制\r\n\r\nVue Router 4 在每次导航时，会通过 `history.pushState()` 写入一个 state 对象：\r\n\r\n```ts\r\n// vue-router 内部行为（简化）\r\nhistory.pushState({ position: 0, back: null, current: '/home', ... }, '', '/home')\r\nhistory.pushState({ position: 1, back: '/home', current: '/list', ... }, '', '/list')\r\nhistory.pushState({ position: 2, back: '/list', current: '/detail', ... }, '', '/detail')\r\n```\r\n\r\n其中 `position` 是从 0 开始递增的索引，表示当前页面在 Vue Router 历史栈中的位置。\r\n\r\n### 关键字段说明\r\n\r\n| 字段 | 含义 |\r\n|------|------|\r\n| `window.history.length` | 浏览器历史栈总长度（包含外部网站记录），直接打开页面时为 1 |\r\n| `window.history.state.position` | vue-router 写入的当前页面位置索引，0 表示起点 |\r\n\r\n### 为什么需要双重判断\r\n\r\n单独使用任一条件都不够：\r\n\r\n- **只看 `length \u003e 1`**：外部网站跳入时 length 也 ≥ 2，无法区分站内外\r\n- **只看 `position \u003e 0`**：position 是 vue-router 写入的，但需要 length 辅助确认栈中确实有其他记录\r\n\r\n组合判断才能精确区分：\r\n\r\n| 场景 | length | position | 结果 |\r\n|------|--------|----------|------|\r\n| 直接输入 URL 进入本站 | 1 | 0 | 跳首页 |\r\n| 从本站其他页面跳过来 | 3 | 1 | `back()` ✅ |\r\n| 从外部网站直接跳进来 | 2 | 0 | 跳首页 ✅ |\r\n| 外部网站进入后，站内再跳了几页 | 4 | 2 | `back()` ✅ |\r\n\r\n### 实现代码\r\n\r\n```vue\r\n\u003ctemplate\u003e\r\n  \u003cKKCIcon name=\"icon-com_return\" @click=\"handleBack\" /\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript setup lang=\"ts\"\u003e\r\n// [AI-GEN] 安全返回：避免返回到外部网站\r\nconst handleBack = () =\u003e {\r\n  const isBrowserHistoryValid =\r\n    window.history?.length \u003e 2 \u0026\u0026 window.history?.state?.position \u003e 0\r\n\r\n  if (isBrowserHistoryValid) {\r\n    $router.back()\r\n  } else {\r\n    navigateTo('/') // 回首页\r\n  }\r\n}\r\n\u003c/script\u003e\r\n```\r\n\r\n### 注意事项\r\n\r\n- `state.position` 是 vue-router@4 的**实现细节**，不是 Web 标准，其他框架不会写入此字段\r\n- 浏览器原生 `history.state` 只是一个任意对象，内容由 `pushState/replaceState` 的调用者决定\r\n- vue-router@4 写入的完整结构为 `{ position, back, current, forward, replaced }`\r\n\r\n---\r\n\r\n## React 项目方案\r\n\r\nReact Router v6 不会往 `history.state` 写入 `position`，无法直接复用 Vue 的方案。以下是三种替代思路：\r\n\r\n### 方案一：document.referrer（最简单）\r\n\r\n`document.referrer` 是浏览器原生属性，记录上一个页面的完整 URL。\r\n\r\n```ts\r\n// [AI-GEN] 安全返回：检查来源是否为本站\r\nconst handleBack = () =\u003e {\r\n  const referrer = document.referrer\r\n  const isSameOrigin = referrer \u0026\u0026 new URL(referrer).origin === window.location.origin\r\n\r\n  if (isSameOrigin) {\r\n    window.history.back()\r\n  } else {\r\n    navigate('/') // React Router useNavigate()\r\n  }\r\n}\r\n```\r\n\r\n局限：部分场景 `referrer` 会丢失（HTTPS → HTTP、`noopener` 链接、浏览器隐私策略）。直接输入 URL 进入时 referrer 为空，走首页 — 这恰好是期望行为。\r\n\r\n### 方案二：sessionStorage 标记来源（最可靠）\r\n\r\n在全局 Layout 或路由守卫中记录站内来源：\r\n\r\n```ts\r\n// [AI-GEN] 全局记录站内来源路径\r\n// 在 Layout 或路由守卫中，每次进入新页面时记录\r\nuseEffect(() =\u003e {\r\n  sessionStorage.setItem('from_path', window.location.pathname)\r\n}, [location.pathname])\r\n\r\n// 返回时使用记录的来源\r\nconst handleBack = () =\u003e {\r\n  const fromPath = sessionStorage.getItem('from_path')\r\n\r\n  if (fromPath) {\r\n    sessionStorage.removeItem('from_path')\r\n    navigate(fromPath)\r\n  } else {\r\n    navigate('/')\r\n  }\r\n}\r\n```\r\n\r\n优势：最可靠，完全不依赖浏览器 API 的不确定性。需要全局配合设置标记。\r\n\r\n### 方案三：组合判断（推荐）\r\n\r\n兼顾简单性和准确性：\r\n\r\n```ts\r\n// [AI-GEN] 安全返回：组合判断\r\nconst handleBack = () =\u003e {\r\n  const referrer = document.referrer\r\n  const isFromSameSite = referrer \u0026\u0026 new URL(referrer).origin === window.location.origin\r\n  const hasHistory = window.history.length \u003e 1\r\n\r\n  if (isFromSameSite \u0026\u0026 hasHistory) {\r\n    window.history.back()\r\n  } else {\r\n    navigate('/')\r\n  }\r\n}\r\n```\r\n\r\n### 方案对比\r\n\r\n| 方案 | 可靠性 | 复杂度 | 说明 |\r\n|------|--------|--------|------|\r\n| `document.referrer` | 中 | 低 | 最简单，但 referrer 有丢失场景 |\r\n| `sessionStorage` 标记 | 高 | 中 | 最可靠，需要全局配合 |\r\n| `referrer + length` 组合 | 中高 | 低 | 兼顾简单和准确性 |\r\n\r\n---\r\n\r\n## 核心思路总结\r\n\r\n无论是 Vue 还是 React，核心逻辑都是同一句话：\r\n\r\n**判断上一页是否是站内页面，是就 back()，不是就走首页。**\r\n\r\n- Vue 有 vue-router@4 的 `state.position` 这个便利字段可以直接判断\r\n- React 没有类似字段，需要用 `document.referrer` 或手动标记来替代\r\n\r\n原理相同，实现方式不同。",
+      "fileName": "ru-he-bi-mian-routerback-fan-hui-dao-wai-bu-wang-zhan",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "QJZDKv",
+      "title": "nestjs生命周期",
+      "createdAt": "2026-05-12T14:48:10+08:00",
+      "updatedAt": "2026-05-12T14:48:10+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "![](/post-images/1778568526478149600_0.webp)",
+      "fileName": "nestjssheng-ming-zhou-qi",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "XHvunz",
       "title": "单体到Monorepo",
-      "createdAt": "2026-05-09T11:04:03Z",
-      "updatedAt": "0001-01-01T00:00:00Z",
+      "createdAt": "2026-05-09T11:04:03+08:00",
+      "updatedAt": "2026-05-09T11:04:03+08:00",
       "tags": [
         "Monorepo"
       ],
@@ -2447,29 +2493,6 @@
       "abstract": ""
     },
     {
-      "id": "uasAeF",
-      "title": "自定义指令directive",
-      "createdAt": "2020-05-12T20:21:32+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
-      "fileName": "zi-ding-yi-zhi-ling-directive",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "Kl4nFz",
       "title": "自定义指令directive 表单按钮重复提交",
       "createdAt": "2020-05-12T20:21:32+08:00",
@@ -2489,6 +2512,29 @@
       },
       "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
       "fileName": "zi-ding-yi-zhi-ling-directive-biao-dan-an-niu-chong-fu-ti-jiao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "uasAeF",
+      "title": "自定义指令directive",
+      "createdAt": "2020-05-12T20:21:32+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "https://juejin.im/post/5eb7fc626fb9a0436a7c6af1\r\n```js\r\nimport Vue from 'vue'\r\n\r\nconst preventReClick = Vue.directive('preventReClick', {\r\n  inserted: function(el, binding) {\r\n    el.addEventListener('click', () =\u003e {\r\n      if (!el.disabled) {\r\n        el.disabled = true\r\n        setTimeout(() =\u003e {\r\n          el.disabled = false\r\n        }, binding.value || 3000) // 传入绑定值就使用，默认3000毫秒内不可重复触发\r\n      }\r\n    })\r\n  }\r\n})\r\n\r\nexport { preventReClick }\r\n\r\n```\r\n```js\r\nimport preventReClick from './plugins/directives.js' //防多次点击，重复提交\r\n```\r\n```js\r\n// 指定延迟1000ms\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick=\"1000\"\u003e保 存\u003c/el-button\u003e\r\n\r\n// 默认延迟时间3000\r\n\u003cel-button  size=\"small\" type=\"primary\" @click=\"handleSave()\" v-preventReClick\u003e保 存\u003c/el-button\u003e\r\n\r\n```",
+      "fileName": "zi-ding-yi-zhi-ling-directive",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -3581,31 +3627,6 @@
       "abstract": ""
     },
     {
-      "id": "JsvNfK",
-      "title": "getTargetObject",
-      "createdAt": "2019-09-19T18:16:00+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [
-        "js utils"
-      ],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
-      "fileName": "gettargetobject",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "AqFF3L",
       "title": "filter Object",
       "createdAt": "2019-09-19T18:16:00+08:00",
@@ -3627,6 +3648,31 @@
       },
       "content": "# 过滤目标对象 / 过滤掉两个对象相等的值\r\n## 过滤目标对象 getTargetObject\r\n/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}\r\n## 过滤掉两个对象相等的值\r\n```\r\n/**\r\n * 比较两个对象是否相等\r\n * 相等返回obj2\r\n * 不等 返回不相同的值 和 reserveArray数组保留的值\r\n *\r\n * @export\r\n * @param {*} obj1\r\n * @param {*} obj2\r\n * @param {*} reserveArray\r\n * @returns\r\n */\r\nexport function getObjectDifferent(obj1, obj2, reserveArray) {\r\n  var data = {}\r\n  var isEqually = true\r\n  for (var key in obj1) {\r\n    if (obj1.hasOwnProperty(key) \u0026\u0026 obj1[key] !== obj2[key]) {\r\n      data[key] = obj2[key]\r\n      isEqually = false\r\n    }\r\n  }\r\n\r\n  if (isEqually) {\r\n    data = obj2\r\n  } else {\r\n    for (var i = 0; i \u003c reserveArray.length; i++) {\r\n      var item = reserveArray[i]\r\n      data[item] = obj2[item]\r\n    }\r\n  }\r\n  // reserveArray.forEach(item =\u003e {\r\n  //   data[item] = obj2[item];\r\n  // })\r\n  return {\r\n    isEqually: isEqually,\r\n    data: data\r\n  }\r\n}\r\n```",
       "fileName": "filter-object",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "JsvNfK",
+      "title": "getTargetObject",
+      "createdAt": "2019-09-19T18:16:00+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [
+        "js utils"
+      ],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
+      "fileName": "gettargetobject",
       "deleteFileName": "",
       "abstract": ""
     },
