@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-26T10:48:25.1600352Z",
+  "generatedAt": "2026-05-26T11:13:29.7769255Z",
   "files": [
     ".current_theme",
     "404.html",
@@ -13,6 +13,7 @@
     "images/avatar.png",
     "index.html",
     "links/index.html",
+    "manifest.json",
     "media/preview.png",
     "memos/index.html",
     "page/10/index.html",
@@ -281,6 +282,7 @@
     "styles/pages.css",
     "styles/responsive.css",
     "styles/utilities.css",
+    "sw.js",
     "tag/BFF/index.html",
     "tag/BOM/index.html",
     "tag/Babel/index.html",

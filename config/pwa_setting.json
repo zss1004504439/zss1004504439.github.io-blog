@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "appName": "",
+  "shortName": "",
+  "description": "",
+  "themeColor": "#ffffff",
+  "backgroundColor": "#ffffff",
+  "orientation": "any",
+  "customIcon": false
+}
