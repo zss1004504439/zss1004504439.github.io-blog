@@ -132,6 +132,13 @@
       "slug": "monorepo",
       "used": true,
       "color": "#C45D5D"
+    },
+    {
+      "id": "CRyCqP",
+      "name": "utils",
+      "slug": "utils",
+      "used": true,
+      "color": "#705DC4"
     }
   ]
 }

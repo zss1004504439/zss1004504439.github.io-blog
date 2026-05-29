@@ -30,12 +30,41 @@
       "abstract": ""
     },
     {
+      "id": "FU0aVz",
+      "title": "SafeStorage",
+      "createdAt": "2026-05-29T14:53:03Z",
+      "updatedAt": "0001-01-01T00:00:00Z",
+      "tags": [
+        "utils",
+        "storage"
+      ],
+      "tagIds": [
+        "CRyCqP",
+        "4uK6uG"
+      ],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 实现\r\n```js\r\nclass SafeStorage {\r\n  #storage;\r\n  #prefix;\r\n  #available;\r\n\r\n  constructor({ storage = localStorage, prefix = 'app' } = {}) {\r\n    this.#prefix = prefix;\r\n    this.#storage = storage;\r\n    this.#available = this.#probe();\r\n  }\r\n\r\n  #probe() {\r\n    try {\r\n      const k = '__probe__';\r\n      this.#storage.setItem(k, '1');\r\n      this.#storage.removeItem(k);\r\n      return true;\r\n    } catch { return false; }\r\n  }\r\n\r\n  #key(key) { return `${this.#prefix}:${key}`; }\r\n\r\n  set(key, value, ttlMs = null) {\r\n    if (!this.#available) return false;\r\n    const payload = JSON.stringify({\r\n      v: value,\r\n      exp: ttlMs ? Date.now() + ttlMs : null\r\n    });\r\n    try {\r\n      this.#storage.setItem(this.#key(key), payload);\r\n      return true;\r\n    } catch (e) {\r\n      if (e.name === 'QuotaExceededError') {\r\n        console.warn('[SafeStorage] 超出存储配额，写入失败');\r\n        return false;\r\n      }\r\n      throw e;\r\n    }\r\n  }\r\n\r\n  get(key, defaultValue = null) {\r\n    if (!this.#available) return defaultValue;\r\n    try {\r\n      const raw = this.#storage.getItem(this.#key(key));\r\n      if (raw === null) return defaultValue;\r\n      const { v, exp } = JSON.parse(raw);\r\n      if (exp \u0026\u0026 Date.now() \u003e exp) {\r\n        this.remove(key);\r\n        return defaultValue;\r\n      }\r\n      return v;\r\n    } catch { return defaultValue; }\r\n  }\r\n\r\n  remove(key) {\r\n    if (!this.#available) return;\r\n    this.#storage.removeItem(this.#key(key));\r\n  }\r\n\r\n  clear(onlyOwn = true) {\r\n    if (!this.#available) return;\r\n    if (!onlyOwn) { this.#storage.clear(); return; }\r\n    const toRemove = [];\r\n    for (let i = 0; i \u003c this.#storage.length; i++) {\r\n      const k = this.#storage.key(i);\r\n      if (k?.startsWith(`${this.#prefix}:`)) toRemove.push(k);\r\n    }\r\n    toRemove.forEach(k =\u003e this.#storage.removeItem(k));\r\n  }\r\n}\r\n\r\n```\r\n\r\n## 示例\r\n```js\r\n// 使用\r\nconst store = new SafeStorage({ prefix: 'myapp' });\r\nstore.set('user', { name: 'Alice' });                // 永久\r\nstore.set('token', 'abc123', 60 * 60 * 1000);        // 1 小时 TTL\r\nstore.get('user');                                   // { name: 'Alice' }\r\nstore.get('missing', 'fallback');                    // 'fallback'\r\n```",
+      "fileName": "safestorage",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
       "id": "YSzBHm",
       "title": "如何避免 $router.back() 返回到外部网站",
-      "createdAt": "2026-05-20T10:45:46Z",
-      "updatedAt": "0001-01-01T00:00:00Z",
+      "createdAt": "2026-05-20T10:45:46+08:00",
+      "updatedAt": "2026-05-20T10:45:46+08:00",
       "tags": [],
-      "tagIds": null,
+      "tagIds": [],
       "categories": [],
       "categoryIds": null,
       "published": true,
@@ -3627,31 +3656,6 @@
       "abstract": ""
     },
     {
-      "id": "AqFF3L",
-      "title": "filter Object",
-      "createdAt": "2019-09-19T18:16:00+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [
-        "js utils"
-      ],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "# 过滤目标对象 / 过滤掉两个对象相等的值\r\n## 过滤目标对象 getTargetObject\r\n/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}\r\n## 过滤掉两个对象相等的值\r\n```\r\n/**\r\n * 比较两个对象是否相等\r\n * 相等返回obj2\r\n * 不等 返回不相同的值 和 reserveArray数组保留的值\r\n *\r\n * @export\r\n * @param {*} obj1\r\n * @param {*} obj2\r\n * @param {*} reserveArray\r\n * @returns\r\n */\r\nexport function getObjectDifferent(obj1, obj2, reserveArray) {\r\n  var data = {}\r\n  var isEqually = true\r\n  for (var key in obj1) {\r\n    if (obj1.hasOwnProperty(key) \u0026\u0026 obj1[key] !== obj2[key]) {\r\n      data[key] = obj2[key]\r\n      isEqually = false\r\n    }\r\n  }\r\n\r\n  if (isEqually) {\r\n    data = obj2\r\n  } else {\r\n    for (var i = 0; i \u003c reserveArray.length; i++) {\r\n      var item = reserveArray[i]\r\n      data[item] = obj2[item]\r\n    }\r\n  }\r\n  // reserveArray.forEach(item =\u003e {\r\n  //   data[item] = obj2[item];\r\n  // })\r\n  return {\r\n    isEqually: isEqually,\r\n    data: data\r\n  }\r\n}\r\n```",
-      "fileName": "filter-object",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "JsvNfK",
       "title": "getTargetObject",
       "createdAt": "2019-09-19T18:16:00+08:00",
@@ -3673,6 +3677,31 @@
       },
       "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
       "fileName": "gettargetobject",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "AqFF3L",
+      "title": "filter Object",
+      "createdAt": "2019-09-19T18:16:00+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [
+        "js utils"
+      ],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "# 过滤目标对象 / 过滤掉两个对象相等的值\r\n## 过滤目标对象 getTargetObject\r\n/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}\r\n## 过滤掉两个对象相等的值\r\n```\r\n/**\r\n * 比较两个对象是否相等\r\n * 相等返回obj2\r\n * 不等 返回不相同的值 和 reserveArray数组保留的值\r\n *\r\n * @export\r\n * @param {*} obj1\r\n * @param {*} obj2\r\n * @param {*} reserveArray\r\n * @returns\r\n */\r\nexport function getObjectDifferent(obj1, obj2, reserveArray) {\r\n  var data = {}\r\n  var isEqually = true\r\n  for (var key in obj1) {\r\n    if (obj1.hasOwnProperty(key) \u0026\u0026 obj1[key] !== obj2[key]) {\r\n      data[key] = obj2[key]\r\n      isEqually = false\r\n    }\r\n  }\r\n\r\n  if (isEqually) {\r\n    data = obj2\r\n  } else {\r\n    for (var i = 0; i \u003c reserveArray.length; i++) {\r\n      var item = reserveArray[i]\r\n      data[item] = obj2[item]\r\n    }\r\n  }\r\n  // reserveArray.forEach(item =\u003e {\r\n  //   data[item] = obj2[item];\r\n  // })\r\n  return {\r\n    isEqually: isEqually,\r\n    data: data\r\n  }\r\n}\r\n```",
+      "fileName": "filter-object",
       "deleteFileName": "",
       "abstract": ""
     },
