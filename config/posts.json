@@ -30,12 +30,35 @@
       "abstract": ""
     },
     {
-      "id": "OAA9Hd",
-      "title": "多标签页并发请求导致 Token 刷新失败？只有 15行代码就能解决 !",
-      "createdAt": "2026-06-02T15:50:01Z",
+      "id": "urvyZq",
+      "title": "nuxt response-wrapper",
+      "createdAt": "2026-06-05T16:12:57Z",
       "updatedAt": "0001-01-01T00:00:00Z",
       "tags": [],
       "tagIds": null,
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "// server/plugins/response-wrapper.ts\r\nexport default defineNitroPlugin((_nitroApp) =\u003e {\r\n  _nitroApp.hooks.hook('beforeResponse', async (event, { body }) =\u003e {\r\n    // 1. 只处理 /api 路径\r\n    if (!event.path.startsWith('/api')) { return }\r\n\r\n    // 2. 排除特殊接口（如 JSONP）\r\n    const excludePaths = ['/api/image-msg']\r\n    if (excludePaths.some(p =\u003e event.path.startsWith(p))) { return }\r\n\r\n    // 3. 已经是包装格式的（有 code 字段），直接透传\r\n    if (body \u0026\u0026 typeof body === 'object' \u0026\u0026 'code' in body) {\r\n      setResponseHeader(event, 'Content-Type', 'application/json')\r\n      return send(event, JSON.stringify(body))\r\n    }\r\n\r\n    // 4. 普通业务数据统一包装\r\n    const responseFormat = {\r\n      code: '10000',\r\n      data: body,\r\n      msg: '成功',\r\n      success: true,\r\n      time: Math.floor(Date.now() / 1000).toString(),\r\n    }\r\n    setResponseHeader(event, 'Content-Type', 'application/json')\r\n    return send(event, JSON.stringify(responseFormat))\r\n  })\r\n})\r\n",
+      "fileName": "nuxt-response-wrapper",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "OAA9Hd",
+      "title": "多标签页并发请求导致 Token 刷新失败？只有 15行代码就能解决 !",
+      "createdAt": "2026-06-02T15:50:01+08:00",
+      "updatedAt": "2026-06-02T15:50:01+08:00",
+      "tags": [],
+      "tagIds": [],
       "categories": [],
       "categoryIds": null,
       "published": true,
@@ -2150,29 +2173,6 @@
       "abstract": ""
     },
     {
-      "id": "lW4a90",
-      "title": "打包编译时间 buildTime",
-      "createdAt": "2020-08-20T08:42:45+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
-      "fileName": "da-bao-bian-yi-shi-jian-buildtime",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "WEpoVC",
       "title": "vue cli \u0026 create-react-app 打包编译时间 buildTime",
       "createdAt": "2020-08-20T08:42:45+08:00",
@@ -2192,6 +2192,29 @@
       },
       "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
       "fileName": "vue-cli-and-create-react-app-da-bao-bian-yi-shi-jian-buildtime",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "lW4a90",
+      "title": "打包编译时间 buildTime",
+      "createdAt": "2020-08-20T08:42:45+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "```html\r\n\u003chtml lang=\"zh-CN\" buildTime=\"\u003c%= (new Date()).toLocaleString() %\u003e\"\u003e\r\n```",
+      "fileName": "da-bao-bian-yi-shi-jian-buildtime",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -3725,31 +3748,6 @@
       "abstract": ""
     },
     {
-      "id": "JsvNfK",
-      "title": "getTargetObject",
-      "createdAt": "2019-09-19T18:16:00+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [
-        "js utils"
-      ],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
-      "fileName": "gettargetobject",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "AqFF3L",
       "title": "filter Object",
       "createdAt": "2019-09-19T18:16:00+08:00",
@@ -3771,6 +3769,31 @@
       },
       "content": "# 过滤目标对象 / 过滤掉两个对象相等的值\r\n## 过滤目标对象 getTargetObject\r\n/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}\r\n## 过滤掉两个对象相等的值\r\n```\r\n/**\r\n * 比较两个对象是否相等\r\n * 相等返回obj2\r\n * 不等 返回不相同的值 和 reserveArray数组保留的值\r\n *\r\n * @export\r\n * @param {*} obj1\r\n * @param {*} obj2\r\n * @param {*} reserveArray\r\n * @returns\r\n */\r\nexport function getObjectDifferent(obj1, obj2, reserveArray) {\r\n  var data = {}\r\n  var isEqually = true\r\n  for (var key in obj1) {\r\n    if (obj1.hasOwnProperty(key) \u0026\u0026 obj1[key] !== obj2[key]) {\r\n      data[key] = obj2[key]\r\n      isEqually = false\r\n    }\r\n  }\r\n\r\n  if (isEqually) {\r\n    data = obj2\r\n  } else {\r\n    for (var i = 0; i \u003c reserveArray.length; i++) {\r\n      var item = reserveArray[i]\r\n      data[item] = obj2[item]\r\n    }\r\n  }\r\n  // reserveArray.forEach(item =\u003e {\r\n  //   data[item] = obj2[item];\r\n  // })\r\n  return {\r\n    isEqually: isEqually,\r\n    data: data\r\n  }\r\n}\r\n```",
       "fileName": "filter-object",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "JsvNfK",
+      "title": "getTargetObject",
+      "createdAt": "2019-09-19T18:16:00+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [
+        "js utils"
+      ],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "/**\r\n *\r\n * @param {Object} targetObject\r\n * @param {Array} propsArray\r\n */\r\nexport function getTargetObject(targetObject, propsArray) {\r\n  if (typeof (targetObject) !== 'object' || !Array.isArray(propsArray)) {\r\n    throw new Error('参数格式不正确')\r\n  }\r\n  const result = {}\r\n  Object.keys(targetObject).filter(key =\u003e propsArray.includes(key)).forEach(key =\u003e {\r\n    result[key] = targetObject[key]\r\n  })\r\n  return result\r\n}",
+      "fileName": "gettargetobject",
       "deleteFileName": "",
       "abstract": ""
     },
@@ -4367,29 +4390,6 @@
       "abstract": ""
     },
     {
-      "id": "jwMBYc",
-      "title": "Vue 作用域插槽",
-      "createdAt": "2019-09-16T10:38:35+08:00",
-      "updatedAt": "2026-04-17T11:19:42+08:00",
-      "tags": [],
-      "tagIds": [],
-      "categories": [],
-      "categoryIds": null,
-      "published": true,
-      "hideInList": false,
-      "isTop": false,
-      "feature": "",
-      "featureImagePath": "",
-      "featureImage": {
-        "name": "",
-        "path": ""
-      },
-      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
-      "fileName": "vue-zuo-yong-yu-cha-cao",
-      "deleteFileName": "",
-      "abstract": ""
-    },
-    {
       "id": "LzWYUj",
       "title": "Vue 生疏知识\u0026实用开发技巧",
       "createdAt": "2019-09-16T10:38:35+08:00",
@@ -4412,6 +4412,29 @@
       },
       "content": "## 一些 Vue 生疏知识\r\n[Vue 实用开发技巧](https://juejin.im/post/5d790819e51d453b5e465bc7)",
       "fileName": "vue-shi-yong-kai-fa-ji-qiao",
+      "deleteFileName": "",
+      "abstract": ""
+    },
+    {
+      "id": "jwMBYc",
+      "title": "Vue 作用域插槽",
+      "createdAt": "2019-09-16T10:38:35+08:00",
+      "updatedAt": "2026-04-17T11:19:42+08:00",
+      "tags": [],
+      "tagIds": [],
+      "categories": [],
+      "categoryIds": null,
+      "published": true,
+      "hideInList": false,
+      "isTop": false,
+      "feature": "",
+      "featureImagePath": "",
+      "featureImage": {
+        "name": "",
+        "path": ""
+      },
+      "content": "## 作用域插槽\r\n```html\r\n\u003ctemplate\u003e\r\n  \u003cdiv\u003e\r\n    \u003cslot v-if=\"loading\" name=\"loading\"\u003e\r\n        \u003cdiv\u003eLoading ...\u003c/div\u003e\r\n    \u003c/slot\u003e\r\n    \u003cslot v-else :data='data' :loading='loading'\u003e \r\n    \u003c!-- 简写 --\u003e\r\n    \u003c!-- \u003cslot v-else v-bind={data, loading}\u003e --\u003e\r\n    \u003c/slot\u003e\r\n  \u003c/div\u003e\r\n\u003c/template\u003e\r\n\r\n\u003cscript\u003e\r\nexport default {\r\n  props: [\"url\"],\r\n  data: () =\u003e ({\r\n    loading: true,\r\n    data: null\r\n  }),\r\n  async created() {\r\n    this.data = await fetch(this.url);\r\n    this.loading = false;\r\n  }\r\n};\r\n\u003c/script\u003e\r\n```\r\n**用法**\r\n```html\r\n\u003clazy-loading url=\"https://www.baidu.com\"\u003e\r\n  \u003ctemplate #default=\"{ data,loading }\"\u003e\r\n    \u003cdiv\u003e{{ data }}\u003c/div\u003e\r\n    \u003cdiv\u003e{{ loading }}\u003c/div\u003e\r\n  \u003c/template\u003e\r\n\u003c/lazy-loading\u003e\r\n\r\n```",
+      "fileName": "vue-zuo-yong-yu-cha-cao",
       "deleteFileName": "",
       "abstract": ""
     },

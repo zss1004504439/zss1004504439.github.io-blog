@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-02T07:50:23.9295527Z",
+  "generatedAt": "2026-06-05T08:13:24.1504509Z",
   "files": [
     ".current_theme",
     "404.html",
@@ -156,6 +156,7 @@
     "post/nodejs-huo-qu-wei-xin-qian-ming-bing-shi-yong-jssdk/index.html",
     "post/nodejsba-express-shi-yong-xiang-jie/index.html",
     "post/nodejsjiu-mongodb-de-ji-ben-shi-yong/index.html",
+    "post/nuxt-response-wrapper/index.html",
     "post/objectfreeze/index.html",
     "post/page/10/index.html",
     "post/page/11/index.html",
